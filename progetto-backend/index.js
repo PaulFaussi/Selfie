@@ -1,23 +1,34 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const User = require('./models/User');
 
-const app = express();
-const port = 3000;
+/** 
+ * Connessione a MongoDB 
+ */
+async function connectToDB() {
+    mongoose.connect('mongodb://localhost:27017/mydatabase', {
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+    }).then(() => {
+        console.log('Connesso a MongoDB');
+    }).catch((err) => {
+        console.error('Errore di connessione a MongoDB:', err);
+    });
+}
 
-// Middleware per parsing del body delle richieste in formato JSON
-app.use(express.json());
+async function main() {
+    const app = express();
+    const port = 3000;
 
-// Connessione a MongoDB
-mongoose.connect('mongodb://localhost:27017/mydatabase', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-}).then(() => {
-    console.log('Connesso a MongoDB');
-}).catch((err) => {
-    console.error('Errore di connessione a MongoDB:', err);
-});
+    await connectToDB();
+    
+    // Middleware per parsing del body delle richieste in formato JSON
+    app.use(express.json());
+    
+    // Avvio del server
+    app.listen(port, () => {
+        console.log(`Server in esecuzione su http://localhost:${port}`);
+    });
+}
 
-// Avvio del server
-app.listen(port, () => {
-    console.log(`Server in esecuzione su http://localhost:${port}`);
-});
+main();
