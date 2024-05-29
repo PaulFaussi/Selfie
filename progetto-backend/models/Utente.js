@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 
 // Definizione dello schema
-const userSchema = new mongoose.Schema({
-    username: {
+const utenteSchema = new mongoose.Schema({
+    utentename: {
         type: String,
         required: true,
         trim: true,
@@ -16,14 +16,14 @@ const userSchema = new mongoose.Schema({
         unique: false,
         lowercase: false
     },
-    name: {
+    nome: {
         type: String
     },
-    surname: {
+    cognome: {
         type: String
     }
 }, {
     timestamps: true
 });
 
-const User = mongoose.model('User', userSchema);
+export const Utente = mongoose.model('Utente', utenteSchema);
