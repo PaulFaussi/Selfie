@@ -18,7 +18,7 @@ async function connectToDB() {
 
 async function main() {
     const app = express();
-    const port = 3000;
+    const port = 8000;
 
     await connectToDB();
     
