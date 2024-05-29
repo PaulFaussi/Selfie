@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 // Definizione dello schema
 const utenteSchema = new mongoose.Schema({
-    utentename: {
+    username: {
         type: String,
         required: true,
         trim: true,
@@ -26,4 +26,4 @@ const utenteSchema = new mongoose.Schema({
     timestamps: true
 });
 
-export const Utente = mongoose.model('Utente', utenteSchema);
+const Utente = mongoose.model('Utente', utenteSchema);

@@ -44,4 +44,4 @@ noteSchema.post('save', function(next) {
     next();
 });
 
-export const Note = mongoose.model('Note', noteSchema);
+const Note = mongoose.model('Note', noteSchema);

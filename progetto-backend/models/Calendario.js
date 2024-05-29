@@ -19,4 +19,4 @@ const calendarioSchema = new mongoose.Schema({
     timestamps: true
 });
 
-export const Calendario = mongoose.model('Calendario', calendarioSchema);
+const Calendario = mongoose.model('Calendario', calendarioSchema);

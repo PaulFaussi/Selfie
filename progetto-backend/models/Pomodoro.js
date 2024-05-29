@@ -43,4 +43,4 @@ const pomodoroSchema = new mongoose.Schema({
     timestamps: true
 })
 
-export const Pomodoro = mongoose.model('Pomodoro', pomodoroSchema);
+const Pomodoro = mongoose.model('Pomodoro', pomodoroSchema);
