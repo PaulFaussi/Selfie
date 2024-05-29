@@ -1,20 +1,20 @@
-const express = require('express');
-const mongoose = require('mongoose');
-const Utente = require('./models/Utente');
+import express from 'express';
+import { json } from 'express';
+import { connect } from 'mongoose';
+import { Utente } from './models/Utente.js';
 
 /** 
  * Connessione a MongoDB 
  */
 async function connectToDB() {
     try {
-        await mongoose.connect('mongodb://localhost:27017/mydatabase', {
+        await connect('mongodb://localhost:27017/mydatabase', {
             useNewUrlParser: true,
             useUnifiedTopology: true
         });
         console.log('Connesso a MongoDB');
     } catch (error) {
         console.error('Errore di connessione a MongoDB:', error);
-        process.exit(1);
     }
 }
 
@@ -23,21 +23,28 @@ async function main() {
     const port = 8000;
 
     await connectToDB();
+
+    await createRandomUser();
+    await getRandomUser();
+    await deleteRandomUser();
+    await getRandomUser();
     
+    // TODO: decommentare questa porzione di codice
+    /*
     // Middleware per parsing del body delle richieste in formato JSON
-    app.use(express.json());
+    app.use(json());
     
     // Avvio del server
     app.listen(port, () => {
         console.log(`Server in esecuzione su http://localhost:${port}`);
     });
-
-    await createRandomUser();
+    */
 }
 
 main();
 
 
+// TODO: eliminare le funzioni qui sotto
 async function createRandomUser() {
     const utenteData = {
         username: "PaulFaussi",
@@ -52,5 +59,45 @@ async function createRandomUser() {
         console.log('Utente creato con successo:', utente);
     } catch (error) {
         console.error('Errore durante la creazione dell\'utente:', error);
+    }
+}
+
+async function getRandomUser() {
+    try {
+        const username = "PaulFaussi";
+
+        // Use the findOne method to find a user by username
+        const user = await Utente.findOne({ username });
+
+        if (user) {
+            console.log('Utente trovato:', user);
+        } else {
+            console.log('Utente non trovato');
+        }
+        
+        return user; // Return the user object
+    } catch (error) {
+        console.error('Errore durante la ricerca dell\'utente:', error);
+        throw error; // Throw the error to handle it in the caller function if needed
+    }
+}
+
+async function deleteRandomUser() {
+    try {
+        const username = "PaulFaussi";
+
+        // Use the findOne method to find a user by username
+        const user = await Utente.deleteOne({ username });
+
+        if (user) {
+            console.log('Utente trovato:', user);
+        } else {
+            console.log('Utente non trovato');
+        }
+        
+        return user; // Return the user object
+    } catch (error) {
+        console.error('Errore durante la ricerca dell\'utente:', error);
+        throw error; // Throw the error to handle it in the caller function if needed
     }
 }
