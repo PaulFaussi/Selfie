@@ -1,14 +1,15 @@
 import express from 'express';
-import { json } from 'express';
 import { connect } from 'mongoose';
 import { Utente } from './models/Utente.js';
+
+const urlMongoDb = 'mongodb://site232437:ahB4ha7j@mongo_site232437:27017/mydatabase';
 
 /** 
  * Connessione a MongoDB 
  */
 async function connectToDB() {
     try {
-        await connect('mongodb://localhost:27017/mydatabase', {
+        await connect(urlMongoDb, {
             useNewUrlParser: true,
             useUnifiedTopology: true
         });
