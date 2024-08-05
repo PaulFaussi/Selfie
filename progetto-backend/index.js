@@ -2,7 +2,7 @@ import express from 'express';
 import { connect } from 'mongoose';
 import { Utente } from './models/Utente.js';
 
-const urlMongoDb = 'mongodb://site232437:ahB4ha7j@mongo_site232437:27017/mydatabase';
+const urlMongoDb = 'mongodb://site232437:ahB4ha7j@mongo_site232437:27017/local';
 
 /** 
  * Connessione a MongoDB 
@@ -98,7 +98,7 @@ async function deleteRandomUser() {
         
         return user; // Return the user object
     } catch (error) {
-        console.error('Errore durante la ricerca dell\'utente:', error);
+        console.error('Errore durante la eliminazione dell\'utente:', error);
         throw error; // Throw the error to handle it in the caller function if needed
     }
 }
