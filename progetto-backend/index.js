@@ -2,7 +2,7 @@ import express from 'express';
 import { connect } from 'mongoose';
 import { Utente } from './models/Utente.js';
 
-const urlMongoDb = 'mongodb://site232437:ahB4ha7j@mongo_site232437:27017/local';
+const urlMongoDb = 'mongodb://site232437:ahB4ha7j@72ff1c09f0a0:27017/local';
 
 /** 
  * Connessione a MongoDB 
