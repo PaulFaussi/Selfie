@@ -1,21 +1,20 @@
 import express from 'express';
-import { connect } from 'mongoose';
 import { Utente } from './models/Utente.js';
+import { MongoClient } from 'mongodb';
 
-const urlMongoDb = 'mongodb://site232437:ahB4ha7j@72ff1c09f0a0:27017/local';
+var db = null;
+var collectionName = "Utente";
+var collection = null;
 
 /** 
  * Connessione a MongoDB 
  */
 async function connectToDB() {
     try {
-        await connect(urlMongoDb, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true
-        });
+        db = (await MongoClient.connect('mongodb://72ff1c09f0a0:27017')).db('local');
         console.log('Connesso a MongoDB');
-    } catch (error) {
-        console.error('Errore di connessione a MongoDB:', error);
+    } catch(error) {
+        console.error("Errore nel connettersi al DB\n", error);
     }
 }
 
@@ -25,6 +24,7 @@ async function main() {
 
     await connectToDB();
 
+    await createCollection();
     await createRandomUser();
     await getRandomUser();
     await deleteRandomUser();
@@ -46,6 +46,17 @@ main();
 
 
 // TODO: eliminare le funzioni qui sotto
+
+async function createCollection() {
+    try {
+        collection = await db.createCollection(collectionName);
+        console.log("Collection creata con successo");
+    } catch (error) {
+        console.log("Errore nel creare la Collection: ", error);
+    }
+}
+
+
 async function createRandomUser() {
     const utenteData = {
         username: "PaulFaussi",
@@ -55,9 +66,8 @@ async function createRandomUser() {
     };
 
     try {
-        const utente = new Utente(utenteData);
-        await utente.save();
-        console.log('Utente creato con successo:', utente);
+        const insertResult = await collection.insertOne(utenteData);
+        console.log('Utente creato con successo:', insertResult);
     } catch (error) {
         console.error('Errore durante la creazione dell\'utente:', error);
     }
@@ -66,11 +76,10 @@ async function createRandomUser() {
 async function getRandomUser() {
     try {
         const username = "PaulFaussi";
+        const query = { username };
+        const utente = await collection.findOne(query);
 
-        // Use the findOne method to find a user by username
-        const user = await Utente.findOne({ username });
-
-        if (user) {
+        if (utente) {
             console.log('Utente trovato:', user);
         } else {
             console.log('Utente non trovato');
@@ -79,26 +88,22 @@ async function getRandomUser() {
         return user; // Return the user object
     } catch (error) {
         console.error('Errore durante la ricerca dell\'utente:', error);
-        throw error; // Throw the error to handle it in the caller function if needed
     }
 }
 
 async function deleteRandomUser() {
     try {
-        const username = "PaulFaussi";
+        const query = { username };
+        const deleteResult = await collection.deleteOne(query);
 
-        // Use the findOne method to find a user by username
-        const user = await Utente.deleteOne({ username });
-
-        if (user) {
-            console.log('Utente trovato:', user);
+        if (deleteResult) {
+            console.log('Utente trovato:', deleteResult);
         } else {
             console.log('Utente non trovato');
         }
         
-        return user; // Return the user object
+        return deleteResult; 
     } catch (error) {
         console.error('Errore durante la eliminazione dell\'utente:', error);
-        throw error; // Throw the error to handle it in the caller function if needed
     }
 }
