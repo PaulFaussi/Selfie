@@ -11,7 +11,7 @@ var collection = null;
  */
 async function connectToDB() {
     try {
-        db = (await MongoClient.connect('mongodb://72ff1c09f0a0:27017')).db('local');
+        db = (await MongoClient.connect('mongodb://site232437:ahB4ha7j@ddf4450a64b7:27017')).db('local');
         console.log('Connesso a MongoDB');
     } catch(error) {
         console.error("Errore nel connettersi al DB\n", error);
@@ -24,7 +24,7 @@ async function main() {
 
     await connectToDB();
 
-    await createCollection();
+    // await createCollection();
     await createRandomUser();
     await getRandomUser();
     await deleteRandomUser();
@@ -50,7 +50,7 @@ main();
 async function createCollection() {
     try {
         collection = await db.createCollection(collectionName);
-        console.log("Collection creata con successo");
+        console.log("Collection creata con successo", collection);
     } catch (error) {
         console.log("Errore nel creare la Collection: ", error);
     }
@@ -77,10 +77,10 @@ async function getRandomUser() {
     try {
         const username = "PaulFaussi";
         const query = { username };
-        const utente = await collection.findOne(query);
+        const utente = await db.collection(collectionName).findOne(query);
 
         if (utente) {
-            console.log('Utente trovato:', user);
+            console.log('Utente trovato:', utente);
         } else {
             console.log('Utente non trovato');
         }
@@ -94,7 +94,7 @@ async function getRandomUser() {
 async function deleteRandomUser() {
     try {
         const query = { username };
-        const deleteResult = await collection.deleteOne(query);
+        const deleteResult = await db.collection(collectionName).deleteOne(query);
 
         if (deleteResult) {
             console.log('Utente trovato:', deleteResult);
