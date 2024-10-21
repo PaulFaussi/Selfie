@@ -1,2 +1,0 @@
-# Selfie
-Progetto Tec Web
