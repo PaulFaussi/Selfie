@@ -4,12 +4,13 @@ import { LoginpageComponent } from './loginpage/loginpage.component';
 import { NotesComponent } from './notes/notes.component';
 import { NoteEditorComponent } from './note-editor/note-editor.component';
 import { UserDashboardComponent } from './user-dashboard/user-dashboard.component';
+import { PomodoroComponent } from "./pomodoro/pomodoro.component";
 
 
 
 
 export const routes: Routes = [
-    { 
+    {
         path: '',
         component: HomeComponent,
         title: 'Selfie.'
@@ -33,5 +34,10 @@ export const routes: Routes = [
         path: 'dashboard',
         component: UserDashboardComponent,
         title: 'Dashboard'
+    },
+    {
+        path: 'pomodoro',
+        component: PomodoroComponent,
+        title: 'Pomodoro'
     }
 ];
