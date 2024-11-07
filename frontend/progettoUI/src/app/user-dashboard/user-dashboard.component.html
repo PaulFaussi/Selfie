@@ -1,0 +1,22 @@
+<app-navbar></app-navbar>
+
+<body>
+    <div class="mainContainer" *ngIf="username && firstname && lastname">
+        <h1 class="title-box">Welcome back, {{firstname}}.</h1>
+        
+        <p >Username: &#64;{{username}}</p>
+        <p>Full name: {{firstname}} {{lastname}} </p>
+        <p>Date of birth: {{dob | date:'MMMM dd, yyyy'}}</p>
+        
+    </div>
+
+
+    <div class="buttons">
+        <button id="edit-action-button" (click)="homepageRedirect()">HOME PAGE</button>
+        <button id="edit-action-button" (click)="logout()">LOGOUT</button>
+    </div>
+    
+</body>
+
+
+<app-footer></app-footer>

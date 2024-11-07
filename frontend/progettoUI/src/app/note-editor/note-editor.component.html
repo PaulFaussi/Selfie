@@ -1,0 +1,87 @@
+<app-navbar></app-navbar>
+
+<body>
+    <div class="head">
+        <a routerLink="/notes">
+            <h1 class="backto" (click)="updateNote()">< back to notes</h1>
+        </a>
+    </div>
+
+    <div>
+        <div class="manageNote">
+                <button id="form-button" class="new-note" (click)="showEditPopup()" >EDIT NOTE</button>
+                <button id="form-button" style="background-color: rgb(97, 97, 97); border-left: 1px solid black;" (click)="showDeletePopup()">DELETE NOTE</button>
+        </div>
+
+        <div class="noteHeader">
+            <h1 id="noteTitle">{{note?.title}}</h1>
+
+            <div class="creatorSection">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                </svg>
+    
+                <p>{{note?.creator}}</p>
+            </div>
+        </div>
+
+        <div class="dates">
+            <h2>Last modified: {{note?.lastModificationDate | date:'dd MMM yyyy, hh:mm' }}</h2>
+            <h2>Created: {{note?.creationDate | date:'dd MMM yyyy, hh:mm' }}</h2>
+        </div>
+
+        <div class="markdown-div">
+            <p [style.display]="markdownVisibility">Markdown is enabled for this note.</p>
+            <button id="edit-action-button" style="width: 90%; margin: 0.1rem 0.5rem 0.5rem 0.5rem;" [style.display]="markdownVisibility" (click)="parseText()" >PARSE/UNPARSE</button>
+        </div>
+    </div>
+
+    <div class="noteBody">
+        <textarea  id="noteTextArea" formControlName="noteBody" #noteBody>{{note?.body}}</textarea>
+    </div>
+
+
+
+    <!-- popup -->
+
+    <div class="overlay" [style.display]="overlayVisibility"></div>
+
+    <div class="editnote-popup" [style.display]="popupVisibility">
+
+        <div class="popup-header">
+            <h1 style="margin:0;">/edit-note</h1>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"  stroke="currentColor" (click)="showEditPopup()">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+            </svg>
+        </div>
+
+        <div class="separator"></div>
+
+        <div class="title-box" style="margin-top: 1rem;">
+            <label for="title-box">Title</label>
+            <input id="title-box" type="text" name="title" placeholder="Enter note title">
+        </div>
+
+        <button id="edit-action-button" style="margin-top: 1rem;" (click)="duplicateNote()">DUPLICATE NOTE</button>
+        <button id="edit-action-button" style="margin-top: 0.5rem;" (click)="copyContent()">COPY CONTENT</button>
+    </div>
+
+
+    <!-- delete popup -->
+
+    <div class="deletenote-popup" [style.display]="deletePopupVisibility">
+        <div class="popup-header" style='border-bottom: 1px solid black;'>
+            <h1 style="margin:0;">/delete-note</h1>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"  stroke="currentColor" (click)="showDeletePopup()">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+            </svg>
+        </div>
+
+
+        <h1>Are you sure you want to delete this note?</h1>
+        <button id="edit-action-button" style="background-color: rgb(187, 0, 0); margin-bottom: 1rem;" (click)="deleteNote()">DELETE NOTE</button>
+    </div>
+
+</body>
+
+

@@ -6,18 +6,20 @@ const EventoController = require('./src/controller/EventoController');
 const PomodoroController = require('./src/controller/PomodoroController'); */
 const UtenteController = require('./controller/UtenteController');
 const NoteController = require('./controller/NoteController');
-// const cors = require('cors');
 const express = require('express');
-const { MongoClient} = require('mongodb');
+const cors = require('cors');
+const { MongoClient } = require('mongodb');
 
 
 var db;
 
 async function main() {
-
     const app = express();
     app.use(express.json());
-    const port = 8080;
+    app.use(cors({
+        origin: 'http://localhost:4200'
+    }));
+    const port = 4316;
     await connectToDB();
 
     /* // creazione controllers
@@ -35,7 +37,7 @@ async function main() {
     app.use('/categoria', categoriaController.router);
     app.use('/evento', eventoController.router);
     app.use('/pomodoro', pomodoroController.router); */
-    app.use('/utente', utenteController.router);
+    app.use('/user', utenteController.router);
     app.use('/note', noteController.router);
 
     app.listen(port, () => {
@@ -47,37 +49,29 @@ main();
 
 
 
-module.exports = db;
+/* module.exports = db; */
 
 async function connectToDB() {
-    const uri = "mongodb://localhost:27017/Selfie";
-
+    const uri = "mongodb://localhost:27017/selfie";
     const client = new MongoClient(uri);
 
     try {
         await client.connect();
         console.log('Connesso a MongoDB');
         db = client.db();
-        const collection = db.collection("Utente");
-
-        // aggiungi utente alla Collection
-        const newUser = {
-            nome: "Samuele",
-            cognome: "Selfie",
-            email: "samuele.selfie@unibo.com",
-            dataDiRegistrazione: new Date() // Data di registrazione
-        };
-
-        const result = await collection.insertOne(newUser);
-        console.log("Documento inserito correttamente");
-        console.log(result);
-
     } catch(error) {
         console.error("Errore nel connettersi al DB\n", error);
-    } finally {
+    } /* finally {
         await client.close();
-    }
+    } */
 }
+
+
+
+
+
+
+
 
 
 /* const connectToDB = async () => {
