@@ -52,7 +52,7 @@ main();
 /* module.exports = db; */
 
 async function connectToDB() {
-    const uri = "mongodb://localhost:27017/selfie";
+    const uri = "mongodb://localhost:27017/selfie_2";
     const client = new MongoClient(uri);
 
     try {
@@ -76,7 +76,7 @@ async function connectToDB() {
 
 /* const connectToDB = async () => {
     try {
-      const mongoURI = 'mongodb://localhost:27017/selfie';  
+      const mongoURI = 'mongodb://localhost:27017/selfie_2';
   
       const options = {
         serverSelectionTimeoutMS: 5000
