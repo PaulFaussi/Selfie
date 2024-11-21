@@ -129,7 +129,7 @@ p{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    padding: 0 1.5rem 1rem 1.5rem;
+    padding: 0.2rem 1.5rem 0.75rem 1.5rem;
 }
 
 .noteBody{
@@ -306,4 +306,9 @@ label, input{
     flex-direction: column;
     align-items: center;
     justify-content: center;
+}
+
+.parsedDiv{
+    min-height: 70vh;
+    margin: 1rem 2rem 0 2rem;
 }

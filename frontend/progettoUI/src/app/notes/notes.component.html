@@ -20,7 +20,7 @@
         <button id="management-button" class="new-note" (click)="openTab()" style="border-right: 1px solid black;">
                 NEW NOTE
         </button>
-        <button id="management-button" style="background-color: grey;">
+        <button id="management-button" (click)="openSortingPopup()" style="background-color: grey;">
             SORT / FILTER
         </button>
     </div>
@@ -29,7 +29,7 @@
         <app-preview-note *ngFor="let singleNoteInstance of testNotesList" [noteFetched]="singleNoteInstance"></app-preview-note>
     </div>
 
-    <app-footer></app-footer>
+    
 
 
 
@@ -41,7 +41,7 @@
 
     <!-- popup -->
 
-    <div class="overlay" [style.display]="popupVisibility"></div>
+    <div class="overlay" [style.display]="overlayVisibility"></div>
 
     <div class="creation-popup" [style.display]="popupVisibility" >
             <div class="popup-header">
@@ -57,6 +57,11 @@
             <div class="title-box" [formGroup]="noteForm">
                 <label for="title-box">Title</label>
                 <input id="title-box" type="text" name="title" placeholder="Enter note title" formControlName="noteTitle">
+            </div>
+
+            <div class="title-box" [formGroup]="noteForm">
+                <label for="title-box">Category</label>
+                <input id="title-box" type="text" name="title" placeholder="Enter note category" formControlName="noteCategory">
             </div>
 
             <div class="markdown-check">
@@ -101,4 +106,42 @@
         
     </div>
 
+    <!-- popup sorting -->
+
+
+    <div class="sorting-popup" [style.display]="sortingVisibility" >
+        <div class="popup-header">
+            <h1 style="margin:0;">/sort-notes</h1>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"  stroke="currentColor" (click)="closeSortingPopup()">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+            </svg>
+        </div>
+
+        <div class="separator"></div> 
+
+        <h1 style="margin: 0.5rem 0 0.5rem 0;">Sort notes by:</h1>
+        
+        <button id="form-button" type="submit" (click)="sortLastModified()">LAST MODIFIED</button>
+        <button id="form-button" type="submit" style="margin-top: 0.5rem;" (click)="sortMostRecent()">CREATION - RECENT</button>
+        <button id="form-button" type="submit" style="margin-top: 0.5rem;" (click)="sortLeastRecent()">CREATION - OLDEST</button>
+        <button id="form-button" type="submit" style="margin-top: 0.5rem;" (click)="sortShortest()">LENGTH - SHORTEST</button>
+        <button id="form-button" type="submit" style="margin-top: 0.5rem;" (click)="sortLongest()">LENGTH - LONGEST</button>
+        
+        <h1 style="margin: 0.5rem 0 0.5rem 0;">Filter notes by category:</h1>
+
+        <div class="title-box" style="margin-top: 1rem;">
+            <label for="title-box">Title</label>
+            <input id="title-box" type="text" name="title" placeholder="Enter note title" style="height: 2rem;" #cat>
+        </div>
+        <button id="form-button" type="submit" style="margin-top: 0.5rem;" (click)="filterCategory(cat.value)">FILTER</button>
+
+    </div>
+
+
+
+
+
+    <app-footer></app-footer>
+
 </body>
+

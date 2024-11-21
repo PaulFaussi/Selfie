@@ -53,7 +53,7 @@ class NoteController {
     async createNote(req, res){
         try{
             const authHeader = req.headers['authorization'];
-            await this.noteService.createNote(authHeader, req.body.title, req.body.isMarkdown, req.body.privacyMode, req.body.authList);
+            await this.noteService.createNote(authHeader, req.body.title, req.body.category, req.body.isMarkdown, req.body.privacyMode, req.body.authList);
             res.status(200).json( {message: 'Note created successfully.'} );
         }
         catch(error){

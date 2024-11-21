@@ -16,10 +16,11 @@ var db;
 async function main() {
     const app = express();
     app.use(express.json());
-    app.use(cors({
+    /* app.use(cors({
         origin: 'http://localhost:4200'
-    }));
-    const port = 4316;
+    })); */
+    
+    const port = 8000;
     await connectToDB();
 
     /* // creazione controllers
@@ -52,7 +53,8 @@ main();
 /* module.exports = db; */
 
 async function connectToDB() {
-    const uri = "mongodb://localhost:27017/selfie";
+    /* const uri = "mongodb://localhost:27017/selfie"; */
+    const uri = 'mongodb://mongo_site232437:27017/Selfie'
     const client = new MongoClient(uri);
 
     try {

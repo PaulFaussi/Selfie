@@ -94,7 +94,7 @@ h1, label, input{
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 1;
 }
-.creation-popup{
+.creation-popup, .sorting-popup{
     width: 85vw;
     max-width: 25rem;
     height: 80vh;
@@ -222,4 +222,35 @@ form{
 
 app-preview-note{
     width: 100%;
+}
+
+
+.title-box{
+    width: 90%;
+    height: 3.2rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+
+    align-items: center;
+}
+
+
+.title-box > input{
+    background-color: #434343;
+    border-style: solid;
+    border: 1px solid rgb(106, 106, 106);
+    height: 2rem;
+    padding: 0.5rem;
+
+    outline: none;
+    color: rgb(228, 228, 228);
+    text-align: start;
+}
+.title-box > input:focus{
+    border: 1px solid rgb(123, 31, 162);
+}
+input::placeholder{
+    color: #afafaf;
+    margin-left: 1rem;
 }

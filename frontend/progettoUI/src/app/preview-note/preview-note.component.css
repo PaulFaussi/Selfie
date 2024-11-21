@@ -41,10 +41,11 @@
 
 .date{
     width: 100%;
+    margin-top: 0.2rem;
 
     display: flex;
     flex-direction: row;
-    justify-content: end;
+    justify-content: space-between;
 }
 
 .date > h2{
