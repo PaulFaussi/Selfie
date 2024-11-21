@@ -1,5 +1,4 @@
 const jwt = require('jsonwebtoken');
-const SECRET_KEY = 'U1r3G8f0Hk3nZ4xT6bP9j2M5oA7yQ0Lw';
 const { ObjectId } = require('mongodb');
 
 class NoteRepository {
