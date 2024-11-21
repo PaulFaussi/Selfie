@@ -18,7 +18,7 @@ export class PomodoroComponent {
 
 
   constructor (private router: Router, private activatedRoute : ActivatedRoute) {
-
+    console.log("Siamo dentro al Pomodoro");
   }
 
 }

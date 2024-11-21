@@ -3,6 +3,7 @@ export interface NoteInterface {
     title: string,
     body: string,
     isMarkdown: boolean,
+  // FIXME privacyMode sarebbe?
     privacyMode: number,
     authList: string[],
     creationDate: Date,
