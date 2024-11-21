@@ -55,7 +55,7 @@ export class NotesService {
 
   }  
 
-  async createNote(title: string, isMarkdown: boolean, privacyMode: number, authList: string[]) {
+  async createNote(title: string, category: string, isMarkdown: boolean, privacyMode: number, authList: string[]) {
     const token = localStorage.getItem('loginToken');
     const headers = new HttpHeaders({
       'Content-Type': 'application/json', 
@@ -65,7 +65,7 @@ export class NotesService {
     try{
       this.http.post<{message?: string, error?:string}>(
         `${this.apiUrl}/createNote`,
-        {title, isMarkdown, privacyMode, authList},
+        {title, category, isMarkdown, privacyMode, authList},
         {headers}).subscribe({
 
           next: (res) => {

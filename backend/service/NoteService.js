@@ -18,9 +18,9 @@ class NoteService {
         
     }
 
-    async createNote(auth, title, isMarkdown, privacyMode, usersAuth){
+    async createNote(auth, title, category, isMarkdown, privacyMode, usersAuth){
         try{
-            return await this.noteRepository.createNote(auth, title, isMarkdown, privacyMode, usersAuth);
+            return await this.noteRepository.createNote(auth, title, category, isMarkdown, privacyMode, usersAuth);
         }catch(error){
             return error;
         }

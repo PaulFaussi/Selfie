@@ -23,6 +23,7 @@ import { Router, ActivatedRoute } from '@angular/router'
 export class NotesComponent {
   notesService: NotesService = inject(NotesService);
   testNotesList : NoteInterface[] = [];
+  notesToDisplay: NoteInterface[] = [];
   noteId: string | null = this.activatedRoute.snapshot.paramMap.get('id');
 
   noteTitle: string = 'New note';
@@ -31,7 +32,8 @@ export class NotesComponent {
   usersAuth: string[] = [];
 
   noteForm = new FormGroup({
-    noteTitle: new FormControl('')
+    noteTitle: new FormControl(''),
+    noteCategory: new FormControl('')
   });
 
   
@@ -41,7 +43,8 @@ export class NotesComponent {
   }
   submitNoteCreation(){
     window.location.reload();
-    return this.notesService.createNote(this.noteForm.value.noteTitle!, this.isMarkdown, this.privacyMode, this.usersAuth);
+    console.log(this.noteForm.value.noteCategory);
+    return this.notesService.createNote(this.noteForm.value.noteTitle!, this.noteForm.value.noteCategory!, this.isMarkdown, this.privacyMode, this.usersAuth);
     
   }
   deleteNote(){
@@ -68,14 +71,18 @@ export class NotesComponent {
 
 /*   dom management */
 
+  overlayVisibility: string = 'none';
   popupVisibility: string = 'none';
+  sortingVisibility: string = 'none';
   authTabVisibility: string = "none";
 
   openTab(){
     this.popupVisibility = "";
+    this.overlayVisibility = '';
   }
   closeTab(){
     this.popupVisibility = "none";
+    this.overlayVisibility = 'none';
   }
 
   showAuthTab(){
@@ -111,4 +118,56 @@ export class NotesComponent {
       this.isMarkdown = false;
     }
   }
+
+
+  //sorting popup
+
+  openSortingPopup(){
+    this.sortingVisibility = '';
+    this.overlayVisibility = '';
+  }
+  closeSortingPopup(){
+    this.sortingVisibility = 'none';
+    this.overlayVisibility = 'none';
+  }
+  sortLastModified(){
+    this.notesToDisplay = this.testNotesList.sort((a, b) => {
+      return new Date(b.lastModificationDate).getTime() - new Date(a.lastModificationDate).getTime();
+    });
+    this.testNotesList = this.notesToDisplay;
+    this.closeSortingPopup();
+  }
+  sortMostRecent(){
+    this.notesToDisplay = this.testNotesList.sort((a, b) => {
+      return new Date(b.creationDate).getTime() - new Date(a.creationDate).getTime();
+    });
+    this.testNotesList = this.notesToDisplay;
+    this.closeSortingPopup();
+  }
+  sortLeastRecent(){
+    this.notesToDisplay = this.testNotesList.sort((a, b) => {
+      return new Date(a.creationDate).getTime() - new Date(b.creationDate).getTime();
+    });
+    this.testNotesList = this.notesToDisplay;
+    this.closeSortingPopup();
+  }
+  sortShortest(){
+    this.notesToDisplay = this.testNotesList.sort((a, b) => {
+      return a.body.length - b.body.length;
+    });
+    this.testNotesList = this.notesToDisplay;
+    this.closeSortingPopup();
+  }
+  sortLongest(){
+    this.notesToDisplay = this.testNotesList.sort((a, b) => {
+      return b.body.length - a.body.length;
+    });
+    this.testNotesList = this.notesToDisplay;
+    this.closeSortingPopup();
+  }
+filterCategory(cat: string){
+  this.notesToDisplay = this.testNotesList.filter(note => note.category === cat);
+  this.testNotesList = this.notesToDisplay;
+}
+
 }

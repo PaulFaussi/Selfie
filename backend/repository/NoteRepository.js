@@ -23,7 +23,6 @@ class NoteRepository {
             throw error;  
         }
     }
-
     async findAllNotes(auth){
         try {
             const user = jwt.decode(auth).username;
@@ -39,19 +38,21 @@ class NoteRepository {
 
     //POST
 
-    async createNote(auth, title, isMarkdown, privacyMode, authList){
+    async createNote(auth, title, notecategory, isMarkdown, privacyMode, authList){
         try{
             const creator = jwt.decode(auth).username;
             const newNote = {
-                title: title,
+                title: title.trim(),
                 body: '',
+                category: notecategory.trim(),
                 isMarkdown: isMarkdown,
                 pricavyMode: privacyMode,
                 authList: authList,
                 creationDate: new Date,
                 lastModificationDate: new Date,
-                creator: creator
+                creator: creator.trim()
             };
+            console.log(newNote);
             const result = await this.collection.insertOne(newNote);
             if(result.acknowledged){
                 console.log("Documento inserito correttamente - ", newNote.title);
@@ -95,9 +96,6 @@ class NoteRepository {
             throw new Error(error);
         }
     }
-
-
-
     
 
     //DELETE    
@@ -140,7 +138,7 @@ class NoteRepository {
             if(note){
                 console.log(note);
                 const result = await this.collection.updateOne({ _id: new ObjectId(id) },
-                { $set: { body: noteBody } });
+                { $set: { body: noteBody, lastModificationDate: new Date} });
 
                 /* const newNote = await this.collection.findOne({_id: new ObjectId(id)});
                 console.log(newNote); */

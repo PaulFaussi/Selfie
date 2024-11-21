@@ -1,5 +1,6 @@
 import { Component, ElementRef, inject, ViewChild} from '@angular/core';
 import { NavbarComponent } from '../navbar/navbar.component';
+import { FooterComponent } from '../footer/footer.component';
 import { NotesService } from '../notes.service';
 import { NoteInterface } from '../note-interface';
 import { ActivatedRoute} from '@angular/router';
@@ -11,7 +12,7 @@ import { marked, Marked } from 'marked';
 @Component({
   selector: 'app-note-editor',
   standalone: true,
-  imports: [NavbarComponent, CommonModule, RouterModule],
+  imports: [NavbarComponent, FooterComponent, CommonModule, RouterModule],
   templateUrl: "./note-editor.component.html",
   styleUrl: './note-editor.component.css'
 })
@@ -25,6 +26,7 @@ export class NoteEditorComponent {
   markdownEnabled: boolean = false;
   markdownVisibility: string = 'none';
   @ViewChild('noteBody') noteBody!: ElementRef;
+  @ViewChild('parsedText') parsedText!: ElementRef;
   
 
   constructor() {
@@ -47,13 +49,24 @@ export class NoteEditorComponent {
 
   
   /* gestione dom e markdown */
+
+  displayTextarea: string = '';
+  displayParsedDiv: string = 'none';
   
   parseText(){
     const noteBody = this.noteBody.nativeElement.value;
     var parsedText = marked.parse(noteBody);
-    this.noteBody.nativeElement.html = parsedText;
+    this.parsedText.nativeElement.innerHTML = parsedText;
 
   
+    if(this.displayTextarea===''){
+      this.displayParsedDiv = '';
+      this.displayTextarea = 'none';
+    }
+    else{
+      this.displayParsedDiv = 'none';
+      this.displayTextarea = '';
+    }
   }
 
 
@@ -117,8 +130,10 @@ export class NoteEditorComponent {
   }
 
   copyContent(){
-
+    const noteBody = this.noteBody.nativeElement.value;
+    navigator.clipboard.writeText(noteBody);
   }
+
   deleteNote(){
     if(this.noteId!=null){
       this.notesService.deleteNote(this.noteId);
