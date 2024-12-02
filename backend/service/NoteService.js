@@ -5,7 +5,11 @@ class NoteService {
     }
 
     async findById(id) {
-        return await this.noteRepository.findById(id);
+        try{
+            return await this.noteRepository.findById(id);
+        } catch(error){
+            throw new Error(error.message);
+        }
     }
 
     async getAllNotes(auth){
@@ -13,7 +17,7 @@ class NoteService {
             return await this.noteRepository.findAllNotes(auth);
         }
         catch(error){
-            throw new Error(error);
+            throw new Error(error.message);
         }
         
     }
@@ -22,7 +26,7 @@ class NoteService {
         try{
             return await this.noteRepository.createNote(auth, title, category, isMarkdown, privacyMode, usersAuth);
         }catch(error){
-            return error;
+            throw new Error(error.message);
         }
         
     }
@@ -32,7 +36,7 @@ class NoteService {
             return await this.noteRepository.duplicateNote(auth, id);
         }
         catch(error){
-            throw new Error(error);
+            throw new Error(error.message);
         }
     }
 
@@ -41,7 +45,7 @@ class NoteService {
             return await this.noteRepository.deleteNote(auth, id);
         }
         catch(error){
-            return error; //THROW!!!!!!!!!!!!!!
+            throw new Error(error.message);
         }
         
     }
@@ -52,7 +56,7 @@ class NoteService {
             return await this.noteRepository.updateNoteBody(id, noteBody);
         }
         catch(error){
-            throw new Error;
+            throw new Error(error.message);
         }
     }
 }

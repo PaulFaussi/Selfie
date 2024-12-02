@@ -8,8 +8,8 @@ class UtenteService {
         try{
             return await this.utenteRepository.getUser(auth);
         }
-        catch(err){
-            throw new Error (err);
+        catch(error){
+            throw new Error(error.message);
         }
         
     }
@@ -19,7 +19,7 @@ class UtenteService {
             return await this.utenteRepository.loginUser(username, password);
         }
         catch(error){
-            return error.message;
+            throw new Error(error.message);
         }
         
     }
@@ -29,7 +29,7 @@ class UtenteService {
             return await this.utenteRepository.registerUser(firstname, lastname, username, password, dob);
         }
         catch(error){
-            throw new Error(error.message)
+            throw new Error(error.message);
         }
     }
 }

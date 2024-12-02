@@ -1,3 +1,7 @@
+const jwt = require('jsonwebtoken');
+const { generateToken, extractToken} = require('../JwtUtils.js');
+const Payload = require('../JwtPayload.js')
+const SECRET_KEY = 'U1r3G8f0Hk3nZ4xT6bP9j2M5oA7yQ0Lw';
 
 class UtenteRepository {
     constructor(db) {
@@ -5,10 +9,9 @@ class UtenteRepository {
     }
 
     async getUser(auth) {
-        const username = jwt.decode(auth).username;
+        const username = extractToken(auth);
         try{
             const user = this.collection.findOne({ username: username});
-        
             if(user){
                 return user;
             }
@@ -23,21 +26,25 @@ class UtenteRepository {
 
 
     async loginUser(username, password){
-        const userFound = await this.collection.findOne({username: username});
-
-        if(!userFound){
-            throw new Error("User not found");
-        }
-
-        if(userFound.password != password){
-            throw new Error('Password not valid.');
-        }
-        else{
-            const token = jwt.sign({username}, SECRET_KEY);
-            return token;
+        try{
+            const userFound = await this.collection.findOne({username: username});
+            if(!userFound){
+                console.log("User inesistente")
+                throw new Error("user error");
+            }
+            if(userFound.password != password){
+                console.log("Wrong psw")
+                throw new Error("psw error");
+            }
+            else{
+                const token = generateToken(username);
+                console.log('token generato: ', token);
+                return token;
+            }
+        } catch(error){
+            throw new Error(error);
         }
     }
-
 
 
     async registerUser(firstname, lastname, username, password, dob){

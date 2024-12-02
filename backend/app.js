@@ -17,9 +17,10 @@ async function main() {
     const app = express();
     app.use(express.json());
     app.use(cors({
-        origin: 'http://localhost:4200'
+        origin: 'http://localhost:4200' //possibile causi problemi su macchina dipartimento
     }));
-    const port = 4316;
+    
+    const port = 8000;
     await connectToDB();
 
     /* // creazione controllers
@@ -52,7 +53,8 @@ main();
 /* module.exports = db; */
 
 async function connectToDB() {
-    const uri = "mongodb://localhost:27017/selfie_2";
+    const uri = "mongodb://localhost:27017/selfie";                 // URL TEST LOCALE
+    /* const uri = 'mongodb://mongo_site232437:27017/Selfie' */     // URL MACCHINE UNI
     const client = new MongoClient(uri);
 
     try {
@@ -76,7 +78,7 @@ async function connectToDB() {
 
 /* const connectToDB = async () => {
     try {
-      const mongoURI = 'mongodb://localhost:27017/selfie_2';
+      const mongoURI = 'mongodb://localhost:27017/selfie';  
   
       const options = {
         serverSelectionTimeoutMS: 5000
