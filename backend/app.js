@@ -9,15 +9,26 @@ const NoteController = require('./controller/NoteController');
 const express = require('express');
 const cors = require('cors');
 const { MongoClient } = require('mongodb');
+const { server } = require('typescript');
 
 
 var db;
+
+// Time Machine
+let serverDateTime = new Date;
+
+setInterval(() => {
+   serverDateTime = new Date(serverDateTime.getTime() + 1000);
+}, 1000);
+
+
+
 
 async function main() {
     const app = express();
     app.use(express.json());
     app.use(cors({
-        origin: 'http://localhost:4200' //possibile causi problemi su macchina dipartimento
+        origin: 'http://localhost:4200' //problemi su macchina dipartimento ??
     }));
     
     const port = 8000;
@@ -41,16 +52,40 @@ async function main() {
     app.use('/user', utenteController.router);
     app.use('/note', noteController.router);
 
-    app.listen(port, () => {
-    console.log(`Server in esecuzione su http://localhost:${port}`);
+
+    //endpoint Time Machine
+    app.post('/timeMachine', (req, res) => {
+        const { newDateTime } = req.body;
+
+        if(newDateTime == "Now"){
+            updatedTime = new Date();
+        }
+        else{
+            updatedTime = new Date(newDateTime);
+        }
+        
+        if (isNaN(updatedTime.getTime())) {
+          return res.status(400).json({ error: 'Formato data/ora non valido.' });
+        }
+
+        updatedTime.setHours(updatedTime.getHours() + 1); //correzione fuso orario
+        serverDateTime = updatedTime;
+
+        console.log("Data e ora aggiornati: ", serverDateTime);
+        res.status(200).json({ message: 'Data e ora aggiornate con successo!', serverDateTime});
     });
+
+
+    app.listen(port, () => {
+        console.log(`Server in esecuzione su http://localhost:${port}`);
+    });
+
+
 }
 
 main();
 
 
-
-/* module.exports = db; */
 
 async function connectToDB() {
     const uri = "mongodb://localhost:27017/selfie";                 // URL TEST LOCALE
@@ -59,112 +94,37 @@ async function connectToDB() {
 
     try {
         await client.connect();
-        console.log('Connesso a MongoDB');
+
         db = client.db();
+
+        const adminDb = client.db().admin();
+        const pingResult = await adminDb.ping();
+
+        if (pingResult.ok === 1) {
+            console.log("Connessione al database stabilita.");
+        } else {
+            throw new Error("Errore connessione al DB.");
+        }
+
     } catch(error) {
-        console.error("Errore nel connettersi al DB\n", error);
-    } /* finally {
-        await client.close();
-    } */
+        console.error("Errore nel connettersi al DB\n");
+    } 
+
 }
 
 
 
+ 
 
 
 
-
-
-
-/* const connectToDB = async () => {
-    try {
-      const mongoURI = 'mongodb://localhost:27017/selfie';  
   
-      const options = {
-        serverSelectionTimeoutMS: 5000
-      };
-
-      await mongoose.connect(mongoURI, options);
-      
-      const connectionState = mongoose.connection.readyState; 
-      if (connectionState === 1) {
-        console.log('Connessione a MongoDB stabilita con successo!');
-      } else {
-        throw new Error('Connessione a MongoDB fallita');
-      }
   
-    } catch (err) {
-      console.error('Errore nella connessione a MongoDB:', err.message);
-      process.exit(1); 
-    }
-  };
-connectToDB();
 
-const noteSchema = new mongoose.Schema({
-    id: Number,
-    title: String,
-    body: String,
-    creator: String,
-    lastModificationDate: String,
-    creationDate: String
-});
-const userSchema = new mongoose.Schema({
-    email: String,
-    password: String
-})
 
-const Note = mongoose.model('Note', noteSchema);
-const User = mongoose.model('User', userSchema);
 
-app.get('/getAllNotes', async (req, res) => {
-    try {
-        const notes = await Note.find();
-        res.status(200).json(notes);
-    } catch (err) {
-        console.error('Errore nel recupero delle note:', err.message);
-        res.status(500).json({ message: 'Errore nel recupero delle note' });
-    }
-});
 
-app.get('/getNote/:id', async (req, res) => {
-    const noteId = parseInt(req.params.id);
-    try{
-        const note = await Note.findOne({id: noteId});
-        res.json(note);
-    }
-    catch{
-        console.error("Unable to fetch note: ", id);
-        res.status(400).json({message: "Unable to fetch note"});
-    }
 
-});
 
-app.post('/login', async (req, res) => {
-    console.log("Login attempt for user:", req.body.email);
 
-    try {
-        const userFound = await User.findOne({email: req.body.email});
 
-        if(!userFound){
-            console.log('User not found');
-            return res.json({message: "User not found."});
-        }
-
-        if (userFound.password === req.body.password){
-            console.log(req.body.email, ': Login succesfull');
-            const token = jwt.sign({ email: req.body.email }, '77f8519958b5544c3bd4742ef610563df88be40ba4bd164309a8c37261412ab1'); 
-            return res.status(200).json({ token, email: req.body.email});
-        }
-        else{
-            console.log('Invalid password.')
-            return res.status(400).json({ message: 'Password invalid.' });
-        }
-
-    } catch (err) {
-        return res.status(500).json({ message: 'Server error.' });
-    }
-});
-
-app.listen(PORT, () => {
-    console.log(`Server in esecuzione sulla porta ${PORT}`);
-  }); */
