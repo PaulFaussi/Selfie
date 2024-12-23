@@ -45,6 +45,7 @@ export class PomodoroComponent implements OnInit {
 
   async salvaNewPomodoro() {
     const body: PomodoroInterface = {
+      _id: '',
       creator: '',
       authList: [],
       title: this.pomodoro.name,
@@ -77,7 +78,7 @@ export class PomodoroComponent implements OnInit {
 
   private getAllPomodoros() {
     this.pomodoroService.getAllPomodoros().then((result: PomodoroInterface[]) => {
-      this.pomodoroList = result;
+      this.pomodoroList = this.pomodoroService.sortByUpcomingPomodoros(result);
     })
   }
 

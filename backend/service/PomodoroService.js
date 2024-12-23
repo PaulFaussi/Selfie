@@ -35,9 +35,17 @@ class PomodoroService {
         await this.pomodoroRepository.createPomodoro(pomodoro);
     }
 
-    async deletePomodoro(jwt, id) {
-        const username = extractUsername((jwt));
-        return await this.pomodoroRepository.deletePomodoro(username, id);
+    async deletePomodoro(jwt, req) {
+        const username = extractUsername(jwt);
+        const id = req.params.id;
+        await this.pomodoroRepository.deletePomodoro(username, id);
+    }
+
+    async updatePomodoro(jwt, req) {
+        const username = extractUsername(jwt);
+        const id = req.params.id;
+        const updatedData = req.body.pomodoro;
+        return await  this.pomodoroRepository.updatePomodoro(username, id, updatedData);
     }
 
 

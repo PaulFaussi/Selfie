@@ -9,6 +9,7 @@ import { CommonModule, NgFor } from '@angular/common';
 import { PomodoroInterface } from "../pomodoro.interface";
 import { PomodoroService } from "../pomodoro.service";
 import { PreviewPomodoroComponent } from "../preview-pomodoro/preview-pomodoro.component";
+import { FooterComponent } from "../footer/footer.component";
 
 // TODO (pf): permettere all'utente di editare un Pomodoro
 
@@ -16,7 +17,7 @@ import { PreviewPomodoroComponent } from "../preview-pomodoro/preview-pomodoro.c
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [PreviewNoteComponent, RouterModule, NavbarComponent, CommonModule, NgFor, PreviewPomodoroComponent],
+  imports: [PreviewNoteComponent, RouterModule, NavbarComponent, CommonModule, NgFor, PreviewPomodoroComponent, FooterComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
@@ -31,7 +32,9 @@ export class HomeComponent implements OnInit {
   noteToDisplay: NoteInterface[] = []
   noNotesAvailable: string = 'none';
 
+  showUpcomingPomodoros: boolean = true;
   upcomingPomodoros: PomodoroInterface[] = [];
+  recentPomodoros: PomodoroInterface[] = [];
   pomodoroToDisplay: PomodoroInterface[] = [];
   pomodoroService: PomodoroService = inject(PomodoroService);
 
@@ -60,7 +63,14 @@ export class HomeComponent implements OnInit {
     });
 
     this.pomodoroService.getAllPomodoros().then((pomodoros: PomodoroInterface[]) => {
-      this.upcomingPomodoros = this.sortByUpcomingPomodoros(pomodoros);
+      this.upcomingPomodoros = this.pomodoroService
+        .sortByUpcomingPomodoros(pomodoros)
+        .slice(0, 3);
+
+      this.recentPomodoros = this.pomodoroService
+        .sortByRecentPomodoros(pomodoros)
+        .slice(0, 3);
+
       this.pomodoroToDisplay = this.upcomingPomodoros;
     });
   }
@@ -74,14 +84,15 @@ export class HomeComponent implements OnInit {
     }
   }
 
+  switchPomodoroToDisplay() {
+    this.showUpcomingPomodoros = !this.showUpcomingPomodoros;
 
-  private sortByUpcomingPomodoros(list: PomodoroInterface[]): PomodoroInterface[] {
-    const now: Date = new Date();
+    if(this.showUpcomingPomodoros) {
+      this.pomodoroToDisplay = this.upcomingPomodoros;
+    } else {
+      this.pomodoroToDisplay = this.recentPomodoros;
+    }
 
-    return list
-      .filter(obj => new Date(obj.startDate) > now)
-      .sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime())
-      .slice(0, 3);
   }
 
 }

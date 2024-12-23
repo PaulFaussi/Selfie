@@ -19,14 +19,17 @@
   </div>
 
   <div class="pomodoro-displayed" >
-<!--    <app-preview-note *ngFor="let singleNoteInstance of testNotesList" [noteFetched]="singleNoteInstance"></app-preview-note>-->
     <app-preview-pomodoro *ngFor="let singlePomodoro of pomodoroList" [pomodoro]="singlePomodoro"></app-preview-pomodoro>
   </div>
 
   <app-footer></app-footer>
 
 
-  <!-- TODO (pf): creiamo un component a parte solo per questo dialog? -->
+
+
+
+
+
   <!-- Dialog creazione pomodoro -->
   <div class="dialog-overlay" *ngIf="showDialogCreaPomodoro">
     <div class="dialog-container">

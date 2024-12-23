@@ -12,7 +12,8 @@ class PomodoroController {
         this.router.get('/getPomodoro/:id', this.getPomodoro.bind(this));
         this.router.get('/getAllPomodoros', this.getAllPomodoros.bind(this));
         this.router.post('/createPomodoro', this.createPomodoro.bind(this));
-        this.router.delete('/deletePomodoro', this.deletePomodoro.bind(this));
+        this.router.post('/updatePomodoro/:id', this.updatePomodoro.bind(this));
+        this.router.delete('/deletePomodoro/:id', this.deletePomodoro.bind(this));
 
 
     }
@@ -33,7 +34,6 @@ class PomodoroController {
     }
 
     async getAllPomodoros(req, res) {
-        const id = req.params.id;
         const jwt = getJwtFromRequest(req);
         try {
             const pomodoros = await this.pomodoroService.findAllPomodoros(jwt);
@@ -59,15 +59,25 @@ class PomodoroController {
         }
     }
 
+    async updatePomodoro(req, res) {
+        const jwt = getJwtFromRequest(req);
+        try {
+            const updatedPomodoro = await this.pomodoroService.updatePomodoro(jwt, req);
+            res.status(200).json({ pomodoro: updatedPomodoro, message: `Pomodoro ${updatedPomodoro.title} aggiornato con successo` });
+        } catch (error) {
+            res.status(400).json(error.message);
+            console.log(error);
+        }
+    }
+
 
     //DELETE
 
     async deletePomodoro(req, res) {
         const jwt = getJwtFromRequest(req);
-        const id = req.params.id;
         try {
-            const deletedPomodoro = await this.pomodoroService.deletePomodoro(jwt, id);
-            res.status(200).json(`Pomodoro '${deletedPomodoro.title}' eliminato con successo`)
+            await this.pomodoroService.deletePomodoro(jwt, req);
+            res.status(200).json(`Pomodoro eliminato con successo`)
         } catch (error) {
             res.status(400).json(error.message);
             console.log(error);

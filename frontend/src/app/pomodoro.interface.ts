@@ -1,6 +1,7 @@
 import { ObjectId } from "mongodb"
 
 export interface PomodoroInterface {
+  _id: string,
   creator: string,
   authList: string[],
   title: string,

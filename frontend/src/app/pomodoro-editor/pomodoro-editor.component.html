@@ -1,0 +1,88 @@
+<app-navbar></app-navbar>
+
+<body>
+
+<!--  <div class="head">-->
+<!--    <a routerLink="/pomodoro">-->
+<!--      <h1 class="backto" (click)="updatePomodoro()">< back to pomodoros</h1>-->
+<!--    </a>-->
+<!--  </div>-->
+
+  <div class="edit-pomodoro-container">
+    <h2>Modifica Pomodoro</h2>
+
+    <div class="pomodoroHeader">
+      <h1 id="pomodoroTitle">{{ pomodoro?.title }}</h1>
+
+      <div class="creatorSection">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+        </svg>
+
+        <p>{{ pomodoro?.creator }}</p>
+      </div>
+    </div>
+
+    <!-- Titolo -->
+    <div class="form-group">
+      <label for="title" class="label-input">Titolo</label>
+      <input id="title" type="text" class="input-tag" [(ngModel)]="updatedData.title" />
+    </div>
+
+    <!-- Descrizione -->
+    <div class="form-group">
+      <label for="description" class="label-input">Descrizione</label>
+      <input id="description" type="text" class="input-tag" [(ngModel)]="updatedData.description" />
+    </div>
+
+    <!-- Start Date -->
+    <div class="form-group">
+      <label for="description" class="label-input">Data di inizio</label>
+      <input id="startDate" type="date" class="input-tag" [(ngModel)]="updatedData.startDate" />
+    </div>
+
+    <!-- Durata Studio -->
+    <div class="form-group">
+      <label for="description" class="label-input">Durata studio (in minuti)</label>
+      <input id="studyDuration" type="number" class="input-tag" [(ngModel)]="updatedData.studyDurationInMinutes" />
+    </div>
+
+    <!-- Durata Pausa -->
+    <div class="form-group">
+      <label for="description" class="label-input">Durata pausa (in minuti)</label>
+      <input id="breakDuration" type="number" class="input-tag" [(ngModel)]="updatedData.breakDurationInMinutes" />
+    </div>
+
+    <!-- Bottoni azioni -->
+    <div class="dialog-actions">
+      <button (click)="apriPopupEliminaPomodoro()">Elimina</button>
+      <button (click)="aggiornaPomodoro()">Salva</button>
+<!--      <button (click)="aggiornaPomodoro()"-->
+<!--              [disabled]="!pomodoro?.title || !pomodoro.startDate || !pomodoro.studyDurationInMinutes || !pomodoro.breakDurationInMinutes">Salva</button>-->
+    </div>
+
+
+    <div class="dates">
+      <h2>Last modified: {{pomodoro?.lastModificationDate | date:'dd MMM yyyy, HH:mm' }}</h2>
+      <h2>Created: {{pomodoro?.creationDate | date:'dd MMM yyyy, HH:mm' }}</h2>
+    </div>
+
+  </div>
+
+  <app-footer></app-footer>
+
+
+  <div class="deletepomodoro-popup" *ngIf="visibleDeletePopup">
+    <div class="popup-header" style='border-bottom: 1px solid black;'>
+      <h1 style="margin:0;">/delete-pomodoro</h1>
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"  stroke="currentColor" (click)="showDeletePopup()">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+      </svg>
+    </div>
+
+
+    <h1>Are you sure you want to delete this pomodoro?</h1>
+    <button id="edit-action-button" style="background-color: rgb(187, 0, 0); margin-bottom: 1rem;" (click)="deletePomodoro()">DELETE POMODORO</button>
+  </div>
+
+</body>
