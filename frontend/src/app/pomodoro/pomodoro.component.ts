@@ -1,24 +1,84 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NavbarComponent } from "../navbar/navbar.component";
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { PreviewNoteComponent } from "../preview-note/preview-note.component";
-import { CommonModule, NgFor } from "@angular/common";
+import { CommonModule } from "@angular/common";
 import { FooterComponent } from "../footer/footer.component";
-import { ReactiveFormsModule } from "@angular/forms";
-import { NoteInterface } from "../note-interface";
+import { FormsModule } from '@angular/forms';
+import { PomodoroInterface } from "../pomodoro.interface";
+import { PreviewPomodoroComponent } from "../preview-pomodoro/preview-pomodoro.component";
+import { PomodoroService } from "../pomodoro.service";
 
 @Component({
   selector: 'app-pomodoro',
   standalone: true,
-  imports: [RouterModule, NavbarComponent, FooterComponent, PreviewNoteComponent, CommonModule, NgFor, ReactiveFormsModule],
+  imports: [RouterModule, NavbarComponent, FooterComponent, PreviewNoteComponent, CommonModule, FormsModule, PreviewPomodoroComponent],
   templateUrl: './pomodoro.component.html',
   styleUrl: './pomodoro.component.css'
 })
-export class PomodoroComponent {
+export class PomodoroComponent implements OnInit {
+
+  public showDialogCreaPomodoro: boolean = false;
+
+  public pomodoroList: PomodoroInterface[] = [];
+
+  public pomodoro = {
+    name: '',
+    startDate: null,
+    startTime: null,
+    durationWork: null,
+    durationBreak: null
+  };
+
+  constructor (private router: Router, private activatedRoute : ActivatedRoute,
+               private pomodoroService: PomodoroService) {
+  }
+
+  ngOnInit(): void {
+    this.getAllPomodoros();
+  }
 
 
-  constructor (private router: Router, private activatedRoute : ActivatedRoute) {
-    console.log("Siamo dentro al Pomodoro");
+  openCreateNewPomodoroWindow() {
+    this.showDialogCreaPomodoro = true;
+  }
+
+  async salvaNewPomodoro() {
+    const body: PomodoroInterface = {
+      creator: '',
+      authList: [],
+      title: this.pomodoro.name,
+      description: '',
+      startDate: new Date(`${this.pomodoro.startDate}T${this.pomodoro.startTime}`),
+      studyDurationInMinutes: this.pomodoro.durationWork,
+      breakDurationInMinutes: this.pomodoro.durationBreak,
+      lastModificationDate: new Date(),
+      creationDate: new Date(),
+    }
+
+    await this.pomodoroService.createPomodoro(body);
+
+    this.getAllPomodoros();
+    this.showDialogCreaPomodoro = false;
+  }
+
+  eliminaNewPomodoro() {
+    this.showDialogCreaPomodoro = false;
+    this.pomodoro = { name: '', startDate: null, startTime: null, durationWork: null, durationBreak: null };
+  }
+
+  openSortFilterWindow() {
+    console.log("Ordina/Filtra i Pomodoro");
+  }
+
+
+
+  ////// PRIVATE
+
+  private getAllPomodoros() {
+    this.pomodoroService.getAllPomodoros().then((result: PomodoroInterface[]) => {
+      this.pomodoroList = result;
+    })
   }
 
 }

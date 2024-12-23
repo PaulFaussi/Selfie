@@ -12,7 +12,7 @@ const SECRET_KEY = 'U1r3G8f0Hk3nZ4xT6bP9j2M5oA7yQ0Lw';
  * @param {String} expiresIn - Durata del token (es. '1h', '2d')
  * @returns {String} Il token generato
  */
-export function generateToken(payload, expiresIn = '1h') {
+function generateToken(payload, expiresIn = '1h') {
     return jwt.sign(payload, SECRET_KEY, { expiresIn });
 }
 
@@ -23,10 +23,35 @@ export function generateToken(payload, expiresIn = '1h') {
  * @returns {Payload} Il payload decodificato se il token è valido
  * @throws {Error} Lancia un errore se il token è invalido o scaduto
  */
-export function extractToken(token) {
-    try {
-        return  jwt.verify(token, SECRET_KEY);
-    } catch (error) {
-        throw new error(`Errore nella lettura del payload: ${error.message}`);
-    }
+function extractToken(token) {
+    return  jwt.verify(token, SECRET_KEY);
 }
+
+
+/**
+ * Verifica se il token JWT è valido e restituisce l'username dell'utente a cui è associato il token
+ * @param {string} token - Il token JWT da verificare
+ * @returns {string} L'username dell'utente a cui il token è associato
+ * @throws {Error} Lancia un errore se il token è invalido o scaduto
+ */
+function extractUsername(token) {
+    return extractToken(token).username;
+}
+
+
+/**
+ * Data una chiamata HTTP REST, restituisce il JWT presente nell'header della chiamata
+ * @param req - Request ricevuta in ingresso dal backend
+ * @returns {string} - ritorna il JWT in formato Stringa
+ */
+function getJwtFromRequest(req) {
+    const authHeader = req.headers['authorization'];
+    if (authHeader && authHeader.startsWith('Bearer ')) {
+        return authHeader.substring(7);
+    }
+
+    throw new Error(`Problema nel leggere il jwt dalla Request.\nAuth Header: ${authHeader}`);
+}
+
+
+module.exports = { generateToken, extractToken, extractUsername, getJwtFromRequest }

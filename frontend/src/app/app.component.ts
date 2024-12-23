@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-/* import { FormsModule } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
+/* import { HttpClient } from '@angular/common/http';
 import $ from 'jquery'; */
+import { FormsModule } from '@angular/forms';
 import { HomeComponent } from './home/home.component';
 import { RouterModule } from '@angular/router';
 
@@ -14,8 +14,8 @@ import { RouterModule } from '@angular/router';
   `,
   standalone: true,
   imports: [RouterModule, HomeComponent],
-  styleUrl: './app.component.css', 
-  
+  styleUrl: './app.component.css',
+
 })
 
 export class AppComponent {
@@ -41,7 +41,7 @@ export class AppComponent {
       }
     });
 
-    
+
   } */
 
 }

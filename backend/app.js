@@ -1,9 +1,9 @@
 
-/* const AttivitaController = require('./src/controller/AttivitaController');
-const CalendarioController = require('./src/controller/CalendarioController');
-const CategoriaController = require('./src/controller/CategoriaController');
-const EventoController = require('./src/controller/EventoController');
-const PomodoroController = require('./src/controller/PomodoroController'); */
+/* const AttivitaController = require('./controller/AttivitaController');
+const CalendarioController = require('./controller/CalendarioController');
+const CategoriaController = require('./controller/CategoriaController');
+const EventoController = require('./src/controller/EventoController'); */
+const PomodoroController = require('./controller/PomodoroController');
 const UtenteController = require('./controller/UtenteController');
 const NoteController = require('./controller/NoteController');
 const express = require('express');
@@ -26,8 +26,8 @@ async function main() {
     const attivitaController = new AttivitaController(db);
     const calendarioController = new CalendarioController(db);
     const categoriaController = new CategoriaController(db);
-    const eventoController = new EventoController(db);
-    const pomodoroController = new PomodoroController(db); */
+    const eventoController = new EventoController(db); */
+    const pomodoroController = new PomodoroController(db);
     const utenteController = new UtenteController(db);
     const noteController = new NoteController(db);
 
@@ -35,8 +35,8 @@ async function main() {
     app.use('/attivita', attivitaController.router);
     app.use('/calendario', calendarioController.router);
     app.use('/categoria', categoriaController.router);
-    app.use('/evento', eventoController.router);
-    app.use('/pomodoro', pomodoroController.router); */
+    app.use('/evento', eventoController.router); */
+    app.use('/pomodoro', pomodoroController.router);
     app.use('/user', utenteController.router);
     app.use('/note', noteController.router);
 

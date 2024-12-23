@@ -69,18 +69,20 @@
             <h1>Pomodoro.</h1>
           </div>
         </a>
-        <div class="selector">
-          <label>Day</label>
-          <label class="switch">
-            <input type="checkbox">
-            <span class="slider round"></span>
-          </label>
-          <label>Week</label>
-        </div>
+<!--        <div class="selector">-->
+<!--          <label>Day</label>-->
+<!--          <label class="switch">-->
+<!--            <input type="checkbox">-->
+<!--            <span class="slider round"></span>-->
+<!--          </label>-->
+<!--          <label>Week</label>-->
+<!--        </div>-->
       </div>
 
         <div class="pomos-content">
-            <p>No recent pomos available.</p>
+          <p *ngIf="pomodoroToDisplay.length === 0">No recent pomos available.</p>
+
+          <app-preview-pomodoro *ngFor="let pomodoroInstance of pomodoroToDisplay" [pomodoro]="pomodoroInstance"></app-preview-pomodoro>
         </div>
     </div>
 

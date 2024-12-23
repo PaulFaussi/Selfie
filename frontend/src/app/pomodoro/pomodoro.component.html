@@ -9,6 +9,70 @@
     </a>
   </div>
 
+  <div class="manage-pomodoro">
+    <button id="new-pomodoro-button" class="management-button" (click)="openCreateNewPomodoroWindow()" style="border-right: 1px solid black;">
+      NEW POMODORO
+    </button>
+    <button id="sort-filter-pomodoro-button" class="management-button" (click)="openSortFilterWindow()" style="background-color: grey;">
+      SORT / FILTER
+    </button>
+  </div>
+
+  <div class="pomodoro-displayed" >
+<!--    <app-preview-note *ngFor="let singleNoteInstance of testNotesList" [noteFetched]="singleNoteInstance"></app-preview-note>-->
+    <app-preview-pomodoro *ngFor="let singlePomodoro of pomodoroList" [pomodoro]="singlePomodoro"></app-preview-pomodoro>
+  </div>
+
   <app-footer></app-footer>
+
+
+  <!-- TODO (pf): creiamo un component a parte solo per questo dialog? -->
+  <!-- Dialog creazione pomodoro -->
+  <div class="dialog-overlay" *ngIf="showDialogCreaPomodoro">
+    <div class="dialog-container">
+      <h2>Creazione Pomodoro</h2>
+
+      <form>
+
+        <!-- Nome Pomodoro -->
+        <div class="form-group">
+          <label for="pomodoroName">Nome Pomodoro:</label>
+          <input id="pomodoroName" type="text" [(ngModel)]="pomodoro.name" name="pomodoroName" required />
+        </div>
+
+        <!-- Data di Inizio -->
+        <div class="form-group">
+          <label for="pomodoroStartDate">Data di Inizio</label>
+          <input id="pomodoroStartDate" type="date" [(ngModel)]="pomodoro.startDate" name="pomodoroStartDate" required />
+        </div>
+
+        <!-- Ora di Inizio -->
+        <div class="form-group">
+          <label for="pomodoroStartTime">Ora di Inizio:</label>
+          <input id="pomodoroStartTime" type="time" [(ngModel)]="pomodoro.startTime" name="pomodoroStartTime" required />
+        </div>
+
+        <!-- Durata Studio -->
+        <div class="form-group">
+          <label for="pomodoroDurationWork">Durata Studio (minuti)</label>
+          <input id="pomodoroDurationWork" type="number" [(ngModel)]="pomodoro.durationWork" name="pomodoroDurationWork" required />
+        </div>
+
+        <!-- Durata Pausa -->
+        <div class="form-group">
+          <label for="pomodoroDurationBreak">Durata Pausa (minuti)</label>
+          <input id="pomodoroDurationBreak" type="number" [(ngModel)]="pomodoro.durationBreak" name="pomodoroDurationBreak" required />
+        </div>
+
+      </form>
+
+      <!-- Bottoni azioni -->
+      <div class="dialog-actions">
+        <button (click)="eliminaNewPomodoro()">Annulla</button>
+        <button (click)="salvaNewPomodoro()"
+                [disabled]="!pomodoro.name || !pomodoro.startDate || !pomodoro.startTime || !pomodoro.durationWork || !pomodoro.durationBreak">Salva</button>
+      </div>
+    </div>
+  </div>
 
 </body>

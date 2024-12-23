@@ -1,3 +1,4 @@
+const {generateToken} = require("../utils/JwtUtils");
 
 class UtenteRepository {
     constructor(db) {
@@ -33,7 +34,7 @@ class UtenteRepository {
             throw new Error('Password not valid.');
         }
         else{
-            const token = jwt.sign({username}, SECRET_KEY);
+            const token = generateToken({username});
             return token;
         }
     }
