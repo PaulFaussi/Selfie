@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpService } from "./http.service";
 import { PomodoroInterface } from "./pomodoro.interface";
-import { firstValueFrom } from "rxjs";
+import { firstValueFrom, Observable } from "rxjs";
+import { HttpHeaders } from "@angular/common/http";
 
 @Injectable({
   providedIn: 'root'
 })
 export class PomodoroService {
 
-  apiUrl: string = 'http://localhost:4316/pomodoro'
+  apiUrl: string = 'http://localhost:8000/pomodoro'
 
   constructor(private httpService: HttpService) { }
 

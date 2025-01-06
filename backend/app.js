@@ -27,10 +27,15 @@ setInterval(() => {
 async function main() {
     const app = express();
     app.use(express.json());
-    app.use(cors({
-        origin: 'http://localhost:4200' //problemi su macchina dipartimento ??
-        // origin: '*'
-    }));
+    const corsOptions = {
+        origin: 'http://localhost:4200', //problemi su macchina dipartimento ??
+        methods:['GET', 'POST', 'PUT', 'DELETE'],
+        allowedHeaders: ['Content-Type', 'Authorization']
+    };
+    // app.use(cors({
+    //     origin: 'http://localhost:4200' //problemi su macchina dipartimento ??
+    // }));
+    app.use(cors(corsOptions));
     
     const port = 8000;
     await connectToDB();

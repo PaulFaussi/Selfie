@@ -17,27 +17,27 @@ export class NotesService {
   async showAlert(message: string): Promise<void> {
     return new Promise((resolve) => {
       alert(message);
-      resolve(); 
+      resolve();
     });
   }
 
   async getAllNotes(): Promise<NoteInterface[]> {
     const token = localStorage.getItem('loginToken');
     const data = await fetch(`${this.apiUrl}/getAllNotes`, {method: 'GET', headers: {'Content-Type': 'application/json', 'Authorization': `${token}`}});
-    return await data.json() ?? [];
-  }
+    return await data.json() ?? [];}
+
 
 
   async getNoteById( _id : string): Promise<NoteInterface> {
     const data = await fetch(`${this.apiUrl}/getNote/${_id}`);
     return await data.json() ?? [];
 
-  }  
+  }
 
   async createNote(title: string, category: string, isMarkdown: boolean, privacyMode: number, authList: string[]) {
     const token = localStorage.getItem('loginToken');
     const headers = new HttpHeaders({
-      'Content-Type': 'application/json', 
+      'Content-Type': 'application/json',
       'Authorization': `${token}`
     });
 
@@ -56,13 +56,13 @@ export class NotesService {
             }
           }
       })
-      
+
     }catch(error){
       alert("Request error.")
     }
 
 
-    
+
   }
 
   async deleteNote(id: string){
@@ -108,10 +108,10 @@ export class NotesService {
           }
       },
       error: (err) => {
-          alert('Note duplication failed: ' + (err.error?.error || 'Unknown error')); 
+          alert('Note duplication failed: ' + (err.error?.error || 'Unknown error'));
       }
-    }) 
-    
+    })
+
 
   }
 
@@ -132,13 +132,13 @@ export class NotesService {
           }
       },
       error: (err) => {
-          alert('Note update failed: ' + (err.error?.error || 'Unknown error')); 
+          alert('Note update failed: ' + (err.error?.error || 'Unknown error'));
       }
-    }) 
+    })
   }
 
 
-  
+
 
 
 

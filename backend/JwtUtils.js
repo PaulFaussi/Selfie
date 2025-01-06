@@ -45,8 +45,8 @@ function extractUsername(token) {
  */
 function getJwtFromRequest(req) {
     const authHeader = req.headers['authorization'];
-    if (authHeader && authHeader.startsWith('Bearer ')) {
-        return authHeader.substring(7);
+    if (authHeader) {
+        return authHeader;
     }
 
     throw new Error(`Problema nel leggere il jwt dalla Request.\nAuth Header: ${authHeader}`);

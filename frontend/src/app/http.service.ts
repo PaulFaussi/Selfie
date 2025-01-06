@@ -12,7 +12,7 @@ export class HttpService {
   get(url: string, token: string | null): Observable<any> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`
+      'Authorization': `${token}`
     });
 
     return this.http.get(url, { headers });
@@ -21,7 +21,7 @@ export class HttpService {
   post(url: string, body: any, token: string | null): Observable<any> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`
+      'Authorization': `${token}`
     });
 
     return this.http.post(url, body, {headers});
@@ -30,7 +30,7 @@ export class HttpService {
   delete(url: string, token: string | null): Observable<any> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`
+      'Authorization': `${token}`
     });
 
     return this.http.delete(url, { headers });
