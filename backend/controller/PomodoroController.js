@@ -1,12 +1,11 @@
 const express = require('express');
 const {getJwtFromRequest, extractUsername} = require('../JwtUtils');
-const PomodoroService = require('../service/PomodoroService');
 
 class PomodoroController {
 
     constructor(db) {
         this.router = express.Router();
-        this.pomodoroService = new PomodoroService(db);
+        this.pomodoroService = new (require('../service/PomodoroService'))(db);
 
         // Definizione degli endpoint
         this.router.get('/getPomodoro/:id', this.getPomodoro.bind(this));

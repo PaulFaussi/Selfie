@@ -43,15 +43,15 @@ class NoteRepository {
         try{
             const creator = extractToken(auth);
             const newNote = {
-                title: title.trim(),
+                title: title,
                 body: '',
-                category: notecategory.trim().toLowerCase(),
+                category: notecategory.toLowerCase(),
                 isMarkdown: isMarkdown,
                 pricavyMode: privacyMode,
                 authList: authList,
                 creationDate: new Date,
                 lastModificationDate: new Date,
-                creator: creator.trim()
+                creator: creator
             };
             console.log(newNote);
             const result = await this.collection.insertOne(newNote);
