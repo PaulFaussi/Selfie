@@ -1,5 +1,5 @@
-const PomodoroRepository = require("../repository/PomodoroRepository");
-const { extractUsername } = require("../utils/JwtUtils");
+const PomodoroRepository = require('../repository/PomodoroRepository');
+const { extractUsername } = require('../JwtUtils');
 
 class PomodoroService {
 

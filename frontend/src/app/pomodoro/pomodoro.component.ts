@@ -8,11 +8,12 @@ import { FormsModule } from '@angular/forms';
 import { PomodoroInterface } from "../pomodoro.interface";
 import { PreviewPomodoroComponent } from "../preview-pomodoro/preview-pomodoro.component";
 import { PomodoroService } from "../pomodoro.service";
+import { TimemachineComponent } from "../timemachine/timemachine.component";
 
 @Component({
   selector: 'app-pomodoro',
   standalone: true,
-  imports: [RouterModule, NavbarComponent, FooterComponent, PreviewNoteComponent, CommonModule, FormsModule, PreviewPomodoroComponent],
+    imports: [RouterModule, NavbarComponent, FooterComponent, PreviewNoteComponent, CommonModule, FormsModule, PreviewPomodoroComponent, TimemachineComponent],
   templateUrl: './pomodoro.component.html',
   styleUrl: './pomodoro.component.css'
 })

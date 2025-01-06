@@ -15,5 +15,8 @@
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.10.0",
     "node": "^20.18.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.2"
   }
 }

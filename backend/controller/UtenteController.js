@@ -31,7 +31,7 @@ class UtenteController {
             return res.status(200).json({token});
         }
         catch(error){
-            console.log("hey", error.message);
+            console.log("Errore durante il login", error.message);
             if(error.message === "Error: user error") {
                 return res.status(404).json({ message: "Username error" });
             } else if(error.message === "Error: psw error") {

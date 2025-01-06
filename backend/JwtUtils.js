@@ -10,7 +10,8 @@ const SECRET_KEY = 'U1r3G8f0Hk3nZ4xT6bP9j2M5oA7yQ0Lw';
  * @param {String} expiresIn - Durata del token (es. '1h', '2d')
  * @returns {String} Il token generato
  */
-function generateToken(payload, expiresIn = '1h') {
+function generateToken(payload) {
+    const expiresIn = '1h';
     return jwt.sign(payload, SECRET_KEY, { expiresIn });
 }
 

@@ -1,7 +1,7 @@
-import { ObjectId } from "mongodb"
+// import { ObjectId } from 'mongodb'
 
 export interface UserInterface {
-    _id: ObjectId,
+    _id: string,
     username: string,
     password: string,
     name: string,

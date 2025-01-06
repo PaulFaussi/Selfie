@@ -27,9 +27,9 @@ setInterval(() => {
 async function main() {
     const app = express();
     app.use(express.json());
-    app.use(cors({
+    /*app.use(cors({
         origin: 'http://localhost:4200' //problemi su macchina dipartimento ??
-    }));
+    }));*/
     
     const port = 8000;
     await connectToDB();
@@ -88,7 +88,7 @@ main();
 
 
 async function connectToDB() {
-    const uri = "mongodb://localhost:27017/selfie";                 // URL TEST LOCALE
+    const uri = "mongodb://localhost:27017/selfie_2";                 // URL TEST LOCALE
     /* const uri = 'mongodb://mongo_site232437:27017/Selfie' */     // URL MACCHINE UNI
     const client = new MongoClient(uri);
 

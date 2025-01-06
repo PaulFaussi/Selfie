@@ -1,5 +1,5 @@
 const express = require('express');
-const {getJwtFromRequest, extractUsername} = require("../utils/JwtUtils");
+const {getJwtFromRequest, extractUsername} = require('../JwtUtils');
 const PomodoroService = require('../service/PomodoroService');
 
 class PomodoroController {

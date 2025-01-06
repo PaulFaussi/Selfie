@@ -37,7 +37,8 @@ class UtenteRepository {
                 throw new Error("psw error");
             }
             else{
-                const token = generateToken(username);
+                const payload = { username }
+                const token = generateToken(payload);
                 console.log('token generato: ', token);
                 return token;
             }
