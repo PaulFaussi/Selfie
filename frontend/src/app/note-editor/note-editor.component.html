@@ -1,18 +1,20 @@
+
+
 <app-navbar></app-navbar>
 
 <body>
     <div class="head">
         <a routerLink="/notes">
-            <h1 class="backto" (click)="updateNote()">< back to notes</h1>
+            <h1 class="backto" (click)="updateNote()">< back</h1>
         </a>
     </div>
 
-    <div>
+    
         <div class="manageNote">
-                <button id="form-button" class="new-note" (click)="showEditPopup()" >EDIT NOTE</button>
-                <button id="form-button" style="background-color: rgb(97, 97, 97); border-left: 1px solid black;" (click)="showDeletePopup()">DELETE NOTE</button>
+            <button id="management-button" (click)="showEditPopup()" style="border-right: 1px solid black;height: 100%;">EDIT NOTE</button>
+            <button id="management-button" (click)="showDeletePopup()" style="background-color: rgb(95, 95, 95);height: 100%;">DELETE NOTE</button>
         </div>
-
+    <div>
         <div class="noteHeader">
             <h1 id="noteTitle">{{note?.title}}</h1>
 
@@ -45,8 +47,9 @@
     </div>
 
     <div class="parsedDiv" #parsedText [style.display]="displayParsedDiv">
-
     </div>
+
+    <button id="edit-action-button" style="width: 100%; margin: 0.5rem 0 0.5rem 0;" (click)="updateNote()">SAVE CHANGES</button>
 
     <app-footer></app-footer>
 

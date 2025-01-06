@@ -8,13 +8,14 @@ import { NotesService } from '../notes.service';
 import { CommonModule, NgFor } from '@angular/common';
 import { FormGroup, FormControl, ReactiveFormsModule} from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router'
+import { TimemachineComponent } from '../timemachine/timemachine.component';
 
 
 
 @Component({
   selector: 'app-notes',
   standalone: true,
-  imports: [RouterModule, NavbarComponent, FooterComponent, PreviewNoteComponent, CommonModule, NgFor, ReactiveFormsModule],
+  imports: [RouterModule, NavbarComponent, FooterComponent, PreviewNoteComponent, TimemachineComponent, CommonModule, NgFor, ReactiveFormsModule],
   templateUrl: './notes.component.html',
   styleUrl: './notes.component.css'
 })
@@ -24,6 +25,7 @@ export class NotesComponent {
   notesService: NotesService = inject(NotesService);
   testNotesList : NoteInterface[] = [];
   notesToDisplay: NoteInterface[] = [];
+  originalNotes: NoteInterface[] = [];
   noteId: string | null = this.activatedRoute.snapshot.paramMap.get('id');
 
   noteTitle: string = 'New note';
@@ -59,6 +61,14 @@ export class NotesComponent {
     
     this.notesService.getAllNotes().then((testNotesList : NoteInterface[]) => {
         this.testNotesList = testNotesList;
+        this.originalNotes = testNotesList;
+
+        if(this.testNotesList.length === 0){
+          this.noNotesAvailable = "";
+        }
+        else{
+          this.noNotesAvailable = "none";
+        }
       }
     )
   }
@@ -69,12 +79,13 @@ export class NotesComponent {
 
 
 
-/*   dom management */
+  // dom management
 
   overlayVisibility: string = 'none';
   popupVisibility: string = 'none';
   sortingVisibility: string = 'none';
   authTabVisibility: string = "none";
+  noNotesAvailable: string = 'none';
 
   openTab(){
     this.popupVisibility = "";
@@ -84,14 +95,12 @@ export class NotesComponent {
     this.popupVisibility = "none";
     this.overlayVisibility = 'none';
   }
-
   showAuthTab(){
     this.authTabVisibility = '';
   }
   hideAuthTab(){
     this.authTabVisibility = 'none';
   }
-
   addUserAuth(value: string){
     if( this.usersAuth.includes(value.trim())){
       alert("User already in the authorization list.");
@@ -106,7 +115,6 @@ export class NotesComponent {
   removeUserAuth(value: string){
     this.usersAuth = this.usersAuth.filter(string => string !== value);
   }
-
   switchPrivacyMode(value: number){
     this.privacyMode = value;
   }
@@ -129,6 +137,13 @@ export class NotesComponent {
   closeSortingPopup(){
     this.sortingVisibility = 'none';
     this.overlayVisibility = 'none';
+    
+    if(this.testNotesList.length === 0){
+      this.noNotesAvailable = "";
+    }
+    else{
+      this.noNotesAvailable = "none";
+    }
   }
   sortLastModified(){
     this.notesToDisplay = this.testNotesList.sort((a, b) => {
@@ -165,9 +180,17 @@ export class NotesComponent {
     this.testNotesList = this.notesToDisplay;
     this.closeSortingPopup();
   }
-filterCategory(cat: string){
-  this.notesToDisplay = this.testNotesList.filter(note => note.category === cat);
-  this.testNotesList = this.notesToDisplay;
-}
+
+
+  filterCategory(cat: string){
+    this.notesToDisplay = this.originalNotes.filter(note => note.category == cat);
+    this.testNotesList = this.notesToDisplay;
+    this.closeSortingPopup();
+  }
+
+  resetFilter(){
+    this.testNotesList = this.originalNotes;
+    this.closeSortingPopup();
+  }
 
 }

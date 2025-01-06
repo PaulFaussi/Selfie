@@ -13,29 +13,28 @@ export class LoginService {
 
   }
 
-  url='http://localhost:4316/user'
+  url='http://localhost:8000/user'
 
   async loginRequest(username: string, password: string) {
-    this.http.post<{ token?: string; message?: string; error?: string }>(`${this.url}/login`, { username, password }).subscribe({
-      next: (res) => {
-        if (res.token) {
-          localStorage.setItem("loginToken", res.token);
-          console.log(localStorage.getItem("loginToken"));
-          alert('Login successful.');
-          this.router.navigateByUrl('/notes');
+    this.http.post<{ token?: string; message?: string; error?: string }>(
+        `${this.url}/login`, { username, password }
+    ).subscribe({
+        next: (res) => {
+            if (res.token) {
+                localStorage.setItem("loginToken", res.token);
+                console.log("Token ottenuto: ", localStorage.getItem("loginToken"));
+                this.router.navigateByUrl('');
+            } else {
+                alert(`Login failed: ${res.message || 'Unknown error'}`);
+            }
+        },
+        error: (err) => {
+            console.error('Login failed:', err.error?.message || 'Unknown error');
+            alert(`Login failed: ${err.error?.message}`);
         }
-        else {
-          console.log("Login failed.");
-          alert(res.error);
-        }
-      },
-
-      error: (err) => {
-          console.error('Login failed:', err);
-          alert('Login failed: ' + (err.error?.message || 'Unknown error'));
-      }
     });
   }
+
 
   async registerRequest(firstname: string, lastname: string, username: string, password: string, dob: Date) : Promise<boolean>{
     const data = {firstname: firstname, lastname: lastname, username: username, password: password, dob: dob};
@@ -63,10 +62,6 @@ export class LoginService {
     }
   }
     
-
-
-
-  
 
   async getUser(): Promise<any> {
     const token = localStorage.getItem('loginToken');

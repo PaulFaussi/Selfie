@@ -13,11 +13,12 @@ import { FooterComponent } from "../footer/footer.component";
 
 // TODO (pf): permettere all'utente di editare un Pomodoro
 
+import { TimemachineComponent } from '../timemachine/timemachine.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [PreviewNoteComponent, RouterModule, NavbarComponent, CommonModule, NgFor, PreviewPomodoroComponent, FooterComponent],
+  imports: [PreviewNoteComponent, RouterModule, NavbarComponent, CommonModule, NgFor, PreviewPomodoroComponent, FooterComponent, TimemachineComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
@@ -39,7 +40,9 @@ export class HomeComponent implements OnInit {
   pomodoroService: PomodoroService = inject(PomodoroService);
 
   constructor (private router: Router, private activatedRoute : ActivatedRoute) {
-
+    if(localStorage.getItem("loginToken") == null ){
+      this.router.navigateByUrl('login');
+    }
   }
 
 

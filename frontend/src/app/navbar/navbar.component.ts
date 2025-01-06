@@ -10,6 +10,8 @@ import { Router, RouterModule } from '@angular/router';
 })
 export class NavbarComponent {
 
+  chatTabVis: string = 'none';
+
   constructor(private router: Router){
 
   }
@@ -27,7 +29,21 @@ export class NavbarComponent {
 
 
 
+  chatTab(){
+    if(this.chatTabVis == ''){
+      this.chatTabVis = 'none';
+    }
+    else{
+      this.chatTabVis = '';
+    }
+  }
 
+  refreshNotifications(){
+    
+  }
 
+  sendMessage(){
+
+  }
 
 }

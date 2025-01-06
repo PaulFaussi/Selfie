@@ -4,7 +4,6 @@ export interface NoteInterface {
     category: string,
     body: string,
     isMarkdown: boolean,
-  // FIXME privacyMode sarebbe?
     privacyMode: number,
     authList: string[],
     creationDate: Date,

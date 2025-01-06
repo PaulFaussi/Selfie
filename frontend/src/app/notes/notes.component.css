@@ -1,5 +1,34 @@
 
 
+body{
+
+    width: 100%;
+    height: 100vh;
+    overflow-x: hidden;
+}
+
+.head{
+    height: 3vh;
+    width: 100%;
+    background-color: rgb(78, 78, 78);
+    padding-left: 1rem;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+a{
+    text-decoration: none;
+
+}
+
+.backto{
+    margin:0;
+    font-size: 1rem;
+}
+
 .manage-notes{
     height: 5vh;
     width: 100%;
@@ -15,13 +44,219 @@
 
 
 
+h1, label, input{
+    font-size: 1.5rem;
+    font-weight: 500;
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: center;
+    color: rgb(229, 229, 229);
+}
+
+#form-button, #management-button{
+    height: 2rem;
+    width: 19rem;
+
+    border:none;
+    background-color: rgb(63, 63, 63);
+    
+    font-size: 0.8rem;
+    font-weight: 550;
+    color:rgb(236, 236, 236);
+
+    color: white;
+    cursor: pointer;
+
+}
+
+#management-button{
+    height: 100%;
+}
+
 .notes-displayed{
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
     width: 100vw;
+    min-height: 80vh;
     background-color: grey;
     padding-bottom: 0.5rem;
 }
 
+
+/* gestione popup */
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1;
+}
+.creation-popup, .sorting-popup{
+    width: 85vw;
+    max-width: 25rem;
+    height: 80vh;
+    position: fixed;
+    top: 10vh;
+    left: 7.5vw;
+    z-index: 2;
+
+    background-color: rgb(90, 90, 90);
+    border: 1px solid rgb(16, 16, 16);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+}
+.popup-header{
+    width: 90%;
+    height: 3rem;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+}
+.popup-header > h1, input{
+    font-size: 1rem;
+}
+
+.separator{
+    width: 100%;
+    border-bottom: 1px solid black;
+}
+
+svg{
+    height: 2rem;
+    color: white;
+
+}
+label{
+    font-size: 1rem;
+}
+
+
+.title-box > input, .manage-users-access > input{
+    background-color: #434343;
+    border-style: solid;
+    border: 1px solid rgb(106, 106, 106);
+    height: 2rem;
+    padding: 1rem 0 1rem 1rem;
+
+    outline: none;
+    color: rgb(228, 228, 228);
+    text-align: start;
+}
+.title-box > input:focus, .manage-users-access > input:focus{
+    border: 1px solid rgb(123, 31, 162);
+}
+input::placeholder{
+    color: #afafaf;
+    margin-left: 1rem;
+}
+.title-box, .markdown-check, .privacy-option, .privacy-dropdown, .manage-users-access{
+    width: 90%;
+    height: 3.2rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    align-items: center;
+}
+
+
+.form-check-input:checked {
+    background-color: #4a4a4a;
+}
+#manage-user-button{
+    height: 2rem;
+    width: 2.5rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
+    border:none;
+    border-radius: 0.3rem;
+    background-color: rgb(117, 117, 117);
+    
+    font-size: 1rem;
+    font-weight: 550;
+    color:rgb(236, 236, 236);
+    letter-spacing: 0.02rem;
+
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+
+}
+#manage-user-button > svg{
+    height: 1.2rem;
+}
+.users-auth{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
+    width: 90%;
+    height: 7rem;
+}
+textarea{
+    height: 7rem;
+    width: 100%;
+    max-width: 100%;
+    padding: 0.2rem 0.5rem 0.2rem 0.5rem;
+
+    resize: none;
+    color: white;
+    background-color: rgb(117, 117, 117);
+}
+
+form{
+    width: 90%;
+}
+
+app-preview-note{
+    width: 100%;
+}
+
+
+.title-box{
+    width: 90%;
+    height: 3.2rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    align-items: center;
+}
+
+
+.title-box > input{
+    background-color: #434343;
+    border-style: solid;
+    border: 1px solid rgb(106, 106, 106);
+    height: 2rem;
+    padding: 0.5rem;
+
+    outline: none;
+    color: rgb(228, 228, 228);
+    text-align: start;
+}
+.title-box > input:focus{
+    border: 1px solid rgb(123, 31, 162);
+}
+input::placeholder{
+    color: #afafaf;
+    margin-left: 1rem;
+}
+
+app-footer{
+    padding: 0;
+    margin: 0;
+}

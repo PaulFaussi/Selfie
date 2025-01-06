@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 })
 
 export class NotesService {
-  apiUrl: string = 'http://localhost:4316/note'
+  apiUrl: string = 'http://localhost:8000/note'
 
   constructor(private http: HttpClient, private router: Router) { }
 
@@ -27,27 +27,6 @@ export class NotesService {
     return await data.json() ?? [];
   }
 
-    /* async getAllNotes(){
-      const token = localStorage.getItem('loginToken');
-      const headers = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': `${token}`});
-
-      this.http.get<{notes?: NoteInterface[], message?: string, error?: string}>(`${this.apiUrl}/getAllNotes`, {headers}).subscribe({
-        next: (res) => {
-          if(res.notes){
-            console.log('Note ricevute:', res.notes);
-            return res.notes;
-          }
-          else{
-            console.log('errore richiesta note')
-            return res.error;
-          }
-        },
-          error: (err) => {
-            console.log(err);
-            return err;
-        }
-      })
-    } */
 
   async getNoteById( _id : string): Promise<NoteInterface> {
     const data = await fetch(`${this.apiUrl}/getNote/${_id}`);
@@ -95,7 +74,6 @@ export class NotesService {
       {headers, body}).subscribe({
       next: (res) => {
         if(res.message==="Note deleted."){
-          alert("Note deleted successfully");
           this.router.navigateByUrl('/notes');
         }
         else{
@@ -123,7 +101,6 @@ export class NotesService {
       {headers}).subscribe({
         next: (res) => {
           if (res.message === "Note duplicated successfully.") {
-            alert("Note duplicated successfully");
             this.router.navigateByUrl('/notes');
           }
           else{
@@ -149,7 +126,6 @@ export class NotesService {
         next: async (res) => {
           if (res.message === "Note updated successfully.") {
             this.router.navigateByUrl('/notes');
-            /* window.location.reload(); */
           }
           else{
             alert(res.error || "Update request error.");

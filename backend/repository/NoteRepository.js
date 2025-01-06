@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const { generateToken, extractToken} = require('../JwtUtils.js');
 const { ObjectId } = require('mongodb');
 
 class NoteRepository {
@@ -19,12 +20,13 @@ class NoteRepository {
             return note;
         } catch (error) {
             console.error('Error retrieving note:', error);
-            throw error;  
+            throw new Error(error);
         }
     }
+
     async findAllNotes(auth){
         try {
-            const user = jwt.decode(auth).username;
+            const user = extractToken(auth);
             const query = { $or: [{creator: user}, {authList: user}]};
             const notes = await this.collection.find(query).toArray(); 
             return notes;
@@ -39,11 +41,11 @@ class NoteRepository {
 
     async createNote(auth, title, notecategory, isMarkdown, privacyMode, authList){
         try{
-            const creator = jwt.decode(auth).username;
+            const creator = extractToken(auth);
             const newNote = {
                 title: title.trim(),
                 body: '',
-                category: notecategory.trim(),
+                category: notecategory.trim().toLowerCase(),
                 isMarkdown: isMarkdown,
                 pricavyMode: privacyMode,
                 authList: authList,
@@ -62,13 +64,13 @@ class NoteRepository {
             }
 
         }catch(error){
-            return error;
+            throw new Error(error);
         }
     }
 
     async duplicateNote(auth, id){
         try{
-            const creator = jwt.decode(auth).username;
+            const creator = extractToken(auth);
             const note = await this.collection.findOne({_id: new ObjectId(id)});
 
             if(note.creator === creator){
@@ -101,7 +103,7 @@ class NoteRepository {
 
     async deleteNote(auth, id){
         try{
-            const creator = jwt.decode(auth).username;
+            const creator = extractToken(auth);
             const note = await this.collection.findOne({_id: new ObjectId(id)});
 
             if(note.creator === creator){
@@ -110,19 +112,16 @@ class NoteRepository {
                     console.log('note deleted');
                     return "Note deleted";
                 }
-
                 else{
                     throw new Error('Note deletion failed.');
                 }
             }
-
             else{
                 throw new Error('Note deletion failed - Unauthorized');
             }
         }
-
         catch(error){
-            return error;
+            throw new Error(error);
         }
     }
 
@@ -133,7 +132,6 @@ class NoteRepository {
     async updateNoteBody(id, noteBody){
         try{
             const note = await this.collection.findOne({_id: new ObjectId(id)});
-
             if(note){
                 console.log(note);
                 const result = await this.collection.updateOne({ _id: new ObjectId(id) },
@@ -141,12 +139,10 @@ class NoteRepository {
 
                 /* const newNote = await this.collection.findOne({_id: new ObjectId(id)});
                 console.log(newNote); */
-
                 if(result.modifiedCount != 0){
                     console.log('note updated.');
                     return;
                 }
-
                 else{
                     throw new Error('Note update failed.');
                 }
@@ -155,9 +151,8 @@ class NoteRepository {
                 throw new Error('Note deletion failed - Unauthorized');
             }
         }
-
         catch(error){
-            return error;
+            throw new Error(error);
         }   
     }
 }
