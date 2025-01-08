@@ -50,7 +50,7 @@ svg{
     height: 1.2rem;
     width: 1.2rem;
     color: rgb(186, 186, 186);
-}    
+}
 
 
 
@@ -65,7 +65,7 @@ svg{
     width: 100%;
 }
 
-                  
+
 @keyframes background-pan {
     from {
       background-position: 0% center;
@@ -118,7 +118,7 @@ body{
 h1{
     color: rgb(51, 51, 51);
     font-size: 1rem;
-    
+
 }
 .calendar-content, .notes-content, .pomos-content{
     display: flex;
@@ -148,6 +148,7 @@ h1{
 
 .pomos{
     background-color: rgb(200, 200, 200);
+  min-height: 1rem;
 }
 
 
@@ -184,7 +185,7 @@ svg{
     background-color: rgb(176, 78, 206);
     -webkit-transition: .4s;
     transition: .4s;
-  } 
+  }
   .slider:before {
     position: absolute;
     content: "";

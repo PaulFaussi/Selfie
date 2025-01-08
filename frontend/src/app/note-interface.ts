@@ -1,3 +1,5 @@
+import { CreatorInterface } from "./creator.interface";
+
 export interface NoteInterface {
     _id: string,
     title: string,
@@ -8,5 +10,5 @@ export interface NoteInterface {
     authList: string[],
     creationDate: Date,
     lastModificationDate: Date,
-    creator: string
+    creator: CreatorInterface
 }

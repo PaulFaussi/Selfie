@@ -27,7 +27,7 @@ export class NoteEditorComponent {
   markdownVisibility: string = 'none';
   @ViewChild('noteBody') noteBody!: ElementRef;
   @ViewChild('parsedText') parsedText!: ElementRef;
-  
+
 
   constructor() {
     this.notesService.getNoteById(this.noteId).then((note) => {
@@ -45,20 +45,20 @@ export class NoteEditorComponent {
   noteEditorForm = new FormGroup({
     noteBody: new FormControl('')
   });
-  
 
-  
+
+
   /* gestione dom e markdown */
 
   displayTextarea: string = '';
   displayParsedDiv: string = 'none';
-  
+
   parseText(){
     const noteBody = this.noteBody.nativeElement.value;
     var parsedText = marked.parse(noteBody);
     this.parsedText.nativeElement.innerHTML = parsedText;
 
-  
+
     if(this.displayTextarea===''){
       this.displayParsedDiv = '';
       this.displayTextarea = 'none';
@@ -71,8 +71,8 @@ export class NoteEditorComponent {
 
 
 
-  
-  
+
+
   /* gestione popup */
 
   popupVisibility: string = 'none';
@@ -94,7 +94,7 @@ export class NoteEditorComponent {
     }
     else{
       this.deletePopupVisibility = 'none';
-    } 
+    }
     this.showOverlay();
   }
   showOverlay(){
@@ -103,7 +103,7 @@ export class NoteEditorComponent {
     }
     else{
       this.overlayVisibility = 'none';
-    } 
+    }
   }
   openEditPopup(){
     this.showEditPopup();
@@ -123,7 +123,7 @@ export class NoteEditorComponent {
   duplicateNote(){
     if(this.noteId != null){
       this.notesService.duplicateNote(this.noteId);
-    } 
+    }
     else{
       console.log('Duplication error.')
     }

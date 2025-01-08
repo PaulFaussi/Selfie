@@ -1,15 +1,12 @@
 import { Component, Input } from '@angular/core';
 import { PomodoroInterface } from "../pomodoro.interface";
-import { DatePipe } from "@angular/common";
-import { RouterLink } from "@angular/router";
+import { CommonModule, DatePipe } from "@angular/common";
+import { RouterLink, RouterModule } from "@angular/router";
 
 @Component({
   selector: 'app-preview-pomodoro',
   standalone: true,
-  imports: [
-    DatePipe,
-    RouterLink
-  ],
+  imports: [CommonModule, RouterModule],
   templateUrl: './preview-pomodoro.component.html',
   styleUrl: './preview-pomodoro.component.css'
 })
