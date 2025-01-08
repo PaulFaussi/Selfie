@@ -47,9 +47,9 @@ class PomodoroController {
     //POST
 
     async createPomodoro(req, res) {
-        const jwt = getJwtFromRequest(req);
         try {
-            await this.pomodoroService.createPomodoro(jwt, req);
+            const jwt = getJwtFromRequest(req);
+            await this.pomodoroService.createPomodoro(jwt, req.body.title, req.body.description, req.body.startDate, req.body.studyDurationInMinutes, req.body.breakDurationInMinutes);
 
             res.status(200).json(`Pomodoro creato con successo`);
         } catch (error) {
@@ -61,14 +61,13 @@ class PomodoroController {
     async updatePomodoro(req, res) {
         const jwt = getJwtFromRequest(req);
         try {
-            const updatedPomodoro = await this.pomodoroService.updatePomodoro(jwt, req);
+            const updatedPomodoro = await this.pomodoroService.updatePomodoro(jwt, req.params.id, req.body.title, req.body.description, req.body.startDate, req.body.studyDurationInMinutes, req.body.breakDurationInMinutes);
             res.status(200).json({ pomodoro: updatedPomodoro, message: `Pomodoro ${updatedPomodoro.title} aggiornato con successo` });
         } catch (error) {
             res.status(400).json(error.message);
             console.log(error);
         }
     }
-
 
     //DELETE
 

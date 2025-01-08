@@ -14,25 +14,12 @@ class PomodoroService {
 
     async findAllPomodoros(jwt) {
         const username = extractUsername(jwt);
-        return await this.pomodoroRepository.findAllPomodoros(username);
+        return await this.pomodoroRepository.findAllPomodoros();
     }
 
-    async createPomodoro(jwt, req) {
-        const username = extractUsername(jwt);
+    async createPomodoro(jwt, title, description, startDate, studyDurationInMinutes, breakDurationInMinutes) {
 
-        const pomodoro = {
-            creator: username,
-            authList: [], // TODO (pf): da implementare
-            title: req.body.pomodoro.title,
-            description: req.body.pomodoro.description,
-            startDate: new Date(req.body.pomodoro.startDate),
-            studyDurationInMinutes: req.body.pomodoro.studyDurationInMinutes,
-            breakDurationInMinutes: req.body.pomodoro.breakDurationInMinutes,
-            lastModificationDate: new Date(),
-            creationDate: new Date()
-        }
-
-        await this.pomodoroRepository.createPomodoro(pomodoro);
+        await this.pomodoroRepository.createPomodoro(jwt, title, description, startDate, studyDurationInMinutes, breakDurationInMinutes);
     }
 
     async deletePomodoro(jwt, req) {
@@ -41,13 +28,9 @@ class PomodoroService {
         await this.pomodoroRepository.deletePomodoro(username, id);
     }
 
-    async updatePomodoro(jwt, req) {
-        const username = extractUsername(jwt);
-        const id = req.params.id;
-        const updatedData = req.body.pomodoro;
-        return await  this.pomodoroRepository.updatePomodoro(username, id, updatedData);
+    async updatePomodoro(jwt, id, title, description, startDate, studyDurationInMinutes, breakDurationInMinutes) {
+        return await  this.pomodoroRepository.updatePomodoro(id, jwt, title, description, startDate, studyDurationInMinutes, breakDurationInMinutes);
     }
-
 
 }
 

@@ -47,7 +47,7 @@ export class PomodoroComponent implements OnInit {
   async salvaNewPomodoro() {
     const body: PomodoroInterface = {
       _id: '',
-      creator: '',
+      creator: { username: '', exp: 0, iat: 0 },
       authList: [],
       title: this.pomodoro.name,
       description: '',
@@ -58,7 +58,7 @@ export class PomodoroComponent implements OnInit {
       creationDate: new Date(),
     }
 
-    await this.pomodoroService.createPomodoro(body);
+    await this.pomodoroService.createPomodoro(body.title, body.description, body.startDate, body.studyDurationInMinutes, body.breakDurationInMinutes);
 
     this.getAllPomodoros();
     this.showDialogCreaPomodoro = false;

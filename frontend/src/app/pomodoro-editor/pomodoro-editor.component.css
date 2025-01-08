@@ -2,6 +2,20 @@
     box-sizing:content-box;
 }
  */
+
+
+.edit-pomodoro-container {
+  width: 90vw;
+  min-height: 70vh;
+  border: 1px solid rgb(48, 48, 48);
+  border-radius: 0.3rem;
+  margin: 50px auto;
+  font-family: Arial, Helvetica, sans-serif;
+  padding: 0.75rem;
+  background-color: rgb(172, 172, 172);
+  /*box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);*/
+}
+
 body{
   background-color: grey;
   overflow-x: hidden;
@@ -10,8 +24,10 @@ body{
   padding: 0;
 }
 
+
 .head{
   height: 3vh;
+  /*width: 100%;*/
 
   background-color: rgb(78, 78, 78);
   display: flex;

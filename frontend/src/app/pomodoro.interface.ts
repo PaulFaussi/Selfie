@@ -1,8 +1,10 @@
 // import { ObjectId } from 'mongodb'
 
+import { CreatorInterface } from "./creator.interface";
+
 export interface PomodoroInterface {
   _id: string,
-  creator: string,
+  creator: CreatorInterface,
   authList: string[],
   title: string,
   description: string,

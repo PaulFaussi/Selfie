@@ -38,7 +38,6 @@ export class PomodoroEditorComponent  implements OnInit {
 
   ngOnInit(): void {
     this.pomodoroService.getPomodoroById(this.pomodoroId).then((pomodoro) => {
-      console.log(pomodoro);
 
       this.updatedData = {
         authList: pomodoro.authList,
@@ -48,6 +47,8 @@ export class PomodoroEditorComponent  implements OnInit {
         studyDurationInMinutes: pomodoro.studyDurationInMinutes,
         breakDurationInMinutes: pomodoro.breakDurationInMinutes
       }
+
+      console.log(pomodoro);
     });
   }
 
@@ -55,7 +56,7 @@ export class PomodoroEditorComponent  implements OnInit {
     this.visibleDeletePopup = !this.visibleDeletePopup;
   }
 
-  apriPopupEliminaPomodoro() {
+  openPopupEliminaPomodoro() {
     this.visibleDeletePopup = true;
   }
 
@@ -67,7 +68,7 @@ export class PomodoroEditorComponent  implements OnInit {
     this.visibleDeletePopup = false;
   }
 
-  aggiornaPomodoro() {
+  updatePomodoro() {
     this.pomodoroService.updatePomodoro(this.pomodoroId, this.updatedData).then(() => {
       console.log('Pomodoro aggiornato con successo');
     });

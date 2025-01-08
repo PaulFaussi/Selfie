@@ -1,4 +1,5 @@
 const {ObjectId} = require("mongodb");
+const {extractToken} = require("../JwtUtils");
 
 class PomodoroRepository {
     constructor(db) {
@@ -19,14 +20,51 @@ class PomodoroRepository {
         // }
     }
 
-    async findAllPomodoros(username) {
-        const query = { $or: [{ creator: username }, { authList: username }]};
-        return await this.collection.find(query).toArray();
+    async findAllPomodoros() {
+        const result =  await this.collection.find().toArray();
+
+        return result;
     }
 
-    async createPomodoro(pomodoro) {
-        console.log(pomodoro);
-        const result = await this.collection.insertOne(pomodoro);
+
+    //
+    // // import { ObjectId } from 'mongodb'
+    //
+    // import { CreatorInterface } from "./creator.interface";
+
+// export interface PomodoroInterface {
+//     _id: string,
+//         creator: CreatorInterface,
+//         authList: string[],
+//         title: string,
+//         description: string,
+//         startDate: Date,
+//         studyDurationInMinutes: number | null,
+//         breakDurationInMinutes: number | null,
+//         lastModificationDate: Date,
+//         creationDate: Date,
+//     // duration_in_minutes: number, TODO (pf): da implementare
+//     // state: "TO START" | "STUDY" | "BREAK" | "ON PAUSE" | "COMPLETED"
+// }
+
+
+    async createPomodoro(jwt, title, description, startDate, studyDurationInMinutes, breakDurationInMinutes) {
+        const creator = extractToken(jwt);
+        const now = new Date();
+        const newPomodoro = {
+            creator,
+            authList: [],
+            title,
+            description,
+            startDate,
+            studyDurationInMinutes,
+            breakDurationInMinutes,
+            lastModificationDate: now,
+            creationDate: now
+            // duration_in_minutes: number, TODO (pf): da implementare
+            // state: "TO START" | "STUDY" | "BREAK" | "ON PAUSE" | "COMPLETED"
+        }
+        const result = await this.collection.insertOne(newPomodoro);
         if(result.acknowledged){
             console.log("Document inserted successfully - ", result.title);
         }
@@ -34,6 +72,28 @@ class PomodoroRepository {
             throw new Error('Note creation failed.');
         }
     }
+
+
+    async updatePomodoro(id, jwt, title, description, startDate, studyDurationInMinutes, breakDurationInMinutes) {
+        const pomodoro = await this.collection.findOne({ _id: new ObjectId(id)});
+
+        if (!pomodoro) {
+            throw new Error('Pomodoro non trovato');
+        }
+
+        const now = new Date();
+        const result = await this.collection.updateOne(
+            { _id: new ObjectId(id) },
+            { $set: { title, description, startDate, studyDurationInMinutes, breakDurationInMinutes, lastModificationDate: now} });
+
+        if (result.modifiedCount === 0) {
+            throw new Error('Aggiornamento del Pomodoro fallito');
+        }
+
+        return await this.collection.findOne({ _id: new ObjectId(id)});
+    }
+
+
 
     async deletePomodoro(username, id) {
         const pomodoro = await this.collection.findOne({ _id: new ObjectId(id)});
@@ -48,38 +108,6 @@ class PomodoroRepository {
             const errorMessage = "Errore nell'eliminare il Pomodoro";
             throw new Error(errorMessage);
         }
-    }
-
-    async updatePomodoro(username, id, updatedData) {
-        const pomodoro = await this.collection.findOne({ _id: new ObjectId(id)});
-
-        if (!pomodoro) {
-            throw new Error('Pomodoro non trovato');
-        }
-
-        if (pomodoro.creator !== username) {
-            const errorMessage = "Non hai i diritti per eliminare il Pomodoro";
-            throw new Error(errorMessage);
-        }
-
-        console.log("updated data:");
-        console.log(updatedData);
-
-        const { _id, ...dataToUpdate } = updatedData;
-
-        console.log("data to update:");
-        console.log(dataToUpdate);
-        const result = await this.collection.updateOne(
-            { _id: new ObjectId(id) },
-            { $set: dataToUpdate });
-
-        console.log("result:");
-        console.log(result);
-        if (result.modifiedCount === 0) {
-            throw new Error('Aggiornamento del Pomodoro fallito');
-        }
-
-        return await this.collection.findOne({ _id: new ObjectId(id)});
     }
 
 }

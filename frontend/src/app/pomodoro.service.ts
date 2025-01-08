@@ -13,10 +13,10 @@ export class PomodoroService {
 
   constructor(private httpService: HttpService) { }
 
-  async createPomodoro(pomodoro: PomodoroInterface): Promise<void> {
+  async createPomodoro(title: string, description: string, startDate: Date, studyDurationInMinutes: number | null, breakDurationInMinutes: number | null): Promise<void> {
     try {
       const url = `${this.apiUrl}/createPomodoro`;
-      const body = {pomodoro};
+      const body = {title, description, startDate, studyDurationInMinutes, breakDurationInMinutes};
       const token = this.getToken();
 
       this.httpService.post(url, body, token).subscribe();
@@ -52,9 +52,11 @@ export class PomodoroService {
     }
 
     console.log('Aggiornando il pomodoro... ');
+    // jwt, req.params.id, req.title, req.description, req.startDate, req.startDate, req.studyDurationInMinutes, req.breakDurationInMinutes);
 
     const url = `${this.apiUrl}/updatePomodoro/${id}`;
-    const body = {pomodoro};
+    const body = { title: pomodoro.title, description: pomodoro.description, startDate: pomodoro.startDate,
+      studyDurationInMinutes: pomodoro.studyDurationInMinutes, breakDurationInMinutes: pomodoro.breakDurationInMinutes};
     const token = this.getToken();
 
     return await firstValueFrom(this.httpService.post(url, body, token));
