@@ -5,15 +5,15 @@
 
   <div class="head">
     <a routerLink="">
-      <h1 class="backto">< back to home</h1>
+      <h1 class="backto">< back</h1>
     </a>
   </div>
 
-  <div class="manage-pomodoro">
+  <div class="manage-pomodoros">
     <button id="new-pomodoro-button" class="management-button" (click)="openCreateNewPomodoroWindow()" style="border-right: 1px solid black;">
       NEW POMODORO
     </button>
-    <button id="sort-filter-pomodoro-button" class="management-button" (click)="openSortFilterWindow()" style="background-color: grey;">
+    <button id="sort-filter-pomodoro-button" class="management-button" (click)="openSortFilterPomodorosWindow()" style="background-color: grey;">
       SORT / FILTER
     </button>
   </div>
@@ -74,6 +74,41 @@
       </div>
     </div>
   </div>
+
+
+  <!-- SORT POPUP -->
+
+  <div class="sorting-popup" *ngIf="showDialogSortFilterPomodoros" >
+    <div class="popup-header">
+      <h1 style="margin:0;">/sort-pomodoros</h1>
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"  stroke="currentColor" (click)="closeSortFilterPomodorosWindow()">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+      </svg>
+    </div>
+
+    <div class="separator"></div>
+
+    <h1 style="margin: 0.5rem 0 0.5rem 0;">Sort pomodoros by:</h1>
+
+    <button id="form-button" type="submit" style="margin-top: 0.5rem;" (click)="getAllPomodorosSortedByStartRecent()">START - RECENT</button>
+    <button id="form-button" type="submit" style="margin-top: 0.5rem;" (click)="getAllPomodorosSortedByStartOldest()">START - OLDEST</button>
+    <button id="form-button" type="submit" style="margin-top: 0.5rem;" (click)="getAllPomodorosSortedByLastModified()">LAST MODIFIED</button>
+    <button id="form-button" type="submit" style="margin-top: 0.5rem;" (click)="getAllPomodorosSortedByCreationRecent()">CREATION - RECENT</button>
+    <button id="form-button" type="submit" style="margin-top: 0.5rem;" (click)="getAllPomodorosSortedByCreationOldest()">CREATION - OLDEST</button>
+
+    <!-- TODO (pf): permettere anche di filtrare i pomodoro -->
+<!--    <h1 style="margin: 0.5rem 0 0.5rem 0;">Filter notes by category:</h1>-->
+
+<!--    <div class="title-box">-->
+<!--      <label for="title-box">Category</label>-->
+<!--      <input id="title-box" type="text" name="title" placeholder="Enter note category" style="height: 2rem;" #cat>-->
+<!--    </div>-->
+
+
+<!--    <button id="form-button" type="submit" style="margin-top: 0.5rem;" (click)="filterCategory(cat.value)">FILTER</button>-->
+<!--    <button id="form-button" type="submit" style="margin-top: 0.5rem;" (click)="resetFilter()">RESET</button>-->
+  </div>
+
 
   <app-footer></app-footer>
 

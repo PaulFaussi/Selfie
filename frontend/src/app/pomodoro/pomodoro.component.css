@@ -8,7 +8,7 @@
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  border: 1px solid rgb(0, 0, 0);
+  border: 0px solid rgb(0, 0, 0);
 }
 
 /* Overlay per il dialog */
@@ -88,6 +88,74 @@
   align-items: center;
   justify-content: flex-start;
   width: 100vw;
+  min-height: 80vh;
   background-color: grey;
   padding-bottom: 0.5rem;
+}
+
+.creation-popup, .sorting-popup{
+  width: 85vw;
+  max-width: 25rem;
+  height: 80vh;
+  position: fixed;
+  top: 10vh;
+  left: 7.5vw;
+  z-index: 2;
+
+  background-color: rgb(90, 90, 90);
+  border: 1px solid rgb(16, 16, 16);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.popup-header{
+  width: 90%;
+  height: 3rem;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+
+}
+
+h1, label, input{
+  font-size: 1.5rem;
+  font-weight: 500;
+  font-family: Arial, Helvetica, sans-serif;
+  text-align: center;
+  color: rgb(229, 229, 229);
+}
+
+.popup-header > h1, input{
+  font-size: 1rem;
+}
+
+#form-button, #management-button{
+  height: 2rem;
+  width: 19rem;
+
+  border:none;
+  background-color: rgb(63, 63, 63);
+
+  font-size: 0.8rem;
+  font-weight: 550;
+  color:rgb(236, 236, 236);
+
+  color: white;
+  cursor: pointer;
+
+}
+
+.backto{
+  margin:0;
+  font-size: 1rem;
+}
+
+body {
+  background-color: #808080;
+  margin: 0;
+  height: 100%;
 }

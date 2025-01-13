@@ -39,6 +39,8 @@ export class PomodoroEditorComponent  implements OnInit {
   ngOnInit(): void {
     this.pomodoroService.getPomodoroById(this.pomodoroId).then((pomodoro) => {
 
+      this.pomodoro = pomodoro;
+
       this.updatedData = {
         authList: pomodoro.authList,
         title: pomodoro.title,

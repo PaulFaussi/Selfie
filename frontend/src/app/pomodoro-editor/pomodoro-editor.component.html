@@ -1,5 +1,8 @@
 <app-navbar></app-navbar>
 
+<!-- TODO (pf): abbellire lo stile dei due bottoni "delete" e "save" -->
+
+
 <body>
 <!--  <div class="head">-->
 <!--    <a routerLink="/pomodoro">-->
@@ -7,13 +10,13 @@
 <!--    </a>-->
 <!--  </div>-->
 
-  <div class="edit-pomodoro-container">
-    <div class="head">
-      <a routerLink="/pomodoro">
-        <h1 class="backto" (click)="updatePomodoro()">< back</h1>
-      </a>
-    </div>
+  <div class="head">
+    <a routerLink="/pomodoro">
+      <h1 class="backto" (click)="updatePomodoro()">< back</h1>
+    </a>
+  </div>
 
+  <div class="edit-pomodoro-container">
 
 <!--    <h2>Modifica Pomodoro</h2>-->
 
@@ -61,8 +64,8 @@
 
     <!-- Bottoni azioni -->
     <div class="dialog-actions">
-      <button (click)="openPopupEliminaPomodoro()">Elimina</button>
-      <button (click)="updatePomodoro()">Salva</button>
+      <button (click)="openPopupEliminaPomodoro()">Delete</button>
+      <button (click)="updatePomodoro()">Save</button>
 <!--      <button (click)="aggiornaPomodoro()"-->
 <!--              [disabled]="!pomodoro?.title || !pomodoro.startDate || !pomodoro.studyDurationInMinutes || !pomodoro.breakDurationInMinutes">Salva</button>-->
     </div>
@@ -73,8 +76,6 @@
       <h2>Created: {{pomodoro?.creationDate | date:'dd MMM yyyy, HH:mm' }}</h2>
     </div>
 
-
-    <app-footer></app-footer>
 
 
     <div class="deletepomodoro-popup" *ngIf="visibleDeletePopup">
@@ -90,5 +91,7 @@
       <button id="edit-action-button" style="background-color: rgb(187, 0, 0); margin-bottom: 1rem;" (click)="deletePomodoro()">DELETE POMODORO</button>
     </div>
   </div>
+
+  <app-footer></app-footer>
 
 </body>

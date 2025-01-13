@@ -32,6 +32,13 @@ export class PomodoroService {
     return await firstValueFrom(this.httpService.get(url, token));
   }
 
+  async getAllPomodorosSorted(sortType: string): Promise<PomodoroInterface[]> {
+    const url = `${this.apiUrl}/getAllPomodoros/${sortType}`;
+    const token = this.getToken();
+
+    return await firstValueFrom(this.httpService.get(url, token));
+  }
+
   async getPomodoroById(id: string): Promise<PomodoroInterface> {
     const url = `${this.apiUrl}/getPomodoro/${id}`;
     const token = this.getToken();
@@ -62,23 +69,28 @@ export class PomodoroService {
     return await firstValueFrom(this.httpService.post(url, body, token));
   }
 
-  sortByUpcomingPomodoros(list: PomodoroInterface[]): PomodoroInterface[] {
+  filterByFuturePomodoros(list: PomodoroInterface[]): PomodoroInterface[] {
     const now: Date = new Date();
 
-    return list
-      .filter(obj => new Date(obj.startDate) > now)
-      .sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime())
+    return list.filter(obj => new Date(obj.startDate) >= now);
+  }
+
+  filterByPastPomodoros(list: PomodoroInterface[]): PomodoroInterface[] {
+    const now: Date = new Date();
+
+    return list.filter(obj => new Date(obj.startDate) <= now);
+  }
+
+  sortByUpcomingPomodoros(list: PomodoroInterface[]): PomodoroInterface[] {
+    return list.sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime())
   }
 
   sortByRecentPomodoros(list: PomodoroInterface[]): PomodoroInterface[] {
-    const now: Date = new Date();
-
-    return list
-      .filter(obj => new Date(obj.startDate) < now)
-      .sort((a, b) => new Date(b.startDate).getTime() - new Date(a.startDate).getTime());
+    return list.sort((a, b) => new Date(b.startDate).getTime() - new Date(a.startDate).getTime());
   }
 
 
+  // TODO questa funzione andrebbe generalizzata
   private getToken(): string {
     const token = localStorage.getItem('loginToken');
     if (token === null) {

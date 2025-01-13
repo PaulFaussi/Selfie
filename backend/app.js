@@ -106,6 +106,7 @@ async function connectToDB() {
         const adminDb = client.db().admin();
         const pingResult = await adminDb.ping();
 
+        // TODO viene stampato il messaggio di successo anche quando la connessione non viene stabilita
         if (pingResult.ok === 1) {
             console.log("Connessione al database stabilita.");
         } else {

@@ -9,6 +9,7 @@ import { PomodoroInterface } from "../pomodoro.interface";
 import { PreviewPomodoroComponent } from "../preview-pomodoro/preview-pomodoro.component";
 import { PomodoroService } from "../pomodoro.service";
 import { TimemachineComponent } from "../timemachine/timemachine.component";
+import { SortPomodoroEnum } from "../sort-pomodoro.enum";
 
 @Component({
   selector: 'app-pomodoro',
@@ -20,6 +21,8 @@ import { TimemachineComponent } from "../timemachine/timemachine.component";
 export class PomodoroComponent implements OnInit {
 
   public showDialogCreaPomodoro: boolean = false;
+
+  public showDialogSortFilterPomodoros: boolean = false;
 
   public pomodoroList: PomodoroInterface[] = [];
 
@@ -42,6 +45,14 @@ export class PomodoroComponent implements OnInit {
 
   openCreateNewPomodoroWindow() {
     this.showDialogCreaPomodoro = true;
+  }
+
+  openSortFilterPomodorosWindow() {
+    this.showDialogSortFilterPomodoros = true;
+  }
+
+  closeSortFilterPomodorosWindow() {
+    this.showDialogSortFilterPomodoros = false;
   }
 
   async salvaNewPomodoro() {
@@ -69,10 +80,40 @@ export class PomodoroComponent implements OnInit {
     this.pomodoro = { name: '', startDate: null, startTime: null, durationWork: null, durationBreak: null };
   }
 
-  openSortFilterWindow() {
-    console.log("Ordina/Filtra i Pomodoro");
+  async getAllPomodorosSortedByStartRecent() {
+    this.pomodoroService.getAllPomodorosSorted(SortPomodoroEnum.START_RECENT).then((result: PomodoroInterface[]) => {
+      this.pomodoroList = result;
+    });
+    this.showDialogSortFilterPomodoros = false;
   }
 
+  async getAllPomodorosSortedByStartOldest() {
+    this.pomodoroService.getAllPomodorosSorted(SortPomodoroEnum.START_OLDEST).then((result: PomodoroInterface[]) => {
+      this.pomodoroList = result;
+    });
+    this.showDialogSortFilterPomodoros = false;
+  }
+
+  async getAllPomodorosSortedByLastModified() {
+    this.pomodoroService.getAllPomodorosSorted(SortPomodoroEnum.LAST_MODIFIED).then((result: PomodoroInterface[]) => {
+      this.pomodoroList = result;
+    });
+    this.showDialogSortFilterPomodoros = false;
+  }
+
+  async getAllPomodorosSortedByCreationRecent() {
+    this.pomodoroService.getAllPomodorosSorted(SortPomodoroEnum.CREATION_RECENT).then((result: PomodoroInterface[]) => {
+      this.pomodoroList = result;
+    });
+    this.showDialogSortFilterPomodoros = false;
+  }
+
+  async getAllPomodorosSortedByCreationOldest() {
+    this.pomodoroService.getAllPomodorosSorted(SortPomodoroEnum.CREATION_OLDEST).then((result: PomodoroInterface[]) => {
+      this.pomodoroList = result;
+    });
+    this.showDialogSortFilterPomodoros = false;
+  }
 
 
   ////// PRIVATE

@@ -11,8 +11,6 @@ import { PomodoroService } from "../pomodoro.service";
 import { PreviewPomodoroComponent } from "../preview-pomodoro/preview-pomodoro.component";
 import { FooterComponent } from "../footer/footer.component";
 
-// TODO (pf): permettere all'utente di editare un Pomodoro
-
 import { TimemachineComponent } from '../timemachine/timemachine.component';
 
 @Component({
@@ -66,12 +64,14 @@ export class HomeComponent implements OnInit {
     });
 
     this.pomodoroService.getAllPomodoros().then((pomodoros: PomodoroInterface[]) => {
+      const futurePomodoros = this.pomodoroService.filterByFuturePomodoros(pomodoros);
       this.upcomingPomodoros = this.pomodoroService
-        .sortByUpcomingPomodoros(pomodoros)
+        .sortByUpcomingPomodoros(futurePomodoros)
         .slice(0, 3);
 
+      const pastPomodoros = this.pomodoroService.filterByPastPomodoros(pomodoros);
       this.recentPomodoros = this.pomodoroService
-        .sortByRecentPomodoros(pomodoros)
+        .sortByRecentPomodoros(pastPomodoros)
         .slice(0, 3);
 
       this.pomodoroToDisplay = this.upcomingPomodoros;

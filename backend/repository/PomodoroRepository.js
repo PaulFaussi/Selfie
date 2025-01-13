@@ -66,7 +66,7 @@ class PomodoroRepository {
         }
         const result = await this.collection.insertOne(newPomodoro);
         if(result.acknowledged){
-            console.log("Document inserted successfully - ", result.title);
+            console.log("Document inserted successfully");
         }
         else{
             throw new Error('Note creation failed.');
