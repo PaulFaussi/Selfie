@@ -2,7 +2,7 @@ import { Component, ElementRef, inject, OnInit, ViewChild } from '@angular/core'
 import { NavbarComponent } from "../navbar/navbar.component";
 import { FooterComponent } from "../footer/footer.component";
 import { CommonModule } from "@angular/common";
-import { ActivatedRoute, RouterModule } from "@angular/router";
+import { ActivatedRoute, Router, RouterModule } from "@angular/router";
 import { PomodoroService } from "../pomodoro.service";
 import { PomodoroInterface } from "../pomodoro.interface";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
@@ -33,7 +33,7 @@ export class PomodoroEditorComponent  implements OnInit {
 
   @ViewChild('pomodoroBody') pomodoroBody!: ElementRef;
 
-  constructor() {
+  constructor(private router: Router) {
   }
 
   ngOnInit(): void {
@@ -68,6 +68,8 @@ export class PomodoroEditorComponent  implements OnInit {
     });
 
     this.visibleDeletePopup = false;
+
+    this.router.navigate(['/pomodoro'])
   }
 
   updatePomodoro() {

@@ -16,6 +16,35 @@
   /*box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);*/
 }
 
+.dialog-actions {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.dialog-actions button {
+  margin: 0 8px;
+  padding: 8px 16px;
+  font-size: 14px;
+  cursor: pointer;
+  border: none;
+  border-radius: 4px;
+}
+
+.dialog-actions button:hover {
+  background: #ddd;
+}
+
+.dialog-actions button:first-child {
+  background: #f44336;
+  color: white;
+}
+
+.dialog-actions button:last-child {
+  background: #4caf50;
+  color: white;
+}
+
 body{
   background-color: grey;
   overflow-x: hidden;
@@ -171,7 +200,7 @@ p{
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  padding: 0.2rem 1.5rem 0.75rem 1.5rem;
+  padding: 2rem 1.5rem 0.75rem 1.5rem;
 }
 
 .pomodoroBody{

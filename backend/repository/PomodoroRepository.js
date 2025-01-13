@@ -98,7 +98,7 @@ class PomodoroRepository {
     async deletePomodoro(username, id) {
         const pomodoro = await this.collection.findOne({ _id: new ObjectId(id)});
 
-        if (pomodoro.creator !== username) {
+        if (pomodoro.creator.username !== username) {
             const errorMessage = "Non hai i diritti per eliminare il Pomodoro";
             throw new Error(errorMessage);
         }
