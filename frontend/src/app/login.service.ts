@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 
 export class LoginService {
 
-  constructor(private http: HttpClient, private router: Router) { 
+  constructor(private http: HttpClient, private router: Router) {
 
   }
 
@@ -41,27 +41,27 @@ export class LoginService {
     console.log(data);
 
     try{
-      const response = await fetch(`${this.url}/register`, {method: 'POST', 
+      const response = await fetch(`${this.url}/register`, {method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify(data)
       });
-      
+
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.message); 
+        throw new Error(errorData.message);
       }
 
       return true;
-      
-    } 
+
+    }
     catch (error) {
       console.log('sadsdasda');
       return false;
     }
   }
-    
+
 
   async getUser(): Promise<any> {
     const token = localStorage.getItem('loginToken');
@@ -69,12 +69,19 @@ export class LoginService {
     return await data.json() ?? {};
   }
 
-  
+  getToken(): string {
+    const token = localStorage.getItem('loginToken');
+    if (token === null) {
+      throw new Error('Errore. Effettuare il login');
+    }
+    return token;
+  }
+
 }
 
 
 
- 
+
 
 
 

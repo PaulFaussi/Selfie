@@ -3,6 +3,7 @@ import { HttpService } from "./http.service";
 import { PomodoroInterface } from "./pomodoro.interface";
 import { firstValueFrom, Observable } from "rxjs";
 import { HttpHeaders } from "@angular/common/http";
+import { LoginService } from "./login.service";
 
 @Injectable({
   providedIn: 'root'
@@ -11,13 +12,13 @@ export class PomodoroService {
 
   apiUrl: string = 'http://localhost:8000/pomodoro'
 
-  constructor(private httpService: HttpService) { }
+  constructor(private httpService: HttpService, private loginService: LoginService) { }
 
   async createPomodoro(title: string, description: string, startDate: Date, studyDurationInMinutes: number | null, breakDurationInMinutes: number | null): Promise<void> {
     try {
       const url = `${this.apiUrl}/createPomodoro`;
       const body = {title, description, startDate, studyDurationInMinutes, breakDurationInMinutes};
-      const token = this.getToken();
+      const token = this.loginService.getToken();
 
       this.httpService.post(url, body, token).subscribe();
     } catch (error: any) {
@@ -27,28 +28,28 @@ export class PomodoroService {
 
   async getAllPomodoros(): Promise<PomodoroInterface[]> {
     const url = `${this.apiUrl}/getAllPomodoros`;
-    const token = this.getToken();
+    const token = this.loginService.getToken();
 
     return await firstValueFrom(this.httpService.get(url, token));
   }
 
   async getAllPomodorosSorted(sortType: string): Promise<PomodoroInterface[]> {
     const url = `${this.apiUrl}/getAllPomodoros/${sortType}`;
-    const token = this.getToken();
+    const token = this.loginService.getToken();
 
     return await firstValueFrom(this.httpService.get(url, token));
   }
 
   async getPomodoroById(id: string): Promise<PomodoroInterface> {
     const url = `${this.apiUrl}/getPomodoro/${id}`;
-    const token = this.getToken();
+    const token = this.loginService.getToken();
 
     return await firstValueFrom(this.httpService.get(url, token));
   }
 
   async deletePomodoro(id: string) {
     const url = `${this.apiUrl}/deletePomodoro/${id}`;
-    const token = this.getToken();
+    const token = this.loginService.getToken();
 
     return await firstValueFrom(this.httpService.delete(url, token));
   }
@@ -64,7 +65,7 @@ export class PomodoroService {
     const url = `${this.apiUrl}/updatePomodoro/${id}`;
     const body = { title: pomodoro.title, description: pomodoro.description, startDate: pomodoro.startDate,
       studyDurationInMinutes: pomodoro.studyDurationInMinutes, breakDurationInMinutes: pomodoro.breakDurationInMinutes};
-    const token = this.getToken();
+    const token = this.loginService.getToken();
 
     return await firstValueFrom(this.httpService.post(url, body, token));
   }
@@ -89,14 +90,5 @@ export class PomodoroService {
     return list.sort((a, b) => new Date(b.startDate).getTime() - new Date(a.startDate).getTime());
   }
 
-
-  // TODO questa funzione andrebbe generalizzata
-  private getToken(): string {
-    const token = localStorage.getItem('loginToken');
-    if (token === null) {
-      throw new Error('Errore. Effettuare il login');
-    }
-    return token;
-  }
 
 }

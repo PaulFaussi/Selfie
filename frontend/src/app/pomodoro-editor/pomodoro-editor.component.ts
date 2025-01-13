@@ -1,7 +1,7 @@
 import { Component, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
 import { NavbarComponent } from "../navbar/navbar.component";
 import { FooterComponent } from "../footer/footer.component";
-import { CommonModule } from "@angular/common";
+import { CommonModule, Time } from "@angular/common";
 import { ActivatedRoute, Router, RouterModule } from "@angular/router";
 import { PomodoroService } from "../pomodoro.service";
 import { PomodoroInterface } from "../pomodoro.interface";
@@ -27,6 +27,7 @@ export class PomodoroEditorComponent  implements OnInit {
     description: string,
     authList: string[],
     startDate: Date | string,
+    startTime: string,
     studyDurationInMinutes: number | null,
     breakDurationInMinutes: number | null,
   };
@@ -46,6 +47,7 @@ export class PomodoroEditorComponent  implements OnInit {
         title: pomodoro.title,
         description: pomodoro.description,
         startDate: this.getFormattedDate(pomodoro.startDate),
+        startTime: this.getFormattedTime(pomodoro.startDate),
         studyDurationInMinutes: pomodoro.studyDurationInMinutes,
         breakDurationInMinutes: pomodoro.breakDurationInMinutes
       }
@@ -73,8 +75,11 @@ export class PomodoroEditorComponent  implements OnInit {
   }
 
   updatePomodoro() {
+    this.updatedData.startDate = new Date(`${this.updatedData.startDate}T${this.updatedData.startTime}`);
+
     this.pomodoroService.updatePomodoro(this.pomodoroId, this.updatedData).then(() => {
       console.log('Pomodoro aggiornato con successo');
+      this.router.navigate(['/pomodoro']);
     });
   }
 
@@ -87,6 +92,16 @@ export class PomodoroEditorComponent  implements OnInit {
 
     // Restituisci la data nel formato yyyy-mm-dd
     return d.toISOString().split('T')[0]; // "2025-10-10"
+  }
+
+  getFormattedTime(time: string | Date | undefined): string {
+    if (!time) return  '';
+
+    const date = new Date(time);
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+
+    return `${hours}:${minutes}`;
   }
 
 }
