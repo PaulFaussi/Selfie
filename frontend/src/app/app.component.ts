@@ -5,8 +5,6 @@ import { FormsModule } from '@angular/forms';
 import { HomeComponent } from './home/home.component';
 import { RouterModule } from '@angular/router';
 
-// TODO (pf) (prossimo task): implementare la messaggistica
-
 @Component({
   selector: 'app-root',
   template: `

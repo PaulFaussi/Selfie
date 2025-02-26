@@ -14,5 +14,5 @@ export interface PomodoroInterface {
   lastModificationDate: Date,
   creationDate: Date,
   // duration_in_minutes: number, TODO (pf): da implementare
-  // state: "TO START" | "STUDY" | "BREAK" | "ON PAUSE" | "COMPLETED"
+  // state: "TO START" | "STUDY" | "BREAK" | "ON PAUSE" | "COMPLETED" TODO (pf): da implementare
 }

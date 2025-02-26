@@ -1,11 +1,12 @@
 import { Component, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
 import { NavbarComponent } from "../navbar/navbar.component";
 import { FooterComponent } from "../footer/footer.component";
-import { CommonModule, Time } from "@angular/common";
+import { CommonModule } from "@angular/common";
 import { ActivatedRoute, Router, RouterModule } from "@angular/router";
 import { PomodoroService } from "../pomodoro.service";
 import { PomodoroInterface } from "../pomodoro.interface";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { getFormattedDate, getFormattedTime } from "../utils/time-formatter.utils";
 
 @Component({
   selector: 'app-pomodoro-editor',
@@ -46,8 +47,8 @@ export class PomodoroEditorComponent  implements OnInit {
         authList: pomodoro.authList,
         title: pomodoro.title,
         description: pomodoro.description,
-        startDate: this.getFormattedDate(pomodoro.startDate),
-        startTime: this.getFormattedTime(pomodoro.startDate),
+        startDate: getFormattedDate(pomodoro.startDate),
+        startTime: getFormattedTime(pomodoro.startDate),
         studyDurationInMinutes: pomodoro.studyDurationInMinutes,
         breakDurationInMinutes: pomodoro.breakDurationInMinutes
       }
@@ -81,27 +82,6 @@ export class PomodoroEditorComponent  implements OnInit {
       console.log('Pomodoro aggiornato con successo');
       this.router.navigate(['/pomodoro']);
     });
-  }
-
-  // TODO (pf): inserire questa funzione in una classe di utils dedicata
-  getFormattedDate(date: string | Date | undefined): string {
-    if (!date) return '';
-
-    // Crea un oggetto Date a partire dalla stringa ISO
-    const d = new Date(date);
-
-    // Restituisci la data nel formato yyyy-mm-dd
-    return d.toISOString().split('T')[0]; // "2025-10-10"
-  }
-
-  getFormattedTime(time: string | Date | undefined): string {
-    if (!time) return  '';
-
-    const date = new Date(time);
-    const hours = date.getHours();
-    const minutes = date.getMinutes();
-
-    return `${hours}:${minutes}`;
   }
 
 }
