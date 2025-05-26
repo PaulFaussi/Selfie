@@ -6,6 +6,7 @@ const EventoController = require('./src/controller/EventoController'); */
 const PomodoroController = require('./controller/PomodoroController');
 const UtenteController = require('./controller/UtenteController');
 const NoteController = require('./controller/NoteController');
+const MessaggiController = require('./controller/MessaggiController');
 const express = require('express');
 const cors = require('cors');
 const { MongoClient } = require('mongodb');
@@ -48,6 +49,7 @@ async function main() {
     const pomodoroController = new PomodoroController(db);
     const utenteController = new UtenteController(db);
     const noteController = new NoteController(db);
+    const messaggiController = new MessaggiController(db);
 
     /* // creazione endpoints
     app.use('/attivita', attivitaController.router);
@@ -57,6 +59,7 @@ async function main() {
     app.use('/pomodoro', pomodoroController.router);
     app.use('/user', utenteController.router);
     app.use('/note', noteController.router);
+    app.use('/messaggi', messaggiController.router);
 
 
     //endpoint Time Machine
