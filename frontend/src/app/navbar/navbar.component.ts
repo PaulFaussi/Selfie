@@ -6,7 +6,6 @@ import { FormsModule } from "@angular/forms";
 import { MessageService } from "../message.service";
 
 
-// TODO (next step): implementare le notifiche utilizzando la variabile booleana "isRead"
 @Component({
   selector: 'app-navbar',
   standalone: true,
