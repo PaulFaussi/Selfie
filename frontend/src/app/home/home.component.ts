@@ -1,7 +1,9 @@
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { PreviewNoteComponent } from '../preview-note/preview-note.component';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { NavbarComponent } from '../navbar/navbar.component';
+import { MonthComponent } from '../calendar/month/month.component';  // **IMPORTA QUI**
+
 import { NoteInterface } from '../note-interface';
 import { NotesService } from '../notes.service';
 import { OnInit } from '@angular/core';
@@ -16,12 +18,15 @@ import { TimemachineComponent } from '../timemachine/timemachine.component';
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [PreviewNoteComponent, RouterModule, NavbarComponent, CommonModule, NgFor, PreviewPomodoroComponent, FooterComponent, TimemachineComponent],
+  imports: [PreviewNoteComponent, RouterModule, NavbarComponent, MonthComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
 
 
+export class HomeComponent {
+    // Data di riferimento per il preview
+  today = new Date();
 export class HomeComponent implements OnInit {
   noteList: NoteInterface[] = [];
   recentNotes: NoteInterface[] = [];
@@ -78,14 +83,8 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  switchNoteToDisplay(){
-    if(this.noteToDisplay === this.recentNotes){
-      this.noteToDisplay = this.olderNotes;
-    }
-    else{
-      this.noteToDisplay = this.recentNotes;
-    }
-  }
+  noop() {}   // serve per catturare l’output del newEvent senza errori
+}
 
   switchPomodoroToDisplay() {
     this.showUpcomingPomodoros = !this.showUpcomingPomodoros;
@@ -98,4 +97,3 @@ export class HomeComponent implements OnInit {
 
   }
 
-}

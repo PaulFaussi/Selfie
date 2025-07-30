@@ -1,0 +1,32 @@
+<div class="day-header">
+  {{ baseDate | date:'EEEE d MMMM yyyy' }}
+</div>
+
+<div class="day-body">
+  <div class="time-col">
+    <div class="hour" *ngFor="let h of hours">{{ h }}:00</div>
+  </div>
+  <div class="day-col">
+    <div class="slot" *ngFor="let h of hours">
+      <div *ngFor="let ev of eventsForHour(h); let i = index; let count = count"
+           class="fill"
+           [style.width.%]="100 / count"
+           [style.left.%]="(100 / count) * i"
+           [style.right]="'auto'"
+           [style.background]="ev.color"
+           (click)="openDetail(ev, baseDate)">
+        {{ ev.title }}
+      </div>
+    </div>
+  </div>
+</div>
+
+<button class="fab" (click)="openNew()">+</button>
+
+<app-event-form *ngIf="showForm"
+                [formData]="selectedEvent"
+                (newEvent)="saveEvent($event)"
+                (updateEvent)="saveEvent($event)"
+                (deleteEvent)="deleteSelected($event)"
+                (formClosed)="closeForm()">
+</app-event-form>

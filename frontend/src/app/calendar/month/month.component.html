@@ -1,0 +1,39 @@
+<div class="month-grid">
+  <div class="weekday" *ngFor="let w of ['Lun','Mar','Mer','Gio','Ven','Sab','Dom']">
+    {{ w }}
+  </div>
+
+  <ng-container *ngFor="let week of weeks">
+    <ng-container *ngFor="let day of week">
+      <div class="day-cell" [class.out]="day.getMonth() !== baseDate?.getMonth()">
+        <div class="num">{{ day.getDate() }}</div>
+        <div *ngFor="let ev of eventsForDay(day)"
+             class="ev-label"
+             [style.background]="ev.color"
+             (click)="openDetail(ev, day)">
+          {{ ev.title }}
+        </div>
+      </div>
+    </ng-container>
+  </ng-container>
+</div>
+
+<button class="fab" (click)="openNew()">+</button>
+
+<app-event-form *ngIf="showForm"
+  [formData]="selectedEvent"
+  (newEvent)="saveEvent($event)"
+  (updateEvent)="saveEvent($event)"
+  (deleteEvent)="deleteSelected($event)"
+  (formClosed)="closeForm()">
+</app-event-form>
+
+<!-- MODALE DI CONFERMA -->
+<app-confirmation-modal
+  *ngIf="showConfirm"
+  [title]="'Conferma eliminazione'"
+  [message]="'Vuoi eliminare solo questa occorrenza o l\'intera serie?'"
+  (onDeleteSingle)="onDeleteSingle()"
+  (onDeleteSeries)="onDeleteSeries()"
+  (onCancel)="onCancelModal()">
+</app-confirmation-modal>

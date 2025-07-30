@@ -143,7 +143,9 @@ h1{
 .calendar-content{
     min-height: 30rem;
 }
-
+.notes-content, .pomos-content{
+    min-height: 10rem;
+}
 
 
 
@@ -223,25 +225,93 @@ svg{
     flex-direction: row;
     align-items: center;
 }
+.day-week-selector{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
 
 
 
 .notes-content, .pomos-content{
     min-height: 10rem;
-    height: auto;
-    padding-bottom: 0.5rem;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
 
 }
 
 
+.send-message{
+    height: 3rem;
+    width: 3rem;
+    position: fixed;
+    bottom: 2rem;
+    right: 1rem;
+
+    background-color: rgb(229, 229, 229);
+    border-radius: 0.4rem;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.send-message > svg{
+    height: 2rem;
+    width: 2rem;
+
+    color:rgb(81,81,81);
+
+}
+
+
+footer{
+    background-color: rgb(81,81,81);
+    width: 100vw;
+    height: auto;
+}
+
+.footer-container{
+    padding: 1rem 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+
+}
+
+.footer-links{
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+
+}
 app-preview-note{
     width: 95%;
     margin-right: 0.2rem;
-
-
 }
+
+/* Wrapper per scalare o limitare la preview */
+.calendar-preview-wrapper {
+  width: 100%;            /* si adatta al 95% .calendar width */
+  max-width: 350px;       /* non troppo larga */
+  margin: 0 auto;         /* centrata */
+  transform: scale(0.8);  /* riduce al 80% */
+  transform-origin: top center;
+  overflow: hidden;       /* nasconde overflow */
+}
+.calendar-preview-wrapper {
+  width: 100%;
+  max-width: 350px;
+  margin: 0 auto;
+  transform: scale(0.8);
+  transform-origin: top center;
+  overflow: hidden;
+}
+
+
+/* Se vuoi un bordo attorno alla preview
+.calendar-preview-wrapper app-month {
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+  background: white;
+}
+*/

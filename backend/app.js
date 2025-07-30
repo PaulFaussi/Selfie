@@ -1,3 +1,4 @@
+// backend/app.js
 
 /* const AttivitaController = require('./controller/AttivitaController');
 const CalendarioController = require('./controller/CalendarioController');
@@ -8,12 +9,18 @@ const UtenteController = require('./controller/UtenteController');
 const NoteController = require('./controller/NoteController');
 const MessaggiController = require('./controller/MessaggiController');
 const express = require('express');
+const mongoose = require('mongoose');
 const cors = require('cors');
 const { MongoClient } = require('mongodb');
 const { server } = require('typescript');
 
+// Import controller/router
+const UtenteController = require('./controller/UtenteController');
+const NoteController = require('./controller/NoteController');
+const eventRouter = require('./controller/EventController');
+const attivitaRouter = require('./controller/AttivitaController');
+const unavailabilityRouter = require('./controller/UnavailabilityController');
 
-var db;
 
 // Time Machine
 let serverDateTime = new Date;
@@ -26,8 +33,16 @@ setInterval(() => {
 
 
 async function main() {
-    const app = express();
-    app.use(express.json());
+const app = express();
+const port = 8080;
+
+// Middleware
+app.use(cors());
+app.use(express.json());
+app.use('/evento', eventRouter);
+app.use('/attivita', attivitaRouter);
+app.use('/unavailability', unavailabilityRouter);
+
     const corsOptions = {
         origin: 'http://localhost:4200', //problemi su macchina dipartimento ??
         methods:['GET', 'POST', 'PUT', 'DELETE'],
@@ -37,19 +52,35 @@ async function main() {
     //     origin: 'http://localhost:4200' //problemi su macchina dipartimento ??
     // }));
     app.use(cors(corsOptions));
-    
+
     const port = 8000;
     await connectToDB();
 
+// Connessione a MongoDB
+mongoose.connect('mongodb://127.0.0.1:27017/Selfie', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+})
+.then(() => {
+  console.log('✅ Connesso a MongoDB');
+  startServer();
+})
+.catch(err => {
+  console.error('❌ Errore nella connessione a MongoDB:', err);
+  process.exit(1);
+});
+
+function startServer() {
+  // Controllers che usano direttamente MongoDB
+  const db = mongoose.connection.db;
     /* // creazione controllers
     const attivitaController = new AttivitaController(db);
     const calendarioController = new CalendarioController(db);
     const categoriaController = new CategoriaController(db);
     const eventoController = new EventoController(db); */
     const pomodoroController = new PomodoroController(db);
-    const utenteController = new UtenteController(db);
-    const noteController = new NoteController(db);
-    const messaggiController = new MessaggiController(db);
+  const utenteController = new UtenteController(db);
+  const noteController = new NoteController(db);
 
     /* // creazione endpoints
     app.use('/attivita', attivitaController.router);
@@ -58,7 +89,10 @@ async function main() {
     app.use('/evento', eventoController.router); */
     app.use('/pomodoro', pomodoroController.router);
     app.use('/user', utenteController.router);
-    app.use('/note', noteController.router);
+  // Rotte
+  app.use('/utente', utenteController.router);
+  app.use('/note', noteController.router);
+  app.use('/evento', eventRouter); // Eventi già pronti con mongoose
     app.use('/messaggi', messaggiController.router);
 
 
@@ -72,7 +106,7 @@ async function main() {
         else{
             updatedTime = new Date(newDateTime);
         }
-        
+
         if (isNaN(updatedTime.getTime())) {
           return res.status(400).json({ error: 'Formato data/ora non valido.' });
         }
@@ -85,7 +119,10 @@ async function main() {
     });
 
 
-    app.listen(port, () => {
+  app.listen(port, () => {
+    console.log(`🚀 Server in esecuzione su http://localhost:${port}`);
+  });
+}
         console.log(`Server in esecuzione su http://localhost:${port}`);
     });
 
@@ -118,18 +155,18 @@ async function connectToDB() {
 
     } catch(error) {
         console.error("Errore nel connettersi al DB\n");
-    } 
+    }
 
 }
 
 
 
- 
 
 
 
-  
-  
+
+
+
 
 
 
