@@ -1,206 +1,84 @@
-/* You can add global styles to this file, and also import other style files */
-
-
-*{
-    margin: 0 0;
-    padding: 0 0;
-
+:root {
+  --purple: #6f42c1;
+  --white: #ffffff;
+  --black: #000000;
 }
 
-body{
-
-  width: 100%;
-  height: 100vh;
-  overflow-x: hidden;
-}
-
-.head{
-  height: 3vh;
-  width: 100%;
-  background-color: rgb(78, 78, 78);
-  padding-left: 1rem;
-
+/* Pulsante FAB globale (+) */
+.fab {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  width: 4rem;
+  height: 4rem;
+  background-color: var(--purple);
+  color: var(--white);
+  border: none;
+  border-radius: 50%;
+  font-size: 2rem;
   display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
   align-items: center;
-}
-
-a{
-  text-decoration: none;
-
-}
-
-.backto{
-  margin:0;
-  font-size: 1rem;
-}
-
-h1, label, input{
-  font-size: 1.5rem;
-  font-weight: 500;
-  font-family: Arial, Helvetica, sans-serif;
-  text-align: center;
-  color: rgb(229, 229, 229);
-}
-
-#form-button, #management-button{
-  height: 2rem;
-  width: 19rem;
-
-  border:none;
-  background-color: rgb(63, 63, 63);
-
-  font-size: 0.8rem;
-  font-weight: 550;
-  color:rgb(236, 236, 236);
-
-  color: white;
+  justify-content: center;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
   cursor: pointer;
-
+  z-index: 100;
+}
+.fab:hover {
+  transform: scale(1.05);
 }
 
-#management-button{
-  height: 100%;
-}
-
-/* gestione popup */
-
-.overlay {
+/* Pulsanti Attività e Indisponibilità */
+.floating-controls {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 1;
-}
-.creation-popup{
-  width: 85vw;
-  max-width: 25rem;
-  height: 80vh;
-  position: fixed;
-  top: 10vh;
-  left: 7.5vw;
-  z-index: 2;
-
-  background-color: rgb(90, 90, 90);
-  border: 1px solid rgb(16, 16, 16);
+  bottom: 5rem;
+  left: 1rem;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-}
-.popup-header{
-  width: 90%;
-  height: 3rem;
-
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-
-}
-.popup-header > h1, input{
-  font-size: 1rem;
+  gap: 0.75rem;
+  z-index: 50 !important; /* più basso della modale (300) */
 }
 
-.separator{
-  width: 100%;
-  border-bottom: 1px solid black;
-}
-
-svg{
-  height: 2rem;
+.fab-button {
+  background-color: var(--purple);
   color: white;
-
-}
-label{
-  font-size: 1rem;
-}
-
-
-.title-box > input, .manage-users-access > input{
-  background-color: #434343;
-  border-style: solid;
-  border: 1px solid rgb(106, 106, 106);
-  height: 2rem;
-  padding: 1rem 0 1rem 1rem;
-
-  outline: none;
-  color: rgb(228, 228, 228);
-  text-align: start;
-}
-.title-box > input:focus, .manage-users-access > input:focus{
-  border: 1px solid rgb(123, 31, 162);
-}
-input::placeholder{
-  color: #afafaf;
-  margin-left: 1rem;
-}
-.title-box, .markdown-check, .privacy-option, .privacy-dropdown, .manage-users-access{
-  width: 90%;
-  height: 3.2rem;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-
-  align-items: center;
-}
-
-
-.form-check-input:checked {
-  background-color: #4a4a4a;
-}
-#manage-user-button{
-  height: 2rem;
-  width: 2.5rem;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-
-  border:none;
-  border-radius: 0.3rem;
-  background-color: rgb(117, 117, 117);
-
-  font-size: 1rem;
-  font-weight: 550;
-  color:rgb(236, 236, 236);
-  letter-spacing: 0.02rem;
-
-  color: white;
+  border: none;
+  border-radius: 25px;
+  padding: 0.5rem 1rem;
+  font-weight: bold;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.3s ease;
+  z-index: 50 !important; /* fondamentale */
+}
 
+.floating-controls.hidden {
+  display: none !important;
 }
-#manage-user-button > svg{
-  height: 1.2rem;
-}
-.users-auth{
+
+/* Modal form */
+.form-backdrop {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background: rgba(0,0,0,0.5);
   display: flex;
-  flex-direction: row;
   align-items: center;
   justify-content: center;
-
-  width: 90%;
-  height: 7rem;
-}
-textarea{
-  height: 7rem;
-  width: 100%;
-  max-width: 100%;
-  padding: 0.2rem 0.5rem 0.2rem 0.5rem;
-
-  resize: none;
-  color: white;
-  background-color: rgb(117, 117, 117);
+  z-index: 300; /* più alto dei pulsanti */
 }
 
-form{
-  width: 90%;
+/* Altri stili */
+:host ::ng-deep .month-grid .day-cell .num,
+:host ::ng-deep .week-header .day-col-header,
+:host ::ng-deep .week-body .time-col .hour,
+:host ::ng-deep .day-header,
+:host ::ng-deep .day-body .time-col .hour {
+  color: var(--black) !important;
 }
 
-app-preview-note{
-  width: 100%;
+body {
+  background: #f5f5f5;
+}
+
+.hidden {
+  display: none !important;
 }

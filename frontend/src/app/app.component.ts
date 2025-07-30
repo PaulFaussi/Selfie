@@ -1,27 +1,40 @@
 import { Component } from '@angular/core';
-/* import { FormsModule } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
-import $ from 'jquery'; */
-import { HomeComponent } from './home/home.component';
 import { RouterModule } from '@angular/router';
 
 @Component({
-  selector: 'app-root',
-  template: `
-    <main>
-      <router-outlet></router-outlet>
-    </main>
-  `,
   standalone: true,
-  imports: [RouterModule, HomeComponent],
-  styleUrl: './app.component.css', 
-  
+  selector: 'app-root',
+  imports: [RouterModule],
+  template: `<main><router-outlet></router-outlet></main>`
 })
+export class AppComponent { }
+
+
+
+
+
+
+
+/*import { Component } from '@angular/core';
+import { RouterModule } from '@angular/router';
+
+@Component({
+  standalone: true,
+  selector: 'app-root',
+  imports: [RouterModule],
+  template: `
+    <!-- Contenitore principale dell'app con router outlet -->
+    <router-outlet></router-outlet>
+  `
+})
+export class AppComponent {}
+
+
 
 export class AppComponent {
   title = 'progettoUI';
 
-  /* constructor(private http: HttpClient) { }
+   constructor(private http: HttpClient) { }
 
   userValue: string = '';
   pswValue: string = '';
@@ -42,7 +55,7 @@ export class AppComponent {
     });
 
     
-  } */
+  } 
 
 }
-
+*/

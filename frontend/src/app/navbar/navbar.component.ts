@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
@@ -9,25 +9,5 @@ import { Router, RouterModule } from '@angular/router';
   styleUrl: './navbar.component.css'
 })
 export class NavbarComponent {
-
-  constructor(private router: Router){
-
-  }
-
-  openLoginDashboard(){
-    if(localStorage.getItem('loginToken')){
-      this.router.navigateByUrl('/dashboard');
-    }
-    else{
-      this.router.navigateByUrl('/login');
-    }
-
-  }
-
-
-
-
-
-
 
 }

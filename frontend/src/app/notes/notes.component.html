@@ -1,147 +1,57 @@
 
-
+<app-navbar></app-navbar>
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
-
-
-
 <body>
-
-    <app-navbar></app-navbar>
-    
     <div class="head">
-        <a routerLink="">
-            <h1 class="backto">< back to home</h1>
-        </a>
+        <h1>/notes</h1>
     </div>
-
     <div class="manage-notes">
-        <button id="management-button" class="new-note" (click)="openTab()" style="border-right: 1px solid black;">
-                NEW NOTE
+        <button class="new-note">
+            New Note
         </button>
-        <button id="management-button" (click)="openSortingPopup()" style="background-color: grey;">
-            SORT / FILTER
+        <button style="background-color: grey;">
+            Sort/Filter
         </button>
     </div>
-
-    <div class="notes-displayed" >
+    <div class="notes-displayed">
         <app-preview-note *ngFor="let singleNoteInstance of testNotesList" [noteFetched]="singleNoteInstance"></app-preview-note>
     </div>
 
-    
-
-
-
-
-
-
-
-
-
     <!-- popup -->
 
-    <div class="overlay" [style.display]="overlayVisibility"></div>
+    <div class="overlay"></div>
 
-    <div class="creation-popup" [style.display]="popupVisibility" >
-            <div class="popup-header">
-                <h1 style="margin:0;">/note-creation</h1>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"  stroke="currentColor" (click)="closeTab()">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
-                </svg>
-            </div>
+    <div class="creation-popup">
 
-            <div class="separator"></div> 
-            
+        <div class="popup-header">
+            <h1>/note-creation</h1>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+            </svg>
+        </div>
 
-            <div class="title-box" [formGroup]="noteForm">
+        <div class="creation-tab">
+
+            <div class="title-box">
                 <label for="title-box">Title</label>
-                <input id="title-box" type="text" name="title" placeholder="Enter note title" formControlName="noteTitle">
-            </div>
-
-            <div class="title-box" [formGroup]="noteForm">
-                <label for="title-box">Category</label>
-                <input id="title-box" type="text" name="title" placeholder="Enter note category" formControlName="noteCategory">
+                <input id="title-box" type="text">
             </div>
 
             <div class="markdown-check">
                 <label class="form-check-label" for="mark">Markdown note</label>
                 <div class="form-check form-switch" style="size: 5rem">
-                    <input class="form-check-input " type="checkbox" role="switch" id="markdownSwitch" (click)="changeMarkdown()">
+                    <input class="form-check-input " type="checkbox" role="switch" id="markdownSwitch">
                 </div>
             </div>
 
             <div class="privacy-option">
-                <input type="radio" class="btn-check" name="options" id="option1" autocomplete="off" checked (click)="hideAuthTab(); switchPrivacyMode(1)">
-                <label class="btn btn-secondary w-30" for="option1">Private</label>
-
-                <input type="radio" class="btn-check" name="options" id="option2" autocomplete="off" (click)="hideAuthTab(); switchPrivacyMode(2)">
-                <label class="btn btn-secondary w-30" for="option2">Public</label>
-
-                <input type="radio" class="btn-check" name="options" id="option3" autocomplete="off" (click)="showAuthTab(); switchPrivacyMode(3)">
-                <label class="btn btn-secondary w-30" for="option3">Restricted</label>
+                
             </div>
 
-            <div class="manage-users-access" [style.display]="authTabVisibility">
-                <input type="text" placeholder="Add/Remove user" name="addrmuser" #userAuthInput>
-                <button id="manage-user-button" (click)="addUserAuth(userAuthInput.value)">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                      </svg>                      
-                </button>
-                <button id="manage-user-button" (click)="removeUserAuth(userAuthInput.value)">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
-                      </svg>                      
-                </button>
-            </div>
-
-            <div class="users-auth" [style.display]="authTabVisibility">
-                <textarea [value]="formattedString( usersAuth )" disabled>
-                </textarea>
-            </div>
-            <button id="form-button" type="submit" style="margin-top: 0.5rem;" (click)="submitNoteCreation()">CREATE NOTE</button>
-        
-
-        
-    </div>
-
-    <!-- popup sorting -->
-
-
-    <div class="sorting-popup" [style.display]="sortingVisibility" >
-        <div class="popup-header">
-            <h1 style="margin:0;">/sort-notes</h1>
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"  stroke="currentColor" (click)="closeSortingPopup()">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
-            </svg>
+            <button type="submit">Create note</button>
         </div>
-
-        <div class="separator"></div> 
-
-        <h1 style="margin: 0.5rem 0 0.5rem 0;">Sort notes by:</h1>
-        
-        <button id="form-button" type="submit" (click)="sortLastModified()">LAST MODIFIED</button>
-        <button id="form-button" type="submit" style="margin-top: 0.5rem;" (click)="sortMostRecent()">CREATION - RECENT</button>
-        <button id="form-button" type="submit" style="margin-top: 0.5rem;" (click)="sortLeastRecent()">CREATION - OLDEST</button>
-        <button id="form-button" type="submit" style="margin-top: 0.5rem;" (click)="sortShortest()">LENGTH - SHORTEST</button>
-        <button id="form-button" type="submit" style="margin-top: 0.5rem;" (click)="sortLongest()">LENGTH - LONGEST</button>
-        
-        <h1 style="margin: 0.5rem 0 0.5rem 0;">Filter notes by category:</h1>
-
-        <div class="title-box" style="margin-top: 1rem;">
-            <label for="title-box">Title</label>
-            <input id="title-box" type="text" name="title" placeholder="Enter note title" style="height: 2rem;" #cat>
-        </div>
-        <button id="form-button" type="submit" style="margin-top: 0.5rem;" (click)="filterCategory(cat.value)">FILTER</button>
-
     </div>
-
-
-
-
-
-    <app-footer></app-footer>
 
 </body>
-
