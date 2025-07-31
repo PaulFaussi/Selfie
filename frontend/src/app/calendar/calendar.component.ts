@@ -92,7 +92,7 @@ export class CalendarComponent implements OnInit {
   }
 
   fetchAttivita(): void {
-    this.http.get<any[]>('http://localhost:8080/attivita').subscribe({
+    this.http.get<any[]>('http://localhost:9000/attivita').subscribe({
       next: (res) => {
         const now = new Date();
         const todayStr = new Date().toISOString().split('T')[0];
@@ -277,12 +277,12 @@ export class CalendarComponent implements OnInit {
   }
 
   completaAttivita(id: string) {
-    this.http.patch(`http://localhost:8080/attivita/${id}/completa`, {}).subscribe(() => this.fetchAttivita());
+    this.http.patch(`http://localhost:9000/attivita/${id}/completa`, {}).subscribe(() => this.fetchAttivita());
   }
 
   eliminaAttivita(id: string) {
     if (confirm('Sei sicuro di voler eliminare questa attività?')) {
-      this.http.delete(`http://localhost:8080/attivita/${id}`).subscribe(() => this.fetchAttivita());
+      this.http.delete(`http://localhost:9000/attivita/${id}`).subscribe(() => this.fetchAttivita());
     }
   }
 

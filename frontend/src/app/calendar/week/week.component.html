@@ -28,9 +28,10 @@
   </ng-container>
 </div>
 
-<button class="fab" (click)="openNew()">+</button>
+<button class="fab" *ngIf="!previewMode" (click)="openNew()">+</button>
 
-<app-event-form *ngIf="showForm"
+
+<app-event-form *ngIf="!previewMode && showForm"
                 [formData]="selectedEvent"
                 (newEvent)="saveEvent($event)"
                 (updateEvent)="saveEvent($event)"

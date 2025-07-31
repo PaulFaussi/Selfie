@@ -6,7 +6,7 @@ import { lastValueFrom } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class EventService {
-  private apiUrl = 'http://localhost:8080/evento';
+  private apiUrl = 'http://localhost:9000/evento';
 
   constructor(private http: HttpClient) {}
 

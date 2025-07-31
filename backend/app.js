@@ -94,7 +94,7 @@ main();
 
 
 async function connectToDB() {
-    const uri = "mongodb://localhost:27017/selfie";                 // URL TEST LOCALE
+    const uri = "mongodb://localhost:27017/Selfie";                 // URL TEST LOCALE
     // const uri = "mongodb://sam:sam@mongo_site232437:27017/Selfie?authSource=Selfie";       URL MACCHINE UNI
     const client = new MongoClient(uri);
 

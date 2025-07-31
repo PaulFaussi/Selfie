@@ -11,11 +11,14 @@ import { PomodoroService } from "../pomodoro.service";
 import { PreviewPomodoroComponent } from "../preview-pomodoro/preview-pomodoro.component";
 import { FooterComponent } from "../footer/footer.component";
 import { TimemachineComponent } from '../timemachine/timemachine.component';
+import { DayComponent } from '../calendar/day/day.component';
+import { WeekComponent } from '../calendar/week/week.component';
+
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [PreviewNoteComponent, RouterModule, NavbarComponent, PreviewPomodoroComponent, FooterComponent, TimemachineComponent, NgIf, CommonModule],
+  imports: [PreviewNoteComponent, RouterModule, NavbarComponent, PreviewPomodoroComponent, FooterComponent, TimemachineComponent, NgIf, CommonModule, DayComponent, WeekComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
@@ -23,8 +26,13 @@ import { TimemachineComponent } from '../timemachine/timemachine.component';
 
 export class HomeComponent implements OnInit {
 
+
+  showDayView: boolean = true;
+
   // Data di riferimento per il preview
   today = new Date();
+  
+
 
   noteList: NoteInterface[] = [];
   recentNotes: NoteInterface[] = [];
@@ -100,6 +108,11 @@ export class HomeComponent implements OnInit {
     }
 
   }
+
+    toggleCalendarView() {
+    this.showDayView = !this.showDayView;
+  }
+
 }
 
 

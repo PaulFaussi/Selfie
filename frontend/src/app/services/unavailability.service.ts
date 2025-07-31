@@ -14,7 +14,7 @@ export interface Unavailability {
 
 @Injectable({ providedIn: 'root' })
 export class UnavailabilityService {
-  private apiUrl = 'http://localhost:8080/unavailability';
+  private apiUrl = 'http://localhost:9000/unavailability';
 
   constructor(private http: HttpClient) {}
 

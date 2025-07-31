@@ -16,16 +16,22 @@
             <div class="day-week-selector">
                 <label>Day</label>
                 <label class="switch">
-                    <input type="checkbox">
+                    <input type="checkbox" [checked]="!showDayView" (change)="toggleCalendarView()">
                     <span class="slider round"></span>
                 </label>
                 <label>Week</label>
             </div>
         </div>
+<div class="calendar-content">
+  <div class="calendar-scroll-area">
+    <app-day *ngIf="showDayView" [baseDate]="today" [previewMode]="true"></app-day>
+    <app-week *ngIf="!showDayView" [baseDate]="today" [previewMode]="true"></app-week>
+  </div>
+</div>
 
-        <div class="calendar-content">
-            <p>No events planned for today.</p>
-        </div>
+
+
+
     </div>
 
     <div class="notes" rounterLink="/notes">

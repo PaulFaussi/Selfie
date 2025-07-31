@@ -12,6 +12,8 @@ import { EventFormComponent, CalendarEvent } from '../event-form/event-form.comp
 })
 export class WeekComponent implements OnInit, OnChanges {
   @Input() baseDate?: Date;
+  @Input() previewMode: boolean = false;
+
 
   days: Date[] = [];
   hours = Array.from({ length: 24 }, (_, i) => i);

@@ -136,10 +136,29 @@ h1{
     align-items: center;
     justify-content: center;
 }
-
-.calendar-content{
-    min-height: 30rem;
+/* Wrappa la vista calendar preview e consente scroll verticale */
+.calendar-content {
+    /* min-height: 30rem; */   /* disabilitato */
+    max-height: 30rem;
+    overflow-y: hidden;
+    position: relative;
+    display: flex;
+  flex-direction: column;
 }
+.calendar-scroll-area {
+  max-height: 30rem;
+  overflow-y: auto;
+  width: 100%;
+}
+
+
+/* Allinea i contenuti come nel calendario originale */
+.calendar-content app-day {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
 .notes-content, .pomos-content{
     min-height: 10rem;
     padding-bottom: 0.5rem;
