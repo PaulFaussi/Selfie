@@ -16,7 +16,7 @@ class UtenteRepository {
                 return user;
             }
             else{
-                throw new Error("User not find.")
+                throw new Error("User not found.")
             }
         }
         catch(error){
@@ -39,8 +39,8 @@ class UtenteRepository {
             else{
                 const payload = { username }
                 const token = generateToken(payload);
-                console.log('token generato: ', token);
-                return token;
+                console.log('token generato');
+                return {token, userFound};
             }
         } catch(error){
             throw new Error(error);

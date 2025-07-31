@@ -1,9 +1,4 @@
-:root {
-  --purple: rgb(123, 31, 162);
-  --violet: rgb(103, 58, 183);
-  --pink: rgb(244, 143, 177);
-  --bblack: rgb(10, 10, 10);
-}
+
 
 .main{
     height: 8vh;
@@ -15,16 +10,7 @@
     align-items: center;
 }
 
-p{
-    text-align: center;
-    font-size: 0.9rem;
-    font-weight: 500;
-    font-family: Arial, Helvetica, sans-serif;
-}
-label{
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 0.7rem;
-}
+
 h1 {
     font-size: 1.5rem;
     font-weight: 500;
@@ -32,6 +18,7 @@ h1 {
     letter-spacing: 0.1rem;
     text-align: center;
     color: rgb(229, 229, 229);
+    margin: 0;
 }
 
 h2{
@@ -54,7 +41,7 @@ svg{
     height: 1.2rem;
     width: 1.2rem;
     color: rgb(186, 186, 186);
-}
+}    
 
 
 
@@ -69,7 +56,7 @@ svg{
     width: 100%;
 }
 
-
+                  
 @keyframes background-pan {
     from {
       background-position: 0% center;
@@ -95,7 +82,7 @@ svg{
     width: 85vw;
     height: 100vh;
     z-index: 1000;
-
+    
 
     border-right: 1px solid rgb(61, 61, 61);
     background-color: grey;
@@ -117,7 +104,7 @@ svg{
     height: 2rem;
     color: rgb(226, 226, 226);
     margin: 0;
-
+    
 }
 
 
@@ -152,7 +139,7 @@ svg{
 
     border:none;
     background-color: rgb(63, 63, 63);
-
+    
     font-size: 0.8rem;
     font-weight: 500;
     color:rgb(236, 236, 236);
@@ -183,52 +170,8 @@ input{
     width: 90%;
 }
 
-.notification {
-  padding: 16px;
-  flex-direction: column;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  gap: 12px;
-  width: 100%;
-  overflow-y: auto;
-}
-
-.message-box {
-  border: 1px solid #ccc;
-  padding: 10px;
-  background-color: #f9f9f9;
-  max-width: 400px;
-  width: 90%;
-  border-radius: 8px;
-  box-sizing: border-box;
-  word-wrap: break-word;
-  white-space: pre-line;
-}
-
-.message-sender {
-  font-size: 1.1rem;
-  font-weight: bold;
-  margin-bottom: 4px;
-}
-
-.message-text {
-  font-size: 1rem;
-  margin-bottom: 6px;
-}
-
-.message-date{
-  font-size: 0.7rem;
-  color: rgb(209, 209, 209);
-  margin-top: 0.2rem;
-
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-}
-
 label{
-    font-size: 0.9rem;
+    font-size: 0.6rem;
     font-weight: 500;
     font-family: Arial, Helvetica, sans-serif;
     text-align: center;

@@ -10,7 +10,7 @@ class UtenteController {
         this.router.get('/:id', this.getUser.bind(this));
         this.router.post('/register', this.registerUser.bind(this));
         this.router.post('/login', this.loginUser.bind(this));
-        this.router.get('/getUser', this.getUser.bind(this));
+        this.router.get('/getSingleUser', this.getUser.bind(this));
     }
 
     //GET
@@ -26,9 +26,10 @@ class UtenteController {
 
     async loginUser(req, res) {
         try{
-            const token = await this.userService.loginUser(req.body.username, req.body.password);
+            const {token, userFound} = await this.userService.loginUser(req.body.username, req.body.password);
             console.log("[Login] - Token sent.")
-            return res.status(200).json({token});
+            console.log("Utente: ", token, userFound)
+            return res.status(200).json({token, userFound});
         }
         catch(error){
             console.log("Errore durante il login", error.message);

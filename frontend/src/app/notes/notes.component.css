@@ -21,7 +21,6 @@ body{
 
 a{
     text-decoration: none;
-
 }
 
 .backto{
@@ -52,7 +51,7 @@ h1, label, input{
     color: rgb(229, 229, 229);
 }
 
-#form-button, #management-button{
+.form-button, .management-button{
     height: 2rem;
     width: 19rem;
 
@@ -68,7 +67,7 @@ h1, label, input{
 
 }
 
-#management-button{
+.management-button{
     height: 100%;
 }
 
@@ -172,7 +171,7 @@ input::placeholder{
 .form-check-input:checked {
     background-color: #4a4a4a;
 }
-#manage-user-button{
+.manage-user-button{
     height: 2rem;
     width: 2.5rem;
     display: flex;
@@ -194,7 +193,7 @@ input::placeholder{
     transition: background-color 0.3s ease, transform 0.3s ease;
 
 }
-#manage-user-button > svg{
+.manage-user-button > svg{
     height: 1.2rem;
 }
 .users-auth{

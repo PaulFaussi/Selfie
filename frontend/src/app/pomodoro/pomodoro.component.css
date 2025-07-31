@@ -1,3 +1,14 @@
+.head{
+    height: 3vh;
+    width: 100%;
+    background-color: rgb(78, 78, 78);
+    padding-left: 1rem;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
 
 .manage-pomodoros{
   height: 5vh;
@@ -133,8 +144,8 @@ h1, label, input{
   font-size: 1rem;
 }
 
-#form-button, #management-button{
-  height: 2rem;
+.form-button, .management-button{
+  height: 100%;
   width: 19rem;
 
   border:none;
@@ -146,6 +157,8 @@ h1, label, input{
 
   color: white;
   cursor: pointer;
+
+  border: 1px solid black;
 
 }
 

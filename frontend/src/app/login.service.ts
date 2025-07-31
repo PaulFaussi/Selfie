@@ -13,15 +13,18 @@ export class LoginService {
 
   }
 
-  url='http://localhost:8000/user'
+  url='http://localhost:9000/user'
 
   async loginRequest(username: string, password: string) {
-    this.http.post<{ token?: string; message?: string; error?: string }>(
+    this.http.post<{ token?: string; userFound?: any; message?: string; error?: string }>(
         `${this.url}/login`, { username, password }
     ).subscribe({
         next: (res) => {
-            if (res.token) {
+            if (res.token && res.userFound) {
                 localStorage.setItem("loginToken", res.token);
+                localStorage.setItem('username', res.userFound.username)
+                localStorage.setItem("firstname", res.userFound.name);
+                localStorage.setItem("lastname", res.userFound.lastname);
                 console.log("Token ottenuto: ", localStorage.getItem("loginToken"));
                 this.router.navigateByUrl('');
             } else {
@@ -78,16 +81,3 @@ export class LoginService {
   }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

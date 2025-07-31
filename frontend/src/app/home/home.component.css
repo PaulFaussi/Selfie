@@ -23,6 +23,7 @@ p{
 label{
     font-family: Arial, Helvetica, sans-serif;
     font-size: 0.7rem;
+    color: black;
 }
 h1 {
     font-size: 1.5rem;
@@ -46,11 +47,6 @@ a{
     text-decoration: none;
 }
 
-svg{
-    height: 1.2rem;
-    width: 1.2rem;
-    color: rgb(186, 186, 186);
-}
 
 
 
@@ -100,6 +96,7 @@ body{
     border-radius: 0.6rem;
     margin-top: 0.7rem;
 }
+
 .calendar-header, .notes-header, .pomos-header{
     padding: 1rem 2rem;
     display: flex;
@@ -133,7 +130,7 @@ h1{
     align-items: center;
 }
 
-#calendar-header-title{
+.calendar-header-title{
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -145,6 +142,7 @@ h1{
 }
 .notes-content, .pomos-content{
     min-height: 10rem;
+    padding-bottom: 0.5rem;
 }
 
 
@@ -308,10 +306,3 @@ app-preview-note{
 }
 
 
-/* Se vuoi un bordo attorno alla preview
-.calendar-preview-wrapper app-month {
-  border: 1px solid #ccc;
-  border-radius: 0.5rem;
-  background: white;
-}
-*/

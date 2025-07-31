@@ -27,8 +27,8 @@ class NoteRepository {
     async findAllNotes(auth){
         try {
             const user = extractToken(auth);
-            const query = { $or: [{creator: user}, {authList: user}]};
-            const notes = await this.collection.find(query).toArray(); 
+            const query = { $or: [{creator: user.username}, {authList: user.username}]};
+            const notes = await this.collection.find(query).toArray();
             return notes;
         } catch (error) {
             console.error('Error retrieving notes:', error);
@@ -43,15 +43,15 @@ class NoteRepository {
         try{
             const creator = extractToken(auth);
             const newNote = {
-                title: title,
+                title: title.trim(),
                 body: '',
-                category: notecategory.toLowerCase(),
+                category: notecategory.trim().toLowerCase(),
                 isMarkdown: isMarkdown,
                 pricavyMode: privacyMode,
                 authList: authList,
                 creationDate: new Date,
                 lastModificationDate: new Date,
-                creator: creator
+                creator: creator.username
             };
             console.log(newNote);
             const result = await this.collection.insertOne(newNote);
@@ -73,7 +73,7 @@ class NoteRepository {
             const creator = extractToken(auth);
             const note = await this.collection.findOne({_id: new ObjectId(id)});
 
-            if(note.creator === creator){
+            if(note.creator === creator.username){
                 const newNote = {
                     title: `${note.title} - Copy`,
                     body: note.body,
@@ -82,7 +82,7 @@ class NoteRepository {
                     authList: note.authList,
                     creationDate: note.creationDate,
                     lastModificationDate: note.lastModificationDate,
-                    creator: creator
+                    creator: creator.username
                 }
                 await this.collection.insertOne(newNote);
                 console.log('Note duplicated.')
@@ -106,7 +106,7 @@ class NoteRepository {
             const creator = extractToken(auth);
             const note = await this.collection.findOne({_id: new ObjectId(id)});
 
-            if(note.creator === creator){
+            if(note.creator === creator.username){
                 const result = await this.collection.deleteOne({_id: new ObjectId(id)});
                 if(result.deletedCount === 1){
                     console.log('note deleted');

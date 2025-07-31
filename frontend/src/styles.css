@@ -1,4 +1,4 @@
-:root {
+ :root {
   --purple: #6f42c1;
   --white: #ffffff;
   --black: #000000;
@@ -10,13 +10,20 @@ body{
   overflow-x: hidden;
 }
 
+html, body { height: 100%; }
+
+body { 
+  margin: 0;
+}
+
+
 .head{
   height: 3vh;
   width: 100%;
   background-color: rgb(78, 78, 78);
   padding-left: 1rem;
+}
 
-/* Pulsante FAB globale (+) */
 .fab {
   position: fixed;
   bottom: 1.5rem;
@@ -42,13 +49,13 @@ a{
   font-size: 1rem;
 }
 
-h1, label, input{
+/* h1, label, input{
   font-size: 1.5rem;
   font-weight: 500;
   font-family: Arial, Helvetica, sans-serif;
   text-align: center;
   color: rgb(229, 229, 229);
-}
+} */
 
 #form-button{
   height: 2rem;
@@ -69,6 +76,7 @@ h1, label, input{
 }
 .fab:hover {
   transform: scale(1.05);
+}
 
 .management-button{
   height: 100%;
@@ -87,7 +95,7 @@ h1, label, input{
 
 }
 
-/* Pulsanti Attività e Indisponibilità */
+
 .floating-controls {
   position: fixed;
   bottom: 5rem;
@@ -95,7 +103,7 @@ h1, label, input{
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
-  z-index: 50 !important; /* più basso della modale (300) */
+  z-index: 50 !important;
 }
 
 .fab-button {
@@ -107,14 +115,14 @@ h1, label, input{
   font-weight: bold;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   cursor: pointer;
-  z-index: 50 !important; /* fondamentale */
+  z-index: 50 !important; 
 }
 
 .floating-controls.hidden {
   display: none !important;
 }
 
-/* Modal form */
+
 .form-backdrop {
   position: fixed;
   top: 0; left: 0;
@@ -123,10 +131,10 @@ h1, label, input{
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 300; /* più alto dei pulsanti */
+  z-index: 300; 
 }
 
-/* Altri stili */
+
 :host ::ng-deep .month-grid .day-cell .num,
 :host ::ng-deep .week-header .day-col-header,
 :host ::ng-deep .week-body .time-col .hour,
@@ -143,5 +151,4 @@ body {
   display: none !important;
 }
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+

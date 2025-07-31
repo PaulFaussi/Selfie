@@ -1,21 +1,70 @@
 <body>
     <app-navbar></app-navbar>
     <div class="container">
-        <div id="form-box">
-            <h1>Sign in.</h1>
-            
-            <form [formGroup]="loginForm" (submit)="submitLoginRequest()">
-                <div id="input-field">
-                    <label for="emailField">Email.</label>
-                    <input id="emailField" type="email" placeholder="Email address" formControlName="email">
-                </div>
-                <div id="input-field">
-                    <label for="pswField">Password.</label>
-                    <input id="pswField" type="password" placeholder="Password" formControlName="password">
-                </div>
-                <button type="submit" class="primary">Log in.</button>
-            </form>
+
+        <div class="select-login-signup">
+            <div class="login-selection" (click)="swapTabs(1)" [style.border-bottom]="loginBorder">
+                <h1 [style.color]="loginColor">LOG IN</h1>
+            </div>
+            <div class="register-selection" (click)="swapTabs(2)" [style.border-bottom]="registerBorder">
+                <h1 [style.color]="registerColor">REGISTER</h1>
+            </div>
         </div>
+
+        
+        <form [formGroup]="loginForm" (submit)="submitLoginRequest()" class="login-form" id="login-form" [style.display]="displayStyleLogin">
+            <div id="input-field">
+                <div class="label-div">
+                    <label for="usernameFieldLogin">Username*</label>
+                </div>
+                <input id="usernameFieldLogin" type="email" placeholder="Enter your username" formControlName='username'>
+            </div>
+            <div id="input-field">
+                <div class="label-div">
+                    <label for="pswFieldLogin">Password*</label>
+                </div>
+                <input id="pswFieldLogin" type="password" placeholder="Enter your password" formControlName="password">
+            </div>
+            <button type="submit" class="login-button">SIGN IN</button>
+        </form>
+
+
+
+        <form [formGroup]="registerForm" (submit)="submitRegisterRequest()" class="register-form" id="register-form" [style.display]="displayStyleRegister">
+            <div id="input-field">
+                <div class="label-div">
+                    <label for="fnameField">First name*</label>
+                </div>
+                <input id="fnameField" placeholder="Enter your first name" formControlName="firstName">
+            </div>
+            <div id="input-field">
+                <div class="label-div">
+                    <label for="lnamelField">Last name*</label>
+                </div>
+                <input id="lnameField" placeholder="Enter your last name" formControlName="lastName">
+            </div>
+            <div id="input-field">
+                <div class="label-div">
+                    <label for="emailField">Username*</label>
+                </div>
+                <input id="usernameField" type="username" placeholder="Enter your username" formControlName="username">
+            </div>
+            <div id="input-field">
+                <div class="label-div">
+                    <label for="pswFieldRegister">Password*</label>
+                </div>
+                <input id="pswFieldRegister" type="password" placeholder="Enter your password" formControlName="password">
+            </div>
+            <div id="input-field">
+                <div class="label-div">
+                    <label for="emailField">Date of birth*</label>
+                </div>
+                <input id="dobField" type="date" placeholder="Enter your email address" formControlName="dob">
+            </div>
+            <button type="submit" class="login-button">REGISTER</button>
+        </form>
+
+        
     </div>
 </body>
 
