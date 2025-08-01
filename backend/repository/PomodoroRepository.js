@@ -10,14 +10,7 @@ class PomodoroRepository {
         const objId = new ObjectId(id);
         const pomodoro = await this.collection.findOne({ _id: objId });
 
-        // TODO (pf): implementare la logica per controllare se l'utente può visualizzare il pomodoro
         return pomodoro;
-        // if (pomodoro != null && (pomodoro.creator === username || pomodoro.authList.contains(username))) {
-        //     return pomodoro;
-        // } else {
-        //     const errorMessage = "Errore nell'ottenere il Pomodoro";
-        //     throw new Error(errorMessage);
-        // }
     }
 
     async findAllPomodoros() {
@@ -26,11 +19,6 @@ class PomodoroRepository {
         return result;
     }
 
-
-    //
-    // // import { ObjectId } from 'mongodb'
-    //
-    // import { CreatorInterface } from "./creator.interface";
 
 // export interface PomodoroInterface {
 //     _id: string,

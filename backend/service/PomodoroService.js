@@ -9,12 +9,20 @@ class PomodoroService {
 
     async findById(jwt, id) {
         const username = extractUsername(jwt);
-        return  await this.pomodoroRepository.findById(username, id);
+        const pomodoro = await this.pomodoroRepository.findById(username, id);
+
+        if (this.isPomodoroVisible(username, pomodoro)) {
+            return pomodoro;
+        } else {
+            throw new Error("Pomodoro non trovato");
+        }
     }
 
     async findAllPomodoros(jwt) {
         const username = extractUsername(jwt);
-        return await this.pomodoroRepository.findAllPomodoros();
+        const pomodoroList = await this.pomodoroRepository.findAllPomodoros();
+
+        return this.filterPomodoroListByVisibility(username, pomodoroList)
     }
 
     async findAllPomodorosSorted(jwt, sortType) {
@@ -22,23 +30,18 @@ class PomodoroService {
         const allPomodoros = await this.findAllPomodoros(jwt);
 
         if (sortType === 'START_RECENT') {
-            console.log("siamo qui 1");
             allPomodoros.sort((a, b) => b.startDate.getTime() - a.startDate.getTime());
         }
         if (sortType === 'START_OLDEST') {
-            console.log("siamo qui 2");
             allPomodoros.sort((a, b) => a.startDate.getTime() - b.startDate.getTime());
         }
         if (sortType === 'LAST_MODIFIED') {
-            console.log("siamo qui 3");
             allPomodoros.sort((a, b) => b.lastModificationDate.getTime() - a.lastModificationDate.getTime());
         }
         if (sortType === 'CREATION_OLDEST') {
-            console.log("siamo qui 4");
             allPomodoros.sort((a, b) => a.creationDate.getTime() - b.creationDate.getTime());
         }
         if (sortType === 'CREATION_RECENT') {
-            console.log("siamo qui 5");
             allPomodoros.sort((a, b) => b.creationDate.getTime() - a.creationDate.getTime());
         }
 
@@ -60,6 +63,21 @@ class PomodoroService {
         return await  this.pomodoroRepository.updatePomodoro(id, jwt, title, description, startDate, studyDurationInMinutes, breakDurationInMinutes);
     }
 
+
+
+    ////// PRIVATE
+
+    isPomodoroVisible(username, pomodoro) {
+        const result = pomodoro != null && (pomodoro.creator.username === username || pomodoro.authList.includes(username));
+
+        console.log("Il pomodoro è visibile? -> " + result);
+
+        return result;
+    }
+
+    filterPomodoroListByVisibility(username, pomodoroList) {
+        return pomodoroList.filter((p) => { return this.isPomodoroVisible(username, p); });
+    }
 }
 
 module.exports = PomodoroService;

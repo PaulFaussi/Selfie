@@ -51,9 +51,6 @@ export class HomeComponent implements OnInit {
   genericService: GenericService = inject(GenericService);
 
   constructor (private router: Router, private activatedRoute : ActivatedRoute) {
-    if(localStorage.getItem("loginToken") == null ){
-      this.router.navigateByUrl('/login');
-    }
   }
 
 
@@ -61,6 +58,13 @@ export class HomeComponent implements OnInit {
 
     this.genericService.checkTokenValido()
       .then((result: boolean) => {
+
+        if (!result) {
+          this.router.navigateByUrl('/login');
+          return;
+        }
+
+
         this.notesService.getAllNotes().then((notes : NoteInterface[]) => {
           this.noteList = notes;
 
