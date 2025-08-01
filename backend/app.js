@@ -3,6 +3,7 @@ const PomodoroController = require('./controller/PomodoroController');
 const UtenteController = require('./controller/UtenteController');
 const NoteController = require('./controller/NoteController');
 const MessaggiController = require('./controller/MessaggiController');
+const GenericController = require('./controller/GenericController');
 
 const eventRouter = require('./controller/EventController');
 const attivitaRouter = require('./controller/AttivitaController');
@@ -46,6 +47,7 @@ async function main() {
   const utenteController = new UtenteController(db);
   const noteController = new NoteController(db);
   const messaggiController = new MessaggiController(db);
+  const genericController = new GenericController();
 
   // creazione endpoints
   app.use('/evento', eventRouter);
@@ -53,6 +55,7 @@ async function main() {
   app.use('/unavailability', unavailabilityRouter);
   /*app.use('/calendario', calendarioController.router); */
   app.use('/pomodoro', pomodoroController.router);
+  app.use('/generic', genericController.router);
   app.use('/user', utenteController.router);
   app.use('/utente', utenteController.router);
   app.use('/notes', noteController.router);

@@ -74,7 +74,7 @@ export class LoginService {
 
   getToken(): string {
     const token = localStorage.getItem('loginToken');
-    if (token === null) {
+    if (token === null || token === undefined) {
       throw new Error('Errore. Effettuare il login');
     }
     return token;

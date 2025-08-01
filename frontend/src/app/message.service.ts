@@ -9,7 +9,7 @@ import { firstValueFrom } from "rxjs";
 })
 export class MessageService {
 
-  apiUrl: string = 'http://localhost:8000/messaggi'
+  apiUrl: string = 'http://localhost:9000/messaggi'
 
 
   constructor(private httpService: HttpService, private loginService: LoginService) { }

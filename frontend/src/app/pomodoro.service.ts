@@ -10,7 +10,7 @@ import { LoginService } from "./login.service";
 })
 export class PomodoroService {
 
-  apiUrl: string = 'http://localhost:8000/pomodoro'
+  apiUrl: string = 'http://localhost:9000/pomodoro'
 
   constructor(private httpService: HttpService, private loginService: LoginService) { }
 
