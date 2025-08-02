@@ -1,5 +1,7 @@
 # idea
 backend/.idea/
+frontend/.idea/
+.idea/
 
 # node modules
 frontend/node_modules/
