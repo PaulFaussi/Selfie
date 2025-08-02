@@ -1,29 +1,54 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
-import { MessageService } from "../message.service";
-import { MessageInterface } from "../message.interface";
 import { CommonModule, NgIf } from "@angular/common";
+import { MessageInterface } from "../message.interface";
+import { FormsModule } from "@angular/forms";
+import { MessageService } from "../message.service";
+
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [ RouterModule, CommonModule],
+  imports: [RouterModule, NgIf, CommonModule, FormsModule],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css'
 })
-export class NavbarComponent {
+export class NavbarComponent implements OnInit, OnDestroy {
 
   chatTabVis: boolean = false;
   hasNotification: boolean = false;
   private timerId!: ReturnType<typeof setInterval>;
 
+  usernameReceiver: string = "";
+  messageToSend: string = "";
+
   messageList: MessageInterface[] = [];
 
   messageService: MessageService = inject(MessageService);
 
-  constructor(private router: Router){
+  constructor(private router: Router){}
 
+
+  ngOnInit(): void {
+    this.messageToSend = "";
+    this.usernameReceiver = "";
+    this.messageList = [];
+
+    this.refreshNotifications();
+
+    this.chatTabVis = false;
+    this.hasNotification = false;
+
+    this.timerId = setInterval(() => {
+      this.refreshNotifications();
+    }, 20_000);
   }
+
+  ngOnDestroy(): void {
+    clearInterval(this.timerId);
+  }
+
+
 
   openLoginDashboard(){
     if(localStorage.getItem('loginToken')){
@@ -35,9 +60,6 @@ export class NavbarComponent {
 
   }
 
-
-
-
   chatTab(){
     // this.refreshNotifications();
 
@@ -45,47 +67,36 @@ export class NavbarComponent {
     this.hasNotification = false;
   }
 
-  // chatTab(){
-  //   if(this.chatTabVis == ''){
-  //     this.chatTabVis = 'none';
-  //   }
-  //   else{
-  //     this.chatTabVis = '';
-  //   }
-  // }
-
   refreshNotifications(){
     this.messageService.getAllMessages().then((messages: MessageInterface[]) => {
-      if(!this.chatTabVis) {
-      // if(messages.some(message => !message.isRead) && !this.chatTabVis) {
+      if(messages.some(message => !message.isRead) && !this.chatTabVis) {
         this.hasNotification = true;
 
         for (const message of messages) {
-          this.messageService.markMessageAsRead(message);
-          // if (!message.isRead) {
-          //   this.messageService.markMessageAsRead(message);
-          // }
+          if (!message.isRead) {
+            this.messageService.markMessageAsRead(message);
+          }
         }
       }
 
       this.messageList = messages;
-
-      console.log(this.messageList);
     });
   }
 
-  sendMessage(username: string, message: string){
-    const messageInterface: MessageInterface = {
+  sendMessage(){
+    const message: MessageInterface = {
       sender: '',
-      receiver: username,
-      text: message,
+      receiver: this.usernameReceiver,
+      text: this.messageToSend,
       date: new Date(),
       isRead: false
     };
 
-    console.log(messageInterface);
+    console.log(message);
 
-    this.messageService.sendMessage(messageInterface).then(() => {
+    this.messageService.sendMessage(message).then(() => {
+      this.usernameReceiver = "";
+      this.messageToSend = "";
     })
 
   }

@@ -1,25 +1,32 @@
 
 
 <div class="main">
-    <div (click)="chatTab()">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193-.34.027-.68.052-1.02.072v3.091l-3-3c-1.354 0-2.694-.055-4.02-.163a2.115 2.115 0 0 1-.825-.242m9.345-8.334a2.126 2.126 0 0 0-.476-.095 48.64 48.64 0 0 0-8.048 0c-1.131.094-1.976 1.057-1.976 2.192v4.286c0 .837.46 1.58 1.155 1.951m9.345-8.334V6.637c0-1.621-1.152-3.026-2.76-3.235A48.455 48.455 0 0 0 11.25 3c-2.115 0-4.198.137-6.24.402-1.608.209-2.76 1.614-2.76 3.235v6.226c0 1.621 1.152 3.026 2.76 3.235.577.075 1.157.14 1.74.194V21l4.155-4.155" />
-          </svg>
-    </div>
+  <div (click)="chatTab()">
 
-    <div class="title-container">
-        <a routerLink="">
-            <h1 >Selfie.</h1>
-        </a>
-    </div>
+    <svg *ngIf="!hasNotification" xmlns="http://www.w3.org/2000/svg" id="Outline" viewBox="0 0 24 24" width="512" height="512">
+      <path d="M19,1H5A5.006,5.006,0,0,0,0,6V18a5.006,5.006,0,0,0,5,5H19a5.006,5.006,0,0,0,5-5V6A5.006,5.006,0,0,0,19,1ZM5,3H19a3,3,0,0,1,2.78,1.887l-7.658,7.659a3.007,3.007,0,0,1-4.244,0L2.22,4.887A3,3,0,0,1,5,3ZM19,21H5a3,3,0,0,1-3-3V7.5L8.464,13.96a5.007,5.007,0,0,0,7.072,0L22,7.5V18A3,3,0,0,1,19,21Z"/>
+    </svg>
 
-    <div class="navbar-tabs" (click)="openLoginDashboard()" >
-        <div>
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-4 h-4">
-                <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM12.735 14c.618 0 1.093-.561.872-1.139a6.002 6.002 0 0 0-11.215 0c-.22.578.254 1.139.872 1.139h9.47Z" />
-            </svg>
-        </div>
+    <svg *ngIf="hasNotification" xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 24 24" width="512" height="512">
+      <path d="M20,8c-2.21,0-4-1.79-4-4S17.79,0,20,0s4,1.79,4,4-1.79,4-4,4Zm-8,7.42c.77,0,1.54-.29,2.12-.88l4.67-4.67c-2.73-.56-4.79-2.98-4.79-5.88,0-.34,.04-.67,.09-1H5c-1.81,0-3.38,.97-4.26,2.41L9.88,14.55c.58,.58,1.35,.88,2.12,.88Zm9.76-5.69l-6.23,6.23c-.97,.97-2.26,1.46-3.54,1.46s-2.56-.49-3.54-1.46L.05,7.54c-.01,.15-.05,.3-.05,.46v11c0,2.76,2.24,5,5,5h14c2.76,0,5-2.24,5-5l-.02-10.53c-.64,.57-1.39,1-2.22,1.26Z"/>
+    </svg>
+
+  </div>
+
+
+  <div class="title-container">
+    <a routerLink="">
+      <h1 >Selfie.</h1>
+    </a>
+  </div>
+
+  <a class="navbar-tabs" (click)="openLoginDashboard()">
+    <div>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-4 h-4">
+        <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM12.735 14c.618 0 1.093-.561.872-1.139a6.002 6.002 0 0 0-11.215 0c-.22.578.254 1.139.872 1.139h9.47Z" />
+      </svg>
     </div>
+  </a>
 </div>
 
 <div class="sep"></div>
@@ -28,44 +35,44 @@
 
 
 
-<div class="chatSidebar" [style.display]="chatTabVis">
-    <div class="chatHeader">
-        <h2>Notification center</h2>
-        <div class="icons" (click)="refreshNotifications()" style="display: flex; align-items: center; justify-content: space-between;">
-            <svg style="height: 1.5rem; margin-right: 0.1rem;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
-            </svg>
+<div class="chatSidebar" *ngIf="chatTabVis">
+  <div class="chatHeader">
+    <h2>Notification center</h2>
+    <div class="icons" (click)="refreshNotifications()" style="display: flex; align-items: center; justify-content: space-between;">
+      <svg style="height: 1.5rem; margin-right: 0.1rem;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
+      </svg>
 
-            <svg (click)="chatTab()" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
-            </svg>
-        </div>
-
+      <svg (click)="chatTab()" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+      </svg>
     </div>
 
-    <div class="chatContainer">
-        <div class="notification">
-          <div class="message-box" *ngFor="let message of messageList">
-            <div class="message-sender"> {{ message.sender }} : </div>
-            <div class="message-text"> {{ message.text }} </div>
-            <div class="message-date"> {{ message.date }} </div>
-          </div>
-        </div>
+  </div>
 
-        <div class="chatInput">
-            <div class="singleInput">
-                <label for="username-input">Send to:</label>
-                <input #usernameInput id="username-input" style="font-size: 1rem;" type="text" placeholder="Enter username">
-            </div>
-
-            <div class="singleInput">
-                <label for="message-input">Message:</label>
-                <input #messageInput id="message-input" style="font-size: 1rem;" type="text" placeholder="Enter your message">
-            </div>
-
-            <button (click)="sendMessage(usernameInput.value, messageInput.value)" class="chatButton">SEND MESSAGE</button>
-        </div>
-
-
+  <div class="chatContainer">
+    <div class="notification">
+      <div class="message-box" *ngFor="let message of messageList">
+        <div class="message-sender"> {{ message.sender }} : </div>
+        <div class="message-text"> {{ message.text }} </div>
+        <div class="message-date"> {{ message.date }} </div>
+      </div>
     </div>
+
+    <div class="chatInput">
+      <div class="singleInput">
+        <label for="username-input">Send to:</label>
+        <input id="username-input" [(ngModel)]="usernameReceiver" type="text" placeholder="Enter username">
+      </div>
+
+      <div class="singleInput">
+        <label for="message-input">Message:</label>
+        <input id="message-input" [(ngModel)]="messageToSend" type="text" placeholder="Enter your message">
+      </div>
+
+      <button (click)="sendMessage()" class="chatButton">SEND MESSAGE</button>
+    </div>
+
+
+  </div>
 </div>

@@ -1,179 +1,236 @@
-
-
-.main{
-    height: 8vh;
-    display: flex;
-    flex-direction: row;
-    padding: 0 1rem;
-
-    background-color: rgb(51, 51, 51);
-    align-items: center;
+:root {
+  --purple: rgb(123, 31, 162);
+  --violet: rgb(103, 58, 183);
+  --pink: rgb(244, 143, 177);
+  --bblack: rgb(10, 10, 10);
 }
 
+.main{
+  height: 8vh;
+  display: flex;
+  flex-direction: row;
+  padding: 0 1rem;
 
+  background-color: rgb(51, 51, 51);
+  align-items: center;
+}
+
+p{
+  text-align: center;
+  font-size: 0.9rem;
+  font-weight: 500;
+  font-family: Arial, Helvetica, sans-serif;
+}
+label{
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 0.7rem;
+}
 h1 {
-    font-size: 1.5rem;
-    font-weight: 500;
-    font-family: Arial, Helvetica, sans-serif;
-    letter-spacing: 0.1rem;
-    text-align: center;
-    color: rgb(229, 229, 229);
-    margin: 0;
+  font-size: 1.5rem;
+  font-weight: 500;
+  font-family: Arial, Helvetica, sans-serif;
+  letter-spacing: 0.1rem;
+  text-align: center;
+  color: rgb(229, 229, 229);
 }
 
 h2{
-    font-size: 1.2rem;
-    font-weight: 500;
-    font-family: Arial, Helvetica, sans-serif;
-    letter-spacing: 0.05rem;
-    text-align: center;
-    color: rgb(229, 229, 229);
-    margin: 0;
+  font-size: 1.2rem;
+  font-weight: 500;
+  font-family: Arial, Helvetica, sans-serif;
+  letter-spacing: 0.05rem;
+  text-align: center;
+  color: rgb(229, 229, 229);
+  margin: 0;
 }
 
 
 
 a{
-    text-decoration: none;
+  text-decoration: none;
 }
 
 svg{
-    height: 1.2rem;
-    width: 1.2rem;
-    color: rgb(186, 186, 186);
-}    
+  height: 1.2rem;
+  width: 1.2rem;
+  color: rgb(186, 186, 186);
+}
 
 
 
 .navbar-tabs{
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .title-container{
-    margin: 0;
-    padding: 0;
-    width: 100%;
+  margin: 0;
+  padding: 0;
+  width: 100%;
 }
 
-                  
+
 @keyframes background-pan {
-    from {
-      background-position: 0% center;
-    }
-    to {
-      background-position: -200% center;
-    }
+  from {
+    background-position: 0% center;
+  }
+  to {
+    background-position: -200% center;
+  }
 }
 .sep{
-    height: 2px;
-    background-image: linear-gradient(to right, violet, purple);
-    background-size: 200%;
-    animation: background-pan 3s ease infinite;
+  height: 2px;
+  background-image: linear-gradient(to right, violet, purple);
+  background-size: 200%;
+  animation: background-pan 3s ease infinite;
 }
 
 
 /* chat sidebar */
 
 .chatSidebar{
-    position: fixed;
-    left: 0;
-    top: 0;
-    width: 85vw;
-    height: 100vh;
-    z-index: 1000;
-    
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 85vw;
+  height: 100vh;
+  z-index: 1000;
 
-    border-right: 1px solid rgb(61, 61, 61);
-    background-color: grey;
+
+  border-right: 1px solid rgb(61, 61, 61);
+  background-color: grey;
 }
 
 .chatHeader{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    height: 6vh;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 6vh;
 
-    padding: 0 0.5rem 0 1rem;
-    background-color: rgb(69, 69, 69);
-    border-bottom: 1px solid rgb(69, 69, 69);
+  padding: 0 0.5rem 0 1rem;
+  background-color: rgb(69, 69, 69);
+  border-bottom: 1px solid rgb(69, 69, 69);
 }
 
 .icons > svg{
-    width: 2rem;
-    height: 2rem;
-    color: rgb(226, 226, 226);
-    margin: 0;
-    
+  width: 2rem;
+  height: 2rem;
+  color: rgb(226, 226, 226);
+  margin: 0;
+
 }
 
 
 .chatContainer{
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
 
-    height: 94vh;
-    width: 100%;
+  height: 94vh;
+  width: 100%;
 }
 
 .chatInput{
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
 
-    width: 100%;
-    padding: 0.5rem 0 0 0;
+  width: 100%;
+  padding: 0.5rem 0 0 0;
 
 
-    background-color: #6c6c6c;
-    border-top: 1px solid rgb(57, 57, 57);
+  background-color: #6c6c6c;
+  border-top: 1px solid rgb(57, 57, 57);
 }
 
 .chatButton{
-    height: 2.5rem;
-    width: 100%;
-    margin-top: 0.5rem;
+  height: 2.5rem;
+  width: 100%;
+  margin-top: 0.5rem;
 
-    border:none;
-    background-color: rgb(63, 63, 63);
-    
-    font-size: 0.8rem;
-    font-weight: 500;
-    color:rgb(236, 236, 236);
+  border:none;
+  background-color: rgb(63, 63, 63);
 
-    color: white;
-    cursor: pointer;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color:rgb(236, 236, 236);
+
+  color: white;
+  cursor: pointer;
 
 }
 
 input{
-    background-color: #434343;
-    border-style: solid;
-    border: 1px solid rgb(106, 106, 106);
-    border-radius: 0.5rem;
-    height: 1rem;
-    width: 70%;
-    padding: 0.5rem;
+  background-color: #434343;
+  border-style: solid;
+  border: 1px solid rgb(106, 106, 106);
+  border-radius: 0.5rem;
+  height: 1rem;
+  width: 70%;
+  padding: 0.5rem;
 
-    outline: none;
-    color: rgb(228, 228, 228);
-    text-align: start;
+  outline: none;
+  color: rgb(228, 228, 228);
+  text-align: start;
 }
 
 .singleInput{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 90%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 90%;
+}
+
+.notification {
+  padding: 16px;
+  flex-direction: column;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  overflow-y: auto;
+}
+
+.message-box {
+  border: 1px solid #ccc;
+  padding: 10px;
+  background-color: #f9f9f9;
+  max-width: 400px;
+  width: 90%;
+  border-radius: 8px;
+  box-sizing: border-box;
+  word-wrap: break-word;
+  white-space: pre-line;
+}
+
+.message-sender {
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+.message-text {
+  font-size: 1rem;
+  margin-bottom: 6px;
+}
+
+.message-date{
+  font-size: 0.7rem;
+  color: rgb(209, 209, 209);
+  margin-top: 0.2rem;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
 label{
-    font-size: 0.6rem;
-    font-weight: 500;
-    font-family: Arial, Helvetica, sans-serif;
-    text-align: center;
-    color: rgb(229, 229, 229);
+  font-size: 0.9rem;
+  font-weight: 500;
+  font-family: Arial, Helvetica, sans-serif;
+  text-align: center;
+  color: rgb(229, 229, 229);
 }
