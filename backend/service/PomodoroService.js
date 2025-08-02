@@ -68,11 +68,7 @@ class PomodoroService {
     ////// PRIVATE
 
     isPomodoroVisible(username, pomodoro) {
-        const result = pomodoro != null && (pomodoro.creator.username === username || pomodoro.authList.includes(username));
-
-        console.log("Il pomodoro è visibile? -> " + result);
-
-        return result;
+        return pomodoro != null && (pomodoro.creator.username === username || pomodoro.authList.includes(username));
     }
 
     filterPomodoroListByVisibility(username, pomodoroList) {

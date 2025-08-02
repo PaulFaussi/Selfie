@@ -16,15 +16,11 @@ class GenericController {
 
     isTokenValido(req, res) {
 
-        console.log("Stiamo verificando la validità del token");
-
         try {
             const jwt = getJwtFromRequest(req);
             const payload = extractToken(jwt);
-            console.log("Token valido");
             res.status(200).json();
         } catch (error) {
-            console.log("Token NON valido");
             res.status(400).json(error.message);
             console.log(error);
         }

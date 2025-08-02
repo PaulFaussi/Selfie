@@ -60,7 +60,7 @@ class MessaggiRepository {
                 { $set: updateFields }
             );
 
-            if (result.modifiedCount === 1) {
+            if (result.modifiedCount <= 1) {
                 console.log('Messaggio aggiornato con successo');
             } else {
                 throw new Error('Nessun messaggio aggiornato');
