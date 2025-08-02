@@ -1,9 +1,11 @@
 let gap = 0 ;
 
 
-
-function setGap(newGap) {
-    gap = newGap;
+/**
+ * Aggiorna la data attuale del TimeMachine
+ */
+function updateCurrentDate(updatedDate) {
+    gap = calculateGap(updatedDate);
 }
 
 /**
@@ -15,7 +17,7 @@ function getCurrentDate() {
 }
 
 
-module.exports = { setGap, getCurrentDate };
+module.exports = { updateCurrentDate, getCurrentDate };
 
 
 
@@ -23,5 +25,12 @@ module.exports = { setGap, getCurrentDate };
 
 function calculateCurrentTimestamp() {
     return new Date() - gap;
+}
+
+function calculateGap(updatedDate) {
+    console.log("Updated date:");
+    console.log(updatedDate);
+    console.log("Nuovo gap: ", new Date() - new Date(updatedDate));
+    return new Date() - new Date(updatedDate);
 }
 

@@ -19,7 +19,7 @@ import { RouterModule } from '@angular/router';
 })
 
 export class AppComponent {
-  title = 'progettoUI';
+  title = 'Selfie';
 
   /* constructor(private http: HttpClient) { }
 

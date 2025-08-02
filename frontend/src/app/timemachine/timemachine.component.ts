@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ClockService } from "../clock.service";
 import { FormsModule } from "@angular/forms";
 import { NgIf } from "@angular/common";
+import { TimeMachineService } from "../time-machine.service";
 
 @Component({
   selector: 'app-timemachine',
@@ -14,32 +14,25 @@ import { NgIf } from "@angular/common";
   styleUrl: './timemachine.component.css'
 })
 export class TimemachineComponent implements OnInit {
-  constructor(private clockService: ClockService){
+  constructor(private timeMachineService: TimeMachineService){
   }
 
   boxVis: boolean = true;
   popupVis: boolean = false;
-  currentDate: Date = new Date();
   selectedDateStr: string = '';
 
   ngOnInit(): void {
     this.boxVis = true;
     this.popupVis = false;
 
-    const currentDate = this.clockService.getCurrent();
-    if (currentDate == null) {
-      this.clockService.time$.subscribe((now) => { this.currentDate = now });
-    } else {
-      this.clockService.setVirtualNow(currentDate);
-    }
   }
 
 
 
 
-  timemachinePopup(){
-    this.selectedDateStr = this.clockService.getCurrentString();
-    console.log(this.selectedDateStr);
+  async timemachinePopup(){
+    const selectedDate = await this.timeMachineService.getCurrentDate();
+    this.selectedDateStr = selectedDate.toISOString().slice(0, -1);
 
     this.boxVis = false;
     this.popupVis = true;
@@ -53,9 +46,8 @@ export class TimemachineComponent implements OnInit {
 
 
   async setTm() {
-    console.log(this.selectedDateStr);
 
-    this.clockService.setVirtualNow(new Date(this.selectedDateStr));
+    await this.timeMachineService.updateCurrentDate(new Date(this.selectedDateStr));
 
 
     this.closeTm();
@@ -64,14 +56,15 @@ export class TimemachineComponent implements OnInit {
 
 
 
-  restoreTm(){
-    this.clockService.setVirtualNow(new Date());
-    this.selectedDateStr = this.clockService.getCurrentString();
+  async restoreTm(){
+    await this.timeMachineService.updateCurrentDate(new Date());
+    this.selectedDateStr = (await this.timeMachineService.getCurrentDate()).toISOString().slice(0, -1);
 
-    this.setTm();
+    await this.setTm();
     this.closeTm();
     alert("Date/Time restored.")
   }
+
 
 
 
