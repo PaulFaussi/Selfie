@@ -1,7 +1,0 @@
-
-ésecrets:S6694i"PMake sure this MongoDB database password gets changed and removed from the code.(Ã∆èpJ$b6182330-9946-4deb-a371-9a26b71d55e4
-Öjavascript:S1481'"<Remove the declaration of the unused 'corsOptions' variable.(≈ü·Ç8 å‘‹Ü3J$c6c59115-7bef-431a-bbbc-4f5227933b26
-Çjavascript:S1854'"9Remove this useless assignment to variable "corsOptions".(≈ü·Ç8Àå‘‹Ü3J$dd9cc97c-65b8-4f4a-a7c2-ea8c294b462c
-gjavascript:S1250"Remove this commented out code.(¡ßˇõ8Ãå‘‹Ü3J$1a3da12f-1a94-479e-b199-87403250c1cc
-ljavascript:S125<"Remove this commented out code.(‡ﬁ¿«¯ˇˇˇˇ8Ãå‘‹Ü3J$6230b399-8fe5-4d94-a3f7-f8b3090385fa
-Øjavascript:S2703J"aAdd the "let", "const" or "var" keyword to this declaration of "updatedTime" to make it explicit.(Èö◊Â˚ˇˇˇˇ8Ãå‘‹Ü3J$f57bb90a-075a-4280-9d35-263395e2b828
