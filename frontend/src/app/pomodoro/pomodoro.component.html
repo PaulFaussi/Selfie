@@ -4,7 +4,7 @@
   <app-navbar></app-navbar>
 
   <div class="head">
-    <a routerLink="" style="text-decoration: none;">
+    <a routerLink="">
       <h1 class="backto">< back</h1>
     </a>
   </div>
@@ -78,10 +78,10 @@
 
   <!-- SORT POPUP -->
 
-  <div class="sorting-popup" *ngIf="showDialogSortFilterPomodoros" >
+  <div class="sorting-popup" *ngIf="sortingVisibility" >
     <div class="popup-header">
       <h1 style="margin:0;">/sort-pomodoros</h1>
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"  stroke="currentColor" (click)="closeSortFilterPomodorosWindow()">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"  stroke="currentColor" (click)="closeSortFilterPomodorosWindow()" >
         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
       </svg>
     </div>
@@ -90,17 +90,17 @@
 
     <h1 style="margin: 0.5rem 0 0.5rem 0;">Sort pomodoros by:</h1>
 
-    <button id="form-button" type="submit" style="margin-top: 0.5rem;" (click)="getAllPomodorosSortedByStartRecent()">START - RECENT</button>
-    <button id="form-button" type="submit" style="margin-top: 0.5rem;" (click)="getAllPomodorosSortedByStartOldest()">START - OLDEST</button>
-    <button id="form-button" type="submit" style="margin-top: 0.5rem;" (click)="getAllPomodorosSortedByLastModified()">LAST MODIFIED</button>
-    <button id="form-button" type="submit" style="margin-top: 0.5rem;" (click)="getAllPomodorosSortedByCreationRecent()">CREATION - RECENT</button>
-    <button id="form-button" type="submit" style="margin-top: 0.5rem;" (click)="getAllPomodorosSortedByCreationOldest()">CREATION - OLDEST</button>
+    <button class="form-button" type="submit" style="margin-top: 0.5rem;" (click)="getAllPomodorosSortedByStartRecent()">START - RECENT</button>
+    <button class="form-button" type="submit" style="margin-top: 0.5rem;" (click)="getAllPomodorosSortedByStartOldest()">START - OLDEST</button>
+    <button class="form-button" type="submit" style="margin-top: 0.5rem;" (click)="getAllPomodorosSortedByLastModified()">LAST MODIFIED</button>
+    <button class="form-button" type="submit" style="margin-top: 0.5rem;" (click)="getAllPomodorosSortedByCreationRecent()">CREATION - RECENT</button>
+    <button class="form-button" type="submit" style="margin-top: 0.5rem;" (click)="getAllPomodorosSortedByCreationOldest()">CREATION - OLDEST</button>
 
     <h1 style="margin: 2.5rem 0 0.5rem 0;">Filter pomodoros by:</h1>
 
     <div class="title-box">
-      <button id="form-button" type="submit" style="margin-top: 0.5rem; margin-right: 0.5rem">UPCOMING</button>
-      <button id="form-button" type="submit" style="margin-top: 0.5rem; margin-left: 0.5rem">OLDER</button>
+      <button class="form-button" type="submit" style="margin-top: 0.5rem; margin-right: 0.5rem">UPCOMING</button>
+      <button class="form-button" type="submit" style="margin-top: 0.5rem; margin-left: 0.5rem">OLDER</button>
     </div>
   </div>
 

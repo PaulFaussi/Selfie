@@ -22,7 +22,7 @@ export class PomodoroComponent implements OnInit {
 
   public showDialogCreaPomodoro: boolean = false;
 
-  public showDialogSortFilterPomodoros: boolean = false;
+  public sortingVisibility: boolean = false;
 
   public pomodoroList: PomodoroInterface[] = [];
 
@@ -48,11 +48,11 @@ export class PomodoroComponent implements OnInit {
   }
 
   openSortFilterPomodorosWindow() {
-    this.showDialogSortFilterPomodoros = true;
+    this.sortingVisibility = true;
   }
 
   closeSortFilterPomodorosWindow() {
-    this.showDialogSortFilterPomodoros = false;
+    this.sortingVisibility = false;
   }
 
   async salvaNewPomodoro() {
@@ -84,35 +84,35 @@ export class PomodoroComponent implements OnInit {
     this.pomodoroService.getAllPomodorosSorted(SortPomodoroEnum.START_RECENT).then((result: PomodoroInterface[]) => {
       this.pomodoroList = result;
     });
-    this.showDialogSortFilterPomodoros = false;
+    this.sortingVisibility = false;
   }
 
   async getAllPomodorosSortedByStartOldest() {
     this.pomodoroService.getAllPomodorosSorted(SortPomodoroEnum.START_OLDEST).then((result: PomodoroInterface[]) => {
       this.pomodoroList = result;
     });
-    this.showDialogSortFilterPomodoros = false;
+    this.sortingVisibility = false;
   }
 
   async getAllPomodorosSortedByLastModified() {
     this.pomodoroService.getAllPomodorosSorted(SortPomodoroEnum.LAST_MODIFIED).then((result: PomodoroInterface[]) => {
       this.pomodoroList = result;
     });
-    this.showDialogSortFilterPomodoros = false;
+    this.sortingVisibility = false;
   }
 
   async getAllPomodorosSortedByCreationRecent() {
     this.pomodoroService.getAllPomodorosSorted(SortPomodoroEnum.CREATION_RECENT).then((result: PomodoroInterface[]) => {
       this.pomodoroList = result;
     });
-    this.showDialogSortFilterPomodoros = false;
+    this.sortingVisibility = false;
   }
 
   async getAllPomodorosSortedByCreationOldest() {
     this.pomodoroService.getAllPomodorosSorted(SortPomodoroEnum.CREATION_OLDEST).then((result: PomodoroInterface[]) => {
       this.pomodoroList = result;
     });
-    this.showDialogSortFilterPomodoros = false;
+    this.sortingVisibility = false;
   }
 
 
