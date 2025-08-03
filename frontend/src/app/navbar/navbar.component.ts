@@ -4,6 +4,7 @@ import { CommonModule, NgIf } from "@angular/common";
 import { MessageInterface } from "../message.interface";
 import { FormsModule } from "@angular/forms";
 import { MessageService } from "../message.service";
+import { TimeMachineService } from "../time-machine.service";
 
 
 @Component({
@@ -26,7 +27,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   messageService: MessageService = inject(MessageService);
 
-  constructor(private router: Router){}
+  constructor(private router: Router, public timeMachineService: TimeMachineService) {}
 
 
   ngOnInit(): void {
@@ -80,6 +81,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
       }
 
       this.messageList = messages;
+      console.log(this.messageList);
     });
   }
 

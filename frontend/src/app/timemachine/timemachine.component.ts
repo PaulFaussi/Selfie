@@ -31,8 +31,7 @@ export class TimemachineComponent implements OnInit {
 
 
   async timemachinePopup(){
-    const selectedDate = await this.timeMachineService.getCurrentDate();
-    this.selectedDateStr = selectedDate.toISOString().slice(0, -1);
+    this.selectedDateStr = await this.timeMachineService.getCurrentDateString();
 
     this.boxVis = false;
     this.popupVis = true;
@@ -58,16 +57,12 @@ export class TimemachineComponent implements OnInit {
 
   async restoreTm(){
     await this.timeMachineService.updateCurrentDate(new Date());
-    this.selectedDateStr = (await this.timeMachineService.getCurrentDate()).toISOString().slice(0, -1);
+    this.selectedDateStr = await this.timeMachineService.getCurrentDateString();
 
     await this.setTm();
     this.closeTm();
     alert("Date/Time restored.")
   }
-
-
-
-
 
 
 

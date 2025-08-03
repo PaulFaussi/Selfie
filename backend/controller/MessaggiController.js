@@ -23,6 +23,9 @@ class MessaggiController {
             const jwt = getJwtFromRequest(req);
             const messaggi = await this.messaggiService.getAllMessages(jwt);
             if(messaggi){
+                messaggi.forEach(m => {
+                    m.date = new Date(m.date).toLocaleDateString() + " " + new Date(m.date).toLocaleTimeString();
+                });
                 res.status(200).json(messaggi);
             }
             else{

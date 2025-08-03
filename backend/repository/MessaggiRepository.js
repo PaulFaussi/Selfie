@@ -35,9 +35,6 @@ class MessaggiRepository {
 
     async createMessage(auth, message) {
         try {
-            const user = extractToken(auth);
-            message.sender = user.username;
-
             const result = await this.collection.insertOne(message);
 
             if(result.acknowledged){

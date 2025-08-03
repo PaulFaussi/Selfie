@@ -25,6 +25,19 @@ export class TimeMachineService {
     }
   }
 
+
+  async getCurrentDateString(): Promise<string> {
+    try {
+
+      const currentDate: Date = await this.getCurrentDate();
+      return this.toDatetimeString(currentDate);
+
+    } catch (error) {
+      console.error('Errore durante il recupero della data:', error);
+      throw error;
+    }
+  }
+
   async updateCurrentDate(newDate: Date): Promise<void> {
 
     try {
@@ -36,4 +49,19 @@ export class TimeMachineService {
       alert(error.message);
     }
   }
+
+
+  toDatetimeString(date: Date): string {
+
+    const pad = (n: number) => n.toString().padStart(2, '0');
+    const year = date.getFullYear();
+    const month = pad(date.getMonth() + 1);
+    const day = pad(date.getDate());
+    const hours = pad(date.getHours());
+    const minutes = pad(date.getMinutes());
+
+    return `${year}-${month}-${day}T${hours}:${minutes}`;
+  }
+
+
 }

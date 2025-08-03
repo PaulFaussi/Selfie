@@ -1,3 +1,5 @@
+const {extractToken} = require("../JwtUtils");
+const { getCurrentDate, updateCurrentDate} = require('../TimeMachine');
 
 class MessaggiService {
 
@@ -18,6 +20,11 @@ class MessaggiService {
 
     async sendMessaggio(auth, messaggio) {
         try {
+            const user = extractToken(auth);
+            messaggio.sender = user.username;
+
+            messaggio.date = getCurrentDate();
+
             return await this.messaggiRepository.createMessage(auth, messaggio);
         } catch(error){
             throw new Error(error.message);
