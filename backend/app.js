@@ -1,17 +1,19 @@
-
+// backend/app.js
 const PomodoroController = require('./controller/PomodoroController');
 const UtenteController = require('./controller/UtenteController');
 const NoteController = require('./controller/NoteController');
 const MessaggiController = require('./controller/MessaggiController');
 const GenericController = require('./controller/GenericController');
 
-const eventRouter = require('./controller/EventController');
-const attivitaRouter = require('./controller/AttivitaController');
-const unavailabilityRouter = require('./controller/UnavailabilityController');
+const EventController = require('./controller/EventController');
+const createAttivitaRouter = require('./controller/AttivitaController');
+const createUnavailabilityRouter = require('./controller/UnavailabilityController');
 
 const express = require('express');
 const cors = require('cors');
 const { MongoClient } = require('mongodb');
+
+let db;
 
 // Time Machine
 let serverDateTime = new Date;
@@ -20,9 +22,6 @@ setInterval(() => {
    serverDateTime = new Date(serverDateTime.getTime() + 1000);
 }, 1000);
 
-
-
-
 async function main() {
   const app = express();
   const port = 9000;
@@ -30,15 +29,15 @@ async function main() {
   // Middleware
   app.use(express.json());
 
-  
-    app.use(cors()); 
-    const corsOptions = {
-      origin: 'http://localhost:4200', //problemi su macchina dipartimento ??
-      methods:['GET', 'POST', 'PUT', 'DELETE'],
-      allowedHeaders: ['Content-Type', 'Authorization']
+  app.use(cors()); 
+  const corsOptions = {
+    origin: 'http://localhost:4200', //problemi su macchina dipartimento ??
+    methods:['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization']
   }; 
 
-  await connectToDB();
+  db = await connectToDB(); // ✅ CORRETTO: salviamo il db restituito
+
   // Controllers che usano direttamente MongoDB
   // creazione controllers
   /* const attivitaController = new AttivitaController(db);
@@ -48,18 +47,18 @@ async function main() {
   const noteController = new NoteController(db);
   const messaggiController = new MessaggiController(db);
   const genericController = new GenericController();
+  const eventoController = new EventController(db);
 
   // creazione endpoints
-  app.use('/evento', eventRouter);
-  app.use('/attivita', attivitaRouter);
-  app.use('/unavailability', unavailabilityRouter);
+  app.use('/evento', eventoController.router);
+  app.use('/attivita', createAttivitaRouter(db));
+  app.use('/unavailability', createUnavailabilityRouter(db));
   /*app.use('/calendario', calendarioController.router); */
   app.use('/pomodoro', pomodoroController.router);
   app.use('/generic', genericController.router);
   app.use('/user', utenteController.router);
   app.use('/utente', utenteController.router);
   app.use('/notes', noteController.router);
-  app.use('/evento', eventRouter); 
   app.use('/messaggi', messaggiController.router);
 
   //endpoint Time Machine
@@ -89,12 +88,7 @@ async function main() {
   });
 }
 
-
-
-
 main();
-
-
 
 async function connectToDB() {
     const uri = "mongodb://localhost:27017/Selfie";                 // URL TEST LOCALE
@@ -103,9 +97,9 @@ async function connectToDB() {
 
     try {
         await client.connect();
-        db = client.db();
+        const db = client.db(); // ✅ CORRETTO: otteniamo l'oggetto database
 
-        const adminDb = client.db().admin();
+        const adminDb = db.admin();
         const pingResult = await adminDb.ping();
 
         if (pingResult.ok === 1) {
@@ -114,30 +108,10 @@ async function connectToDB() {
             throw new Error("Errore connessione al DB.");
         }
 
+        return db; // ✅ Ritorna il database
+
     } catch(error) {
-        console.error("Errore nel connettersi al DB\n");
+        console.error("Errore nel connettersi al DB\n", error);
+        throw error;
     }
-
 }
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

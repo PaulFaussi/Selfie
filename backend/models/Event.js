@@ -34,4 +34,5 @@ const EventSchema = new mongoose.Schema({
   ]
 });
 
+console.log('[Model] Event model caricato');
 module.exports = mongoose.model('Event', EventSchema);

@@ -1,111 +1,68 @@
 // backend/controller/EventController.js
 const express = require('express');
-const router = express.Router();
-const Event = require('../models/Event');
+const EventService = require('../service/EventService');
 
-// GET all eventi
-router.get('/', async (req, res) => {
-  try {
-    const events = await Event.find();
-    res.json(events);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
+class EventController {
+    constructor(db) {
+        this.router = express.Router();
+        this.service = new EventService(db);
 
-// POST nuovo evento
-router.post('/', async (req, res) => {
-  try {
-    const data = {
-      ...req.body,
-      creatore: req.body.creatore || 'sconosciuto',
-      assegnati: req.body.assegnati || [],
-      partecipazioni: (req.body.assegnati || []).map(u => ({
-        utente: u,
-        stato: 'in_attesa'
-      }))
-    };
-    const ev = new Event(data);
-    await ev.save();
-    res.status(201).json(ev);
-  } catch (err) {
-    res.status(400).json({ error: err.message });
-  }
-});
-
-// PUT aggiornamento evento
-router.put('/:id', async (req, res) => {
-  try {
-    const updateData = {
-      ...req.body,
-      creatore: req.body.creatore || 'sconosciuto',
-      assegnati: req.body.assegnati || []
-    };
-    const updated = await Event.findByIdAndUpdate(req.params.id, updateData, { new: true });
-    res.json(updated);
-  } catch (err) {
-    res.status(400).json({ error: err.message });
-  }
-});
-
-// PATCH risposta ad un invito (accetta/rifiuta/in_attesa)
-router.patch('/:id/rispondi', async (req, res) => {
-  try {
-    const { utente, stato } = req.body;
-    if (!utente || !['accettato', 'rifiutato', 'in_attesa'].includes(stato)) {
-      return res.status(400).json({ error: 'Dati non validi' });
+        this.router.get('/', this.getAllEvents.bind(this));
+        this.router.post('/', this.createEvent.bind(this));
+        this.router.delete('/:id', this.deleteEvent.bind(this));
+        this.router.patch('/:id', this.updateEvent.bind(this));
+        this.router.patch('/:id/partecipazione', this.updatePartecipazione.bind(this));
     }
 
-    const evento = await Event.findById(req.params.id);
-    if (!evento) return res.status(404).json({ error: 'Evento non trovato' });
-
-    const partecipazione = evento.partecipazioni.find(p => p.utente === utente);
-
-    if (partecipazione) {
-      partecipazione.stato = stato;
-    } else {
-      evento.partecipazioni.push({ utente, stato });
+    async getAllEvents(req, res) {
+        try {
+            const auth = req.headers.authorization;
+            const events = await this.service.getAllEvents(auth);
+            res.status(200).json(events);
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
     }
 
-    await evento.save();
-    res.json({ message: 'Stato aggiornato' });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
+    async createEvent(req, res) {
+        try {
+            const auth = req.headers.authorization;
+            const event = await this.service.createEvent(auth, req.body);
+            res.status(201).json(event);
+        } catch (error) {
+            res.status(400).json({ error: error.message });
+        }
+    }
 
-// DELETE singolo evento
-router.delete('/:id', async (req, res) => {
-  try {
-    await Event.findByIdAndDelete(req.params.id);
-    res.status(204).end();
-  } catch (err) {
-    res.status(404).json({ error: 'Event not found' });
-  }
-});
+    async deleteEvent(req, res) {
+        try {
+            const auth = req.headers.authorization;
+            await this.service.deleteEvent(auth, req.params.id);
+            res.status(204).end();
+        } catch (error) {
+            res.status(400).json({ error: error.message });
+        }
+    }
 
-// DELETE intera serie di eventi ricorrenti
-router.delete('/series/:id', async (req, res) => {
-  try {
-    const { id } = req.params;
-    const original = await Event.findById(id);
-    if (!original) return res.status(404).json({ error: 'Evento non trovato' });
+    async updateEvent(req, res) {
+        try {
+            const auth = req.headers.authorization;
+            const event = await this.service.updateEvent(auth, req.params.id, req.body);
+            res.status(200).json(event);
+        } catch (error) {
+            res.status(400).json({ error: error.message });
+        }
+    }
 
-    const toDelete = await Event.find({
-      title: original.title,
-      recurrence: original.recurrence,
-      startTime: original.startTime,
-      startDate: { $gte: original.startDate },
-      color: original.color
-    });
+    async updatePartecipazione(req, res) {
+        try {
+            const auth = req.headers.authorization;
+            const result = await this.service.updatePartecipazione(auth, req.params.id, req.body);
+            res.status(200).json(result);
+        } catch (error) {
+            res.status(400).json({ error: error.message });
+        }
+    }
+}
 
-    const ids = toDelete.map(ev => ev._id);
-    await Event.deleteMany({ _id: { $in: ids } });
-
-    res.status(204).end();
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
-module.exports = router;
+module.exports = EventController;

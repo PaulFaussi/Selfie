@@ -1,6 +1,6 @@
 // services/event.service.ts
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { CalendarEvent } from '../calendar/event-form/event-form.component';
 import { lastValueFrom } from 'rxjs';
 
@@ -10,8 +10,16 @@ export class EventService {
 
   constructor(private http: HttpClient) {}
 
+  private getAuthHeaders(): HttpHeaders {
+    const token = localStorage.getItem('loginToken') || '';
+    return new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': token
+    });
+  }
+
   getAllEvents(): Promise<CalendarEvent[]> {
-    return this.http.get<any[]>(this.apiUrl)
+    return this.http.get<any[]>(this.apiUrl, { headers: this.getAuthHeaders() })
       .toPromise()
       .then(events => {
         if (!events) return [];
@@ -39,8 +47,13 @@ export class EventService {
       startDate: (event.startDate instanceof Date) ? event.startDate.toISOString() : event.startDate,
       endDate: (event.endDate instanceof Date) ? event.endDate.toISOString() : event.endDate
     };
-    return lastValueFrom(this.http.post<any>(this.apiUrl, toSend))
-      .then(e => ({ ...e, id: e._id, startDate: new Date(e.startDate), endDate: new Date(e.endDate) }));
+    return lastValueFrom(this.http.post<any>(this.apiUrl, toSend, { headers: this.getAuthHeaders() }))
+      .then(e => ({
+        ...e,
+        id: e._id,
+        startDate: new Date(e.startDate),
+        endDate: new Date(e.endDate)
+      }));
   }
 
   updateEvent(event: CalendarEvent): Promise<void> {
@@ -49,21 +62,24 @@ export class EventService {
       startDate: (event.startDate instanceof Date) ? event.startDate.toISOString() : event.startDate,
       endDate: (event.endDate instanceof Date) ? event.endDate.toISOString() : event.endDate
     };
-    return lastValueFrom(this.http.put<void>(`${this.apiUrl}/${event.id}`, toSend));
+    return lastValueFrom(this.http.put<void>(`${this.apiUrl}/${event.id}`, toSend, { headers: this.getAuthHeaders() }));
   }
 
   deleteEvent(id: string): Promise<void> {
-    return lastValueFrom(this.http.delete<void>(`${this.apiUrl}/${id}`));
+    return lastValueFrom(this.http.delete<void>(`${this.apiUrl}/${id}`, { headers: this.getAuthHeaders() }));
   }
 
   deleteSeries(id: string): Promise<void> {
-    return lastValueFrom(this.http.delete<void>(`${this.apiUrl}/series/${id}`));
+    return lastValueFrom(this.http.delete<void>(`${this.apiUrl}/series/${id}`, { headers: this.getAuthHeaders() }));
   }
 
-  // ✅ Nuovo metodo per accettare / rifiutare / rimandare un invito
   rispondiAInvito(eventId: string, utente: string, stato: 'accettato' | 'rifiutato' | 'in_attesa'): Promise<void> {
     return lastValueFrom(
-      this.http.patch<void>(`${this.apiUrl}/${eventId}/rispondi`, { utente, stato })
+      this.http.patch<void>(
+        `${this.apiUrl}/${eventId}/rispondi`,
+        { utente, stato },
+        { headers: this.getAuthHeaders() }
+      )
     );
   }
 }
