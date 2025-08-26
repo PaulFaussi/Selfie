@@ -54,7 +54,7 @@ export class PomodoroComponent implements OnInit {
   setPomodoro() {
 
     // TODO applicare la logica per ottenere il Pomodoro corretto
-    
+
     this.pomodoro = {
       _id: '0',
       name: 'Nome del pomodoro',
