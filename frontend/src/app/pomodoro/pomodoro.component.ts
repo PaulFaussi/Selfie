@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, numberAttribute, OnInit } from '@angular/core';
 import { NavbarComponent } from "../navbar/navbar.component";
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { PreviewNoteComponent } from "../preview-note/preview-note.component";
@@ -22,16 +22,16 @@ export class PomodoroComponent implements OnInit {
 
   public showDialogCreaPomodoro: boolean = false;
 
-  public showDialogSortFilterPomodoros: boolean = false;
-
-  public pomodoroList: PomodoroInterface[] = [];
+  minutes: string = '25';
+  seconds: string = '00';
+  private intervalId: any;
 
   public pomodoro = {
+    _id: '0',
     name: '',
-    startDate: null,
-    startTime: null,
-    durationWork: null,
-    durationBreak: null
+    state: '',
+    cyclesLeft: 0,
+
   };
 
   constructor (private router: Router, private activatedRoute : ActivatedRoute,
@@ -39,89 +39,43 @@ export class PomodoroComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getAllPomodoros();
+    this.setPomodoro();
+    this.startTimer();
+
   }
 
+  setPomodoro() {
+
+    this.pomodoro = {
+      _id: '0',
+      name: 'Nome del pomodoro',
+      state: 'STUDIO',
+      cyclesLeft: 2
+    }
+  }
 
   openCreateNewPomodoroWindow() {
     this.showDialogCreaPomodoro = true;
   }
 
-  openSortFilterPomodorosWindow() {
-    this.showDialogSortFilterPomodoros = true;
+  startTimer() {
+    this.intervalId = setInterval(() => {
+      const minutes = Number(this.minutes)
+      const seconds = Number(this.seconds)
+      if (minutes === 0) {
+        if (seconds === 0) {
+          clearInterval(this.intervalId);
+        } else {
+          this.seconds = (seconds - 1) > 9 ? (seconds - 1).toString() : '0' + (seconds - 1).toString();
+        }
+      } else {
+        if (seconds === 0) {
+          this.minutes = (minutes - 1) > 9 ? (minutes - 1).toString() : '0' + (minutes - 1).toString();
+          this.seconds = '59';
+        } else {
+          this.seconds = (seconds - 1) > 9 ? (seconds - 1).toString() : '0' + (seconds - 1).toString();
+        }
+      }
+    }, 1000);
   }
-
-  closeSortFilterPomodorosWindow() {
-    this.showDialogSortFilterPomodoros = false;
-  }
-
-  async salvaNewPomodoro() {
-    const body: PomodoroInterface = {
-      _id: '',
-      creator: { username: '', exp: 0, iat: 0 },
-      authList: [],
-      title: this.pomodoro.name,
-      description: '',
-      startDate: new Date(`${this.pomodoro.startDate}T${this.pomodoro.startTime}`),
-      studyDurationInMinutes: this.pomodoro.durationWork,
-      breakDurationInMinutes: this.pomodoro.durationBreak,
-      lastModificationDate: new Date(),
-      creationDate: new Date(),
-    }
-
-    await this.pomodoroService.createPomodoro(body.title, body.description, body.startDate, body.studyDurationInMinutes, body.breakDurationInMinutes);
-
-    this.getAllPomodoros();
-    this.showDialogCreaPomodoro = false;
-  }
-
-  eliminaNewPomodoro() {
-    this.showDialogCreaPomodoro = false;
-    this.pomodoro = { name: '', startDate: null, startTime: null, durationWork: null, durationBreak: null };
-  }
-
-  async getAllPomodorosSortedByStartRecent() {
-    this.pomodoroService.getAllPomodorosSorted(SortPomodoroEnum.START_RECENT).then((result: PomodoroInterface[]) => {
-      this.pomodoroList = result;
-    });
-    this.showDialogSortFilterPomodoros = false;
-  }
-
-  async getAllPomodorosSortedByStartOldest() {
-    this.pomodoroService.getAllPomodorosSorted(SortPomodoroEnum.START_OLDEST).then((result: PomodoroInterface[]) => {
-      this.pomodoroList = result;
-    });
-    this.showDialogSortFilterPomodoros = false;
-  }
-
-  async getAllPomodorosSortedByLastModified() {
-    this.pomodoroService.getAllPomodorosSorted(SortPomodoroEnum.LAST_MODIFIED).then((result: PomodoroInterface[]) => {
-      this.pomodoroList = result;
-    });
-    this.showDialogSortFilterPomodoros = false;
-  }
-
-  async getAllPomodorosSortedByCreationRecent() {
-    this.pomodoroService.getAllPomodorosSorted(SortPomodoroEnum.CREATION_RECENT).then((result: PomodoroInterface[]) => {
-      this.pomodoroList = result;
-    });
-    this.showDialogSortFilterPomodoros = false;
-  }
-
-  async getAllPomodorosSortedByCreationOldest() {
-    this.pomodoroService.getAllPomodorosSorted(SortPomodoroEnum.CREATION_OLDEST).then((result: PomodoroInterface[]) => {
-      this.pomodoroList = result;
-    });
-    this.showDialogSortFilterPomodoros = false;
-  }
-
-
-  ////// PRIVATE
-
-  private getAllPomodoros() {
-    this.pomodoroService.getAllPomodoros().then((result: PomodoroInterface[]) => {
-      this.pomodoroList = this.pomodoroService.sortByUpcomingPomodoros(result);
-    })
-  }
-
 }
