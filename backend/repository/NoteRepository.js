@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const { generateToken, extractToken} = require('../JwtUtils.js');
 const { ObjectId } = require('mongodb');
+const {getCurrentDate} = require("../TimeMachine");
 
 class NoteRepository {
     
@@ -27,7 +28,7 @@ class NoteRepository {
     async findAllNotes(auth){
         try {
             const user = extractToken(auth);
-            const query = { $or: [{creator: user.username}, {authList: user.username}]};
+            const query = { $or: [{creator: user.username}, {privacyMode: 2}, {authList: user.username}]};
             const notes = await this.collection.find(query).toArray();
             return notes;
         } catch (error) {
@@ -49,8 +50,8 @@ class NoteRepository {
                 isMarkdown: isMarkdown,
                 pricavyMode: privacyMode,
                 authList: authList,
-                creationDate: new Date,
-                lastModificationDate: new Date,
+                creationDate: getCurrentDate(),
+                lastModificationDate: getCurrentDate(),
                 creator: creator.username
             };
             console.log(newNote);
@@ -78,7 +79,7 @@ class NoteRepository {
                     title: `${note.title} - Copy`,
                     body: note.body,
                     isMarkdown: note.isMarkdown,
-                    pricavyMode: note.privacyMode,
+                    privacyMode: note.privacyMode,
                     authList: note.authList,
                     creationDate: note.creationDate,
                     lastModificationDate: note.lastModificationDate,
@@ -135,7 +136,7 @@ class NoteRepository {
             if(note){
                 console.log(note);
                 const result = await this.collection.updateOne({ _id: new ObjectId(id) },
-                { $set: { body: noteBody, lastModificationDate: new Date} });
+                { $set: { body: noteBody, lastModificationDate: getCurrentDate()} });
 
                 /* const newNote = await this.collection.findOne({_id: new ObjectId(id)});
                 console.log(newNote); */

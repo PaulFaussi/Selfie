@@ -1,5 +1,6 @@
 const PomodoroRepository = require('../repository/PomodoroRepository');
 const { extractUsername } = require('../JwtUtils');
+const {getCurrentDate} = require("../TimeMachine");
 
 class PomodoroService {
 
@@ -50,7 +51,7 @@ class PomodoroService {
 
     async createPomodoro(jwt, title, description, startDate, studyDurationInMinutes, breakDurationInMinutes) {
 
-        await this.pomodoroRepository.createPomodoro(jwt, title, description, new Date(startDate), studyDurationInMinutes, breakDurationInMinutes);
+        await this.pomodoroRepository.createPomodoro(jwt, title, description, getCurrentDate(), studyDurationInMinutes, breakDurationInMinutes);
     }
 
     async deletePomodoro(jwt, req) {
