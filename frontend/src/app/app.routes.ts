@@ -11,6 +11,7 @@ import { PomodoroEditorComponent } from "./pomodoro-editor/pomodoro-editor.compo
 
 import { CalendarComponent }   from './calendar/calendar.component';
 import { UserDashboardComponent } from './user-dashboard/user-dashboard.component';
+import { PomodoroCreateComponent } from "./pomodoro-create/pomodoro-create.component";
 
 export const routes: Routes = [
     {
@@ -39,9 +40,14 @@ export const routes: Routes = [
         title: 'Dashboard'
     },
     {
-        path: 'pomodoro',
-        component: PomodoroComponent,
-        title: 'Pomodoro'
+      path: 'pomodoro',
+      component: PomodoroComponent,
+      title: 'Pomodoro'
+    },
+    {
+      path: 'create-pomodoro',
+      component: PomodoroCreateComponent,
+      title: 'Create Pomodoro'
     },
     {
       path: 'pomodoro-editor/:id',

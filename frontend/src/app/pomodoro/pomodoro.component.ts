@@ -59,8 +59,8 @@ export class PomodoroComponent implements OnInit {
       _id: '0',
       name: 'Nome del pomodoro',
       state: 'STUDIO',
-      durationStudy: 0,
-      durationBreak: 0,
+      durationStudy: 1,
+      durationBreak: 1,
       cyclesLeft: 2
     }
 
