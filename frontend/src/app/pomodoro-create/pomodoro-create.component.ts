@@ -4,6 +4,7 @@ import { FooterComponent } from "../footer/footer.component";
 import { TimemachineComponent } from "../timemachine/timemachine.component";
 import { Router, RouterLink } from "@angular/router";
 import { FormsModule } from "@angular/forms";
+import { NgIf } from "@angular/common";
 
 @Component({
   selector: 'app-pomodoro-create',
@@ -13,12 +14,15 @@ import { FormsModule } from "@angular/forms";
     FooterComponent,
     TimemachineComponent,
     RouterLink,
-    FormsModule
+    FormsModule,
+    NgIf
   ],
   templateUrl: './pomodoro-create.component.html',
   styleUrl: './pomodoro-create.component.css'
 })
 export class PomodoroCreateComponent  implements OnInit {
+
+  showPopupSchedulePomodoro: boolean = false;
 
   public newPomodoroData!: {
     title: string,
@@ -44,16 +48,16 @@ export class PomodoroCreateComponent  implements OnInit {
   }
 
   creaPomodoro() {
-
     // TODO da implementare
 
     console.log(this.newPomodoroData);
   }
 
   schedulePomodoro() {
+    this.showPopupSchedulePomodoro = true;
+  }
 
-    // TODO da implementare
-
-    console.log(this.newPomodoroData);
+  closeScheduleBox() {
+    this.showPopupSchedulePomodoro = false;
   }
 }

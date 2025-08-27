@@ -1,5 +1,62 @@
 
-#crea-pomodoro-button, #schedule-pomodoro-button {
+.repeat-section {
+  /*display: flex;*/
+  /*align-items: center;*/
+  /*justify-content: center;*/
+}
+
+.checkbox-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0rem;
+  gap: 0.5rem;
+}
+
+.checkbox-wrapper input[type="checkbox"] {
+  margin-right: 0.5rem;
+  transform: scale(1.2);
+}
+
+.schedule-box {
+  background-color: #c0c0c0;
+  border-radius: 12px;
+  box-shadow: white;
+  max-width: 100vw;
+  max-height: 80vh;
+  overflow-y: auto;
+  padding: 20px;
+}
+
+.popup-schedule {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.schedule-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid #f0f0f0;
+  padding-bottom: 1rem;
+  gap: 2rem;
+}
+
+#crea-pomodoro-button, #schedule-pomodoro-button, #conferma-schedule-button {
   background-color: rgb(90, 90, 90);
   color: black;
 }

@@ -63,6 +63,43 @@
 
 
 
+
+  <!-- POPUP SCHEDULAZIONE POMODORO -->
+
+  <div class="popup-schedule" *ngIf="showPopupSchedulePomodoro">
+    <div class="schedule-box">
+
+      <!-- header -->
+      <div class="schedule-header">
+        <h2 class="schedule-title">Programma Pomodoro</h2>
+        <button class="close-btn" (click)="closeScheduleBox()">&times;</button>
+      </div>
+
+      <!-- data e ora di inizio -->
+      <div class="form-group">
+        <label for="startDate" class="label-input">Data e Ora di Inizio</label>
+        <input id="startDate" type="datetime-local" class="input-tag" />
+      </div>
+
+      <!-- sezione ripetizioni -->
+      <div class="repeat-section">
+        <div class="checkbox-wrapper">
+          <input id="enableRepeat" type="checkbox" />
+          <label for="enableRepeat" class="label-input" style="margin-bottom: 0;">Ripeti questo Pomodoro</label>
+        </div>
+
+        <!-- TODO scegliere come strutturare la frequenza a frontend -->
+
+
+        <div class="button-group">
+          <button type="button" (click)="creaPomodoro()" id="conferma-schedule-button">CONFERMA</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
   <app-footer></app-footer>
 
   <app-timemachine></app-timemachine>
