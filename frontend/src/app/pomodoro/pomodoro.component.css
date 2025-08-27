@@ -1,5 +1,6 @@
 
 .page-content {
+  position: relative;
   flex: 1;
   background: #FF9A9A;
   font-family: Arial, Helvetica, sans-serif;
@@ -117,4 +118,43 @@ h1 {
   margin:0;
   font-size: 1rem;
   font-family: Arial, Helvetica, sans-serif;
+}
+
+.animated-background {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+
+.study::before {
+  content: "📖";
+  font-size: 3rem;
+  position: absolute;
+  top: 0;
+  left: 0;
+  animation: floatBook 8s linear infinite;
+}
+.break::before {
+  content: "⚽";
+  font-size: 3rem;
+  position: absolute;
+  top: 0;
+  left: 0;
+  animation: floatBook 8s linear infinite;
+}
+.completed::before {
+  content: "🎉";
+  font-size: 3rem;
+  position: absolute;
+  top: 0;
+  left: 0;
+  animation: floatBook 8s linear infinite;
+}
+@keyframes floatBook {
+  0% { transform: translateX(0) rotate(0deg); }
+  50% { transform: translateX(80vw) rotate(0deg); }
+  100% { transform: translateX(0) rotate(0deg); }
 }

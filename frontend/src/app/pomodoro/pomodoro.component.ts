@@ -32,15 +32,14 @@ export class PomodoroComponent implements OnInit {
   seconds: string = '00';
   private intervalId: any;
 
-  public pomodoro = {
-    _id: '0',
-    name: '',
-    state: 'STUDIO',
-    durationStudy: 30,
-    durationBreak: 5,
-    cyclesLeft: 0,
-
-  };
+  public pomodoro: {
+    _id: string,
+    name: string,
+    state: 'DA INIZIARE' | 'STUDIO' | 'PAUSA' | 'COMPLETATO',
+    durationStudy: number,
+    durationBreak: number,
+    cyclesLeft: number
+  } = { _id: '', name: '', state: 'DA INIZIARE', durationStudy: 0, durationBreak: 0, cyclesLeft: 0};
 
   constructor (private router: Router, private activatedRoute : ActivatedRoute,
                private pomodoroService: PomodoroService) {
@@ -58,7 +57,7 @@ export class PomodoroComponent implements OnInit {
     this.pomodoro = {
       _id: '0',
       name: 'Nome del pomodoro',
-      state: 'STUDIO',
+      state: 'DA INIZIARE',
       durationStudy: 1,
       durationBreak: 1,
       cyclesLeft: 2
@@ -72,6 +71,8 @@ export class PomodoroComponent implements OnInit {
   }
 
   startStudio() {
+    this.pomodoro.state = 'STUDIO';
+
     this.startStudioIsVisible = false;
     this.startPausaIsVisible = false;
     this.fineCicloIsVisible = true;
@@ -81,6 +82,8 @@ export class PomodoroComponent implements OnInit {
   }
 
   startPausa() {
+    this.pomodoro.state = 'PAUSA';
+
     this.startStudioIsVisible = false;
     this.startPausaIsVisible = false;
     this.fineCicloIsVisible = true;
@@ -183,6 +186,8 @@ export class PomodoroComponent implements OnInit {
   }
 
   private endPomodoro() {
+    this.pomodoro.state = 'COMPLETATO';
+
     this.minutes = this.formatMinutes(0);
     this.seconds = this.formatSeconds(0);
     this.pomodoro.cyclesLeft = 0;

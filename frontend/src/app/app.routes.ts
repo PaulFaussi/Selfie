@@ -5,7 +5,6 @@ import { NotesComponent }      from './notes/notes.component';
 import { NoteEditorComponent } from './note-editor/note-editor.component';
 /* import { UserDashboardComponent } from './user-dashboard/user-dashboard.component'; */
 import { PomodoroComponent } from "./pomodoro/pomodoro.component";
-import { PomodoroEditorComponent } from "./pomodoro-editor/pomodoro-editor.component";
 
 
 
@@ -48,11 +47,6 @@ export const routes: Routes = [
       path: 'create-pomodoro',
       component: PomodoroCreateComponent,
       title: 'Create Pomodoro'
-    },
-    {
-      path: 'pomodoro-editor/:id',
-      component: PomodoroEditorComponent,
-      title: 'PomodoroEditor.'
     },
   // UNICA rotta Calendar
     {

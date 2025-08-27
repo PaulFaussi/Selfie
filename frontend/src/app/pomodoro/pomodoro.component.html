@@ -3,12 +3,13 @@
 <body>
   <app-navbar></app-navbar>
 
-    <div [ngStyle]="pomodoro.state === 'STUDIO' ? {'background-color':'#FF9A9A'} :
+    <div [ngStyle]="pomodoro.state === 'DA INIZIARE' ? {'background-color': 'rgb(200, 200, 200)'} :
+           pomodoro.state === 'STUDIO' ? {'background-color':'#FF9A9A'} :
            pomodoro.state === 'PAUSA' ? {'background-color': '#C7FBFF'} :
            pomodoro.state === 'COMPLETATO' ? {'background-color': '#AFFFA8'} :
            null" class="page-content">
 
-    <div class="head">
+      <div class="head">
       <a routerLink="">
         <h1 class="backto">< back</h1>
       </a>
@@ -37,6 +38,17 @@
         <button *ngIf="fineCicloIsVisible" class="action-button" (click)="fineCiclo()" style="width: 100%; padding: 0 0.7rem; margin: 0.3rem 0" >FINE CICLO</button>
         <button *ngIf="ricominciaCicloIsVisible" class="action-button" (click)="ricominciaCiclo()" style="width: 100%; padding: 0 0.7rem; margin: 0.3rem 0" >RICOMINCIA CICLO</button>
       </div>
+
+
+      <!-- Animazione Studio -->
+      <div class="animated-background study" *ngIf="pomodoro.state === 'STUDIO'"></div>
+
+      <!-- Animazione Pausa -->
+      <div class="animated-background break" *ngIf="pomodoro.state === 'PAUSA'"></div>
+
+      <!-- Animazione Pomodoro Completato -->
+      <div class="animated-background completed" *ngIf="pomodoro.state === 'COMPLETATO'"></div>
+
     </div>
 
     <app-footer></app-footer>
