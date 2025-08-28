@@ -19,7 +19,9 @@ import { WeekComponent } from '../calendar/week/week.component';
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [PreviewNoteComponent, RouterModule, NavbarComponent, PreviewPomodoroComponent, FooterComponent, TimemachineComponent, NgIf, CommonModule, DayComponent, WeekComponent],
+  imports: [PreviewNoteComponent, RouterModule, NavbarComponent,
+            PreviewPomodoroComponent, FooterComponent, TimemachineComponent,
+            NgIf, CommonModule, DayComponent, WeekComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
@@ -43,9 +45,10 @@ export class HomeComponent implements OnInit {
   noNotesAvailable: string = '';
 
   showUpcomingPomodoros: boolean = true;
-  upcomingPomodoros: PomodoroInterface[] = [];
-  recentPomodoros: PomodoroInterface[] = [];
+  todayPomodoroList: PomodoroInterface[] = [];
+  thisWeekPomodoroList: PomodoroInterface[] = [];
   pomodoroToDisplay: PomodoroInterface[] = [];
+  idNextPomodoro: string = '0';
   pomodoroService: PomodoroService = inject(PomodoroService);
 
   genericService: GenericService = inject(GenericService);
@@ -85,16 +88,16 @@ export class HomeComponent implements OnInit {
 
         this.pomodoroService.getAllPomodoros().then((pomodoros: PomodoroInterface[]) => {
           const futurePomodoros = this.pomodoroService.filterByFuturePomodoros(pomodoros);
-          this.upcomingPomodoros = this.pomodoroService
+          this.todayPomodoroList = this.pomodoroService
             .sortByUpcomingPomodoros(futurePomodoros)
             .slice(0, 3);
 
           const pastPomodoros = this.pomodoroService.filterByPastPomodoros(pomodoros);
-          this.recentPomodoros = this.pomodoroService
+          this.thisWeekPomodoroList = this.pomodoroService
             .sortByRecentPomodoros(pastPomodoros)
             .slice(0, 3);
 
-          this.pomodoroToDisplay = this.upcomingPomodoros;
+          this.pomodoroToDisplay = this.todayPomodoroList;
         });
     })
       .catch((error: any) => {
@@ -116,11 +119,10 @@ export class HomeComponent implements OnInit {
   switchPomodoroToDisplay() {    //POSSIBILE ERRORE
   this.showUpcomingPomodoros = !this.showUpcomingPomodoros;
     if(this.showUpcomingPomodoros) {
-      this.pomodoroToDisplay = this.upcomingPomodoros;
+      this.pomodoroToDisplay = this.todayPomodoroList;
     } else {
-      this.pomodoroToDisplay = this.recentPomodoros;
+      this.pomodoroToDisplay = this.thisWeekPomodoroList;
     }
-
   }
 
     toggleCalendarView() {

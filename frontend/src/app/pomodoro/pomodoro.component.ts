@@ -1,4 +1,4 @@
-import { Component, numberAttribute, OnInit } from '@angular/core';
+import { Component, Input, numberAttribute, OnInit } from '@angular/core';
 import { NavbarComponent } from "../navbar/navbar.component";
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { PreviewNoteComponent } from "../preview-note/preview-note.component";
@@ -14,7 +14,9 @@ import { SortPomodoroEnum } from "../sort-pomodoro.enum";
 @Component({
   selector: 'app-pomodoro',
   standalone: true,
-    imports: [RouterModule, NavbarComponent, FooterComponent, PreviewNoteComponent, CommonModule, FormsModule, PreviewPomodoroComponent, TimemachineComponent],
+    imports: [RouterModule, NavbarComponent, FooterComponent,
+              PreviewNoteComponent, CommonModule, FormsModule,
+              PreviewPomodoroComponent, TimemachineComponent],
   templateUrl: './pomodoro.component.html',
   styleUrl: './pomodoro.component.css'
 })
@@ -32,7 +34,7 @@ export class PomodoroComponent implements OnInit {
   seconds: string = '00';
   private intervalId: any;
 
-  public pomodoro: {
+  @Input() pomodoro: {
     _id: string,
     name: string,
     state: 'DA INIZIARE' | 'STUDIO' | 'PAUSA' | 'COMPLETATO',
@@ -58,7 +60,7 @@ export class PomodoroComponent implements OnInit {
       _id: '0',
       name: 'Nome del pomodoro',
       state: 'DA INIZIARE',
-      durationStudy: 1,
+      durationStudy: 0,
       durationBreak: 1,
       cyclesLeft: 2
     }
@@ -110,7 +112,7 @@ export class PomodoroComponent implements OnInit {
   }
 
   resetTimer() {
-    if (this.pomodoro.state === 'STUDIO') {
+    if (this.pomodoro.state === 'DA INIZIARE' || this.pomodoro.state === 'STUDIO') {
       this.minutes = this.formatMinutes(this.pomodoro.durationStudy);
       this.seconds = this.formatSeconds(0);
     } else if (this.pomodoro.state === 'PAUSA') {

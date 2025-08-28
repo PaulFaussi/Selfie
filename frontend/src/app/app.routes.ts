@@ -39,7 +39,7 @@ export const routes: Routes = [
         title: 'Dashboard'
     },
     {
-      path: 'pomodoro',
+      path: 'pomodoro/:id',
       component: PomodoroComponent,
       title: 'Pomodoro'
     },

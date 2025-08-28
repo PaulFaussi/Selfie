@@ -30,8 +30,9 @@
 
       <div class="stato-pomodoro">{{ pomodoro.state}}</div>
 
-      <div class="cicli-pomodoro">Cicli Rimasti: {{ pomodoro.cyclesLeft }}</div>
+      <div *ngIf="pomodoro.cyclesLeft > 0" class="cicli-pomodoro">Cicli Rimasti: {{ pomodoro.cyclesLeft }}</div>
 
+      <!-- TODO da aggiustare le condizioni con cui rendere visibili i tasti -> usare delle funzioni basandoci sullo stato del Pomodoro (invece che delle variabili) -->
       <div class="buttons_pomodoro">
         <button *ngIf="startStudioIsVisible" (click)="startStudio()" [disabled]="!actionButtonIsClickable" class="action-button" style="width: 100%; padding: 0 0.7rem; margin: 0.3rem 0" >INIZIA STUDIO</button>
         <button *ngIf="startPausaIsVisible" (click)="startPausa()" class="action-button" style="width: 100%; padding: 0 0.7rem; margin: 0.3rem 0" >INIZIA PAUSA</button>

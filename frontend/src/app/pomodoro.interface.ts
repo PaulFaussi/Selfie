@@ -2,9 +2,10 @@
 
 import { CreatorInterface } from "./creator.interface";
 
+// TODO aggiustare questa interfaccia (corrisponde a ciò che salveremo a db)
 export interface PomodoroInterface {
   _id: string,
-  creator: CreatorInterface,
+  creator: CreatorInterface | null,
   authList: string[],
   title: string,
   description: string,

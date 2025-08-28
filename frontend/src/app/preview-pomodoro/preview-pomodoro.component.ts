@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { PomodoroInterface } from "../pomodoro.interface";
 import { CommonModule, DatePipe } from "@angular/common";
 import { RouterLink, RouterModule } from "@angular/router";
@@ -10,12 +10,23 @@ import { RouterLink, RouterModule } from "@angular/router";
   templateUrl: './preview-pomodoro.component.html',
   styleUrl: './preview-pomodoro.component.css'
 })
-export class PreviewPomodoroComponent {
+export class PreviewPomodoroComponent implements OnInit {
   @Input() pomodoro!: PomodoroInterface;
 
 
-  truncateText(text: string): string {
-    return text.length > 210 ? text.substring(0, 210) + '...' : text;
+  ngOnInit() {
+    this.pomodoro = {
+      _id: '0',
+      creator: null,
+      authList: [],
+      title: 'Nome del Pomodoro',
+      description: '',
+      startDate: new Date(),
+      studyDurationInMinutes: 30,
+      breakDurationInMinutes: 5,
+      lastModificationDate: new Date(),
+      creationDate: new Date()
+    }
   }
 
 }

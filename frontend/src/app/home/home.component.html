@@ -62,7 +62,7 @@
 
     <div class="pomos" rounterLink="/pomodoro">
         <div class="pomos-header">
-            <a routerLink="/pomodoro">
+            <a routerLink="/pomodoro/{{idNextPomodoro}}">
                 <div class="pomos-header-title">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
@@ -71,18 +71,18 @@
                 </div>
             </a>
             <div class="selector">
-                <label>Upcoming</label>
+                <label>Today</label>
                 <label class="switch">
                     <input type="checkbox" (click)="switchPomodoroToDisplay()">
                     <span class="slider round"></span>
                 </label>
-                <label>Old</label>
+                <label>This Week</label>
             </div>
         </div>
         <div class="pomos-content">
             <p *ngIf="pomodoroToDisplay.length === 0">No recent pomos available.</p>
-            <app-preview-pomodoro *ngFor="let pomodoroInstance of pomodoroToDisplay"
-                                  [pomodoro]="pomodoroInstance"></app-preview-pomodoro>
+          <app-preview-pomodoro *ngFor="let pomodoroInstance of pomodoroToDisplay"
+                                [pomodoro]="pomodoroInstance"></app-preview-pomodoro>
         </div>
     </div>
 
