@@ -175,3 +175,7 @@
 .fab-button:hover {
   background-color: #5931a9;
 }
+
+* {
+  font-family: Arial, Helvetica, sans-serif;
+}
