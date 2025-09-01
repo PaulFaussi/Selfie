@@ -22,19 +22,19 @@ import { SortPomodoroEnum } from "../sort-pomodoro.enum";
 })
 export class PomodoroComponent implements OnInit {
 
-  public showDialogCreaPomodoro: boolean = false;
-
   public startStudioIsVisible: boolean = true;
   public startPausaIsVisible: boolean = false;
   public fineCicloIsVisible: boolean = false;
   public ricominciaCicloIsVisible: boolean = false;
   public actionButtonIsClickable: boolean = true;
 
-  minutes: string = '25';
+  minutes: string = '30';
   seconds: string = '00';
   private intervalId: any;
 
-  @Input() pomodoro: {
+  @Input() idPomodoro: string = '';
+
+  pomodoro: {
     _id: string,
     name: string,
     state: 'DA INIZIARE' | 'STUDIO' | 'PAUSA' | 'COMPLETATO',
@@ -48,28 +48,32 @@ export class PomodoroComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.idPomodoro = this.activatedRoute.snapshot.paramMap.get('id') ?? ''
     this.setPomodoro();
-
   }
 
   setPomodoro() {
 
-    // TODO applicare la logica per ottenere il Pomodoro corretto
+    if (this.idPomodoro == null || this.idPomodoro.length === 0) {
 
-    this.pomodoro = {
-      _id: '0',
-      name: 'Nome del pomodoro',
-      state: 'DA INIZIARE',
-      durationStudy: 0,
-      durationBreak: 1,
-      cyclesLeft: 2
+
+    } else {
+      this.pomodoroService.getPomodoroById(this.idPomodoro)
+        .then((p) => {
+
+          this.pomodoro = {
+            _id: p._id,
+            name: p.name,
+            state: p.state,
+            durationStudy: p.durationStudy,
+            durationBreak: p.durationBreak,
+            cyclesLeft: p.cyclesLeft
+          }
+
+          this.resetTimer();
+        })
     }
 
-    this.resetTimer();
-  }
-
-  openCreateNewPomodoroWindow() {
-    this.showDialogCreaPomodoro = true;
   }
 
   startStudio() {
@@ -201,7 +205,6 @@ export class PomodoroComponent implements OnInit {
     this.fineCicloIsVisible = false;
     this.ricominciaCicloIsVisible = false;
 
-    // TODO aggiornare il db che è stato completato il Pomodoro
   }
 
   private stopTimer() {

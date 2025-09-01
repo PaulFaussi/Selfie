@@ -55,7 +55,7 @@
 
 
     <div class="button-group">
-      <button type="button" (click)="creaPomodoro()" id="crea-pomodoro-button">CREA</button>
+      <button type="button" (click)="creaPomodoro()" id="crea-pomodoro-button">START NOW</button>
       <button type="button" (click)="schedulePomodoro()" id="schedule-pomodoro-button">SCHEDULE</button>
     </div>
 
@@ -78,7 +78,7 @@
       <!-- data e ora di inizio -->
       <div class="form-group">
         <label for="startDate" class="label-input">Data e Ora di Inizio</label>
-        <input id="startDate" type="datetime-local" class="input-tag" />
+        <input id="startDate" type="datetime-local" class="input-tag" [(ngModel)]="newPomodoroData.startDateString" />
       </div>
 
       <!-- sezione ripetizioni -->
@@ -94,7 +94,7 @@
       </div>
 
       <div class="button-group">
-        <button type="button" (click)="creaPomodoro()" id="conferma-schedule-button">CONFERMA</button>
+        <button type="button" (click)="creaScheduledPomodoro()" id="conferma-schedule-button">CONFERMA</button>
       </div>
 
 

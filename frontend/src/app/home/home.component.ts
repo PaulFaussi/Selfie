@@ -14,6 +14,7 @@ import { FooterComponent } from "../footer/footer.component";
 import { TimemachineComponent } from '../timemachine/timemachine.component';
 import { DayComponent } from '../calendar/day/day.component';
 import { WeekComponent } from '../calendar/week/week.component';
+import { TimeMachineService } from "../time-machine.service";
 
 
 @Component({
@@ -44,13 +45,13 @@ export class HomeComponent implements OnInit {
   noteToDisplay: NoteInterface[] = []
   noNotesAvailable: string = '';
 
-  showUpcomingPomodoros: boolean = true;
-  todayPomodoroList: PomodoroInterface[] = [];
-  thisWeekPomodoroList: PomodoroInterface[] = [];
+  showNextPomodoros: boolean = true;
+  allPomodoros: PomodoroInterface[] = [];
   pomodoroToDisplay: PomodoroInterface[] = [];
   idNextPomodoro: string = '0';
   pomodoroService: PomodoroService = inject(PomodoroService);
 
+  timeMachineService: TimeMachineService = inject(TimeMachineService);
   genericService: GenericService = inject(GenericService);
 
   constructor (private router: Router, private activatedRoute : ActivatedRoute) {
@@ -86,18 +87,9 @@ export class HomeComponent implements OnInit {
 
         });
 
-        this.pomodoroService.getAllPomodoros().then((pomodoros: PomodoroInterface[]) => {
-          const futurePomodoros = this.pomodoroService.filterByFuturePomodoros(pomodoros);
-          this.todayPomodoroList = this.pomodoroService
-            .sortByUpcomingPomodoros(futurePomodoros)
-            .slice(0, 3);
-
-          const pastPomodoros = this.pomodoroService.filterByPastPomodoros(pomodoros);
-          this.thisWeekPomodoroList = this.pomodoroService
-            .sortByRecentPomodoros(pastPomodoros)
-            .slice(0, 3);
-
-          this.pomodoroToDisplay = this.todayPomodoroList;
+        this.pomodoroService.getAllPomodoros().then(async (pomodoros: PomodoroInterface[]) => {
+          this.allPomodoros = pomodoros.map(p => {p.startDate = new Date(p.startDate); return p;});
+          await this.updatePomodoroToDisplay();
         });
     })
       .catch((error: any) => {
@@ -116,18 +108,35 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  switchPomodoroToDisplay() {    //POSSIBILE ERRORE
-  this.showUpcomingPomodoros = !this.showUpcomingPomodoros;
-    if(this.showUpcomingPomodoros) {
-      this.pomodoroToDisplay = this.todayPomodoroList;
-    } else {
-      this.pomodoroToDisplay = this.thisWeekPomodoroList;
-    }
+  async switchPomodoroToDisplay() {
+    this.showNextPomodoros = !this.showNextPomodoros;
+    await this.updatePomodoroToDisplay();
   }
 
     toggleCalendarView() {
     this.showDayView = !this.showDayView;
   }
+
+
+
+  private async updatePomodoroToDisplay() {
+    if (this.showNextPomodoros) {
+      this.pomodoroToDisplay = this.allPomodoros
+        .filter(p => p.state !== 'COMPLETATO')
+        .sort((p1, p2) => p1.startDate.getTime() - p2.startDate.getTime());
+    } else {
+      this.pomodoroToDisplay = this.allPomodoros
+        .filter(p => p.state === 'COMPLETATO')
+        .sort((p1, p2) => p2.startDate.getTime() - p1.startDate.getTime());
+    }
+
+    // massimo 3 pomodori nella home
+    this.pomodoroToDisplay = this.pomodoroToDisplay.length <= 3
+      ? this.pomodoroToDisplay
+      : this.pomodoroToDisplay.slice(0, 3);
+  }
+
+
 
 }
 

@@ -26,32 +26,9 @@ class PomodoroService {
         return this.filterPomodoroListByVisibility(username, pomodoroList)
     }
 
-    async findAllPomodorosSorted(jwt, sortType) {
-        const username = extractUsername(jwt);
-        const allPomodoros = await this.findAllPomodoros(jwt);
+    async createPomodoro(jwt, title, durationStudy, durationBreak, numberCycles, cyclesLeft, startDate) {
 
-        if (sortType === 'START_RECENT') {
-            allPomodoros.sort((a, b) => b.startDate.getTime() - a.startDate.getTime());
-        }
-        if (sortType === 'START_OLDEST') {
-            allPomodoros.sort((a, b) => a.startDate.getTime() - b.startDate.getTime());
-        }
-        if (sortType === 'LAST_MODIFIED') {
-            allPomodoros.sort((a, b) => b.lastModificationDate.getTime() - a.lastModificationDate.getTime());
-        }
-        if (sortType === 'CREATION_OLDEST') {
-            allPomodoros.sort((a, b) => a.creationDate.getTime() - b.creationDate.getTime());
-        }
-        if (sortType === 'CREATION_RECENT') {
-            allPomodoros.sort((a, b) => b.creationDate.getTime() - a.creationDate.getTime());
-        }
-
-        return allPomodoros;
-    }
-
-    async createPomodoro(jwt, title, description, startDate, studyDurationInMinutes, breakDurationInMinutes) {
-
-        await this.pomodoroRepository.createPomodoro(jwt, title, description, getCurrentDate(), studyDurationInMinutes, breakDurationInMinutes);
+        await this.pomodoroRepository.createPomodoro(jwt, title, durationStudy, durationBreak, numberCycles, cyclesLeft, startDate);
     }
 
     async deletePomodoro(jwt, req) {
@@ -60,8 +37,12 @@ class PomodoroService {
         await this.pomodoroRepository.deletePomodoro(username, id);
     }
 
-    async updatePomodoro(jwt, id, title, description, startDate, studyDurationInMinutes, breakDurationInMinutes) {
-        return await  this.pomodoroRepository.updatePomodoro(id, jwt, title, description, startDate, studyDurationInMinutes, breakDurationInMinutes);
+    async updateCyclesLeftPomodoro(jwt, id, cyclesLeft) {
+        return await  this.pomodoroRepository.updateCyclesLeftPomodoro(id, jwt, cyclesLeft);
+    }
+
+    async updatePomodoro(jwt, id, title, description, startDate, durationStudy, durationBreak) {
+        return await  this.pomodoroRepository.updatePomodoro(id, jwt, title, description, startDate, durationStudy, durationBreak);
     }
 
 
@@ -69,7 +50,7 @@ class PomodoroService {
     ////// PRIVATE
 
     isPomodoroVisible(username, pomodoro) {
-        return pomodoro != null && (pomodoro.creator.username === username || pomodoro.authList.includes(username));
+        return pomodoro != null && (pomodoro.creator === username);
     }
 
     filterPomodoroListByVisibility(username, pomodoroList) {

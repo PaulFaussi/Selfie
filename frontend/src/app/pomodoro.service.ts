@@ -14,10 +14,15 @@ export class PomodoroService {
 
   constructor(private httpService: HttpService, private loginService: LoginService) { }
 
-  async createPomodoro(title: string, description: string, startDate: Date, studyDurationInMinutes: number | null, breakDurationInMinutes: number | null): Promise<void> {
+  async createPomodoro(title: string,
+                       durationStudy: number | null,
+                       durationBreak: number | null,
+                       numberCycles: number,
+                       startDate: Date): Promise<void> {
     try {
+      const cyclesLeft = numberCycles;
       const url = `${this.apiUrl}/createPomodoro`;
-      const body = {title, description, startDate, studyDurationInMinutes, breakDurationInMinutes};
+      const body = {title, durationStudy, durationBreak, numberCycles, cyclesLeft, startDate};
       const token = this.loginService.getToken();
 
       this.httpService.post(url, body, token).subscribe();
@@ -59,12 +64,11 @@ export class PomodoroService {
       return null;
     }
 
-    console.log('Aggiornando il pomodoro... ');
-    // jwt, req.params.id, req.title, req.description, req.startDate, req.startDate, req.studyDurationInMinutes, req.breakDurationInMinutes);
+    // jwt, req.params.id, req.title, req.description, req.startDate, req.startDate, req.durationStudy, req.durationBreak);
 
     const url = `${this.apiUrl}/updatePomodoro/${id}`;
     const body = { title: pomodoro.title, description: pomodoro.description, startDate: pomodoro.startDate,
-      studyDurationInMinutes: pomodoro.studyDurationInMinutes, breakDurationInMinutes: pomodoro.breakDurationInMinutes};
+      durationStudy: pomodoro.durationStudy, durationBreak: pomodoro.durationBreak};
     const token = this.loginService.getToken();
 
     return await firstValueFrom(this.httpService.post(url, body, token));

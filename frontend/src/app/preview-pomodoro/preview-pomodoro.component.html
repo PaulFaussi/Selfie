@@ -2,16 +2,16 @@
 <div class="container">
   <a [routerLink]="['/pomodoro', pomodoro._id]">
     <div class="title-box">
-      <h1 class="title"> {{ pomodoro.title }} </h1>
+      <h1 class="title"> {{ pomodoro.name }} </h1>
       <h1 class="pomodoro-emoji">🍅</h1>
     </div>
 
     <div class="content">
       <div class="pomodoro-body">
-        <p>Duration study: {{ pomodoro.studyDurationInMinutes }} min </p>
+        <p>Duration study: {{ pomodoro.durationStudy }} min </p>
       </div>
       <div class="pomodoro-body">
-        <p>Duration break: {{ pomodoro.breakDurationInMinutes }} min </p>
+        <p>Duration break: {{ pomodoro.durationBreak }} min </p>
       </div>
       <div class="pomodoro-body">
         <p>Number cycles: 5 </p>
@@ -19,8 +19,8 @@
     </div>
 
     <div class="date">
-      <h2 class="date-left"> Programmed: {{pomodoro.startDate | date:'dd MMM yyyy, HH:mm' }} </h2>
-      <h2 class="date-right"> Created: {{pomodoro.creationDate | date:'dd MMM yyyy, HH:mm' }} </h2>
+      <h2 class="date-left"> Schedule at: {{pomodoro.startDate | date:'dd MMM yyyy, HH:mm' }} </h2>
+<!--      <h2 class="date-right"> Created: {{pomodoro.creationDate | date:'dd MMM yyyy, HH:mm' }} </h2>-->
     </div>
   </a>
 </div>

@@ -15,18 +15,18 @@ export class PreviewPomodoroComponent implements OnInit {
 
 
   ngOnInit() {
-    this.pomodoro = {
-      _id: '0',
-      creator: null,
-      authList: [],
-      title: 'Nome del Pomodoro',
-      description: '',
-      startDate: new Date(),
-      studyDurationInMinutes: 30,
-      breakDurationInMinutes: 5,
-      lastModificationDate: new Date(),
-      creationDate: new Date()
-    }
+    // this.pomodoro = {
+    //   _id: '0',
+    //   creator: null,
+    //   authList: [],
+    //   title: 'Nome del Pomodoro',
+    //   description: '',
+    //   startDate: new Date(),
+    //   durationStudy: 30,
+    //   durationBreak: 5,
+    //   lastModificationDate: new Date(),
+    //   creationDate: new Date()
+    // }
   }
 
 }

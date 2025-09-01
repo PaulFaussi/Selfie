@@ -60,7 +60,6 @@ export class LoginService {
 
     }
     catch (error) {
-      console.log('sadsdasda');
       return false;
     }
   }

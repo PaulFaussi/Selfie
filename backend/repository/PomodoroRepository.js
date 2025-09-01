@@ -1,5 +1,6 @@
 const {ObjectId} = require("mongodb");
 const {extractToken} = require("../JwtUtils");
+const {getCurrentDate} = require("../TimeMachine");
 
 class PomodoroRepository {
     constructor(db) {
@@ -27,8 +28,8 @@ class PomodoroRepository {
 //         title: string,
 //         description: string,
 //         startDate: Date,
-//         studyDurationInMinutes: number | null,
-//         breakDurationInMinutes: number | null,
+//         durationStudy: number | null,
+//         durationBreak: number | null,
 //         lastModificationDate: Date,
 //         creationDate: Date,
 //     // duration_in_minutes: number, TODO (pf): da implementare
@@ -36,21 +37,24 @@ class PomodoroRepository {
 // }
 
 
-    async createPomodoro(jwt, title, description, startDate, studyDurationInMinutes, breakDurationInMinutes) {
+    async createPomodoro(jwt, title, durationStudy, durationBreak, numberCycles, cyclesLeft, startDate) {
         const creator = extractToken(jwt);
-        const now = new Date();
+        const now = getCurrentDate();
+
+        console.log("Start Date:");
+        console.log(startDate);
+        console.log("\n\n\n");
+
         const newPomodoro = {
-            creator,
-            authList: [],
-            title,
-            description,
-            startDate,
-            studyDurationInMinutes,
-            breakDurationInMinutes,
-            lastModificationDate: now,
-            creationDate: now
-            // duration_in_minutes: number, TODO (pf): da implementare
-            // state: "TO START" | "STUDY" | "BREAK" | "ON PAUSE" | "COMPLETED"
+            creator: creator.username,
+            name: title,
+            state: 'DA INIZIARE',
+            durationStudy: durationStudy,
+            durationBreak: durationBreak,
+            numberCycles,
+            cyclesLeft,
+            creationDate: now,
+            startDate: new Date(startDate)
         }
         const result = await this.collection.insertOne(newPomodoro);
         if(result.acknowledged){
@@ -61,18 +65,35 @@ class PomodoroRepository {
         }
     }
 
-
-    async updatePomodoro(id, jwt, title, description, startDate, studyDurationInMinutes, breakDurationInMinutes) {
+    async updateCyclesLeftPomodoro(id, jwt, cyclesLeft) {
         const pomodoro = await this.collection.findOne({ _id: new ObjectId(id)});
 
         if (!pomodoro) {
             throw new Error('Pomodoro non trovato');
         }
 
-        const now = new Date();
         const result = await this.collection.updateOne(
             { _id: new ObjectId(id) },
-            { $set: { title, description, startDate, studyDurationInMinutes, breakDurationInMinutes, lastModificationDate: now} });
+            { $set: { cyclesLeft } });
+
+        if (result.modifiedCount === 0) {
+            throw new Error('Aggiornamento del Pomodoro fallito');
+        }
+
+        return await this.collection.findOne({ _id: new ObjectId(id)});
+    }
+
+    async updatePomodoro(id, jwt, title, description, startDate, durationStudy, durationBreak) {
+        const pomodoro = await this.collection.findOne({ _id: new ObjectId(id)});
+
+        if (!pomodoro) {
+            throw new Error('Pomodoro non trovato');
+        }
+
+        const now = getCurrentDate();
+        const result = await this.collection.updateOne(
+            { _id: new ObjectId(id) },
+            { $set: { title, description, startDate, durationStudy, durationBreak, astModificationDate: nowl} });
 
         if (result.modifiedCount === 0) {
             throw new Error('Aggiornamento del Pomodoro fallito');
