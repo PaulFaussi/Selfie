@@ -2,6 +2,7 @@ import { Component, Input, OnInit, OnChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { EventService }  from '../../services/event.service';
 import { EventFormComponent, CalendarEvent } from '../event-form/event-form.component';
+import { TimeMachineService } from "../../time-machine.service";
 
 @Component({
   selector: 'app-day',
@@ -21,18 +22,18 @@ export class DayComponent implements OnInit, OnChanges {
   selectedEventDate?: Date;
   showForm = false;
 
-  constructor(private eventSvc: EventService) {}
+  constructor(private eventSvc: EventService, private timeMachineService: TimeMachineService) {}
 
   ngOnInit() {
-    if (!this.baseDate) {
-      this.baseDate = new Date();
-    }
-    this.loadEvents();
+    this.setCurrentDateAndLoadEvents()
   }
+
   ngOnChanges() {
-    if (!this.baseDate) {
-      this.baseDate = new Date();
-    }
+    this.setCurrentDateAndLoadEvents()
+  }
+
+  async setCurrentDateAndLoadEvents() {
+    this.baseDate = await this.timeMachineService.getCurrentDate();
     this.loadEvents();
   }
 
@@ -132,13 +133,13 @@ export class DayComponent implements OnInit, OnChanges {
     this.showForm = true;
   }
 
-  openDetail(ev: CalendarEvent, date?: Date) {
+  async openDetail(ev: CalendarEvent, date?: Date) {
     this.selectedEvent = ev;
-    this.selectedEventDate = date ? new Date(date) : (this.baseDate ? new Date(this.baseDate) : new Date());
+    this.selectedEventDate = date ? new Date(date) : (this.baseDate ? new Date(this.baseDate) : await this.timeMachineService.getCurrentDate());
     this.showForm = true;
   }
 
-deleteSelected(event?: CalendarEvent) {
+  async deleteSelected(event?: CalendarEvent) {
   if (event) this.selectedEvent = event;
   if (!this.selectedEvent) return;
 
@@ -161,7 +162,7 @@ deleteSelected(event?: CalendarEvent) {
 
     } else {
       // Eliminazione singola occorrenza
-      if (!this.selectedEventDate) this.selectedEventDate = new Date();
+      if (!this.selectedEventDate) this.selectedEventDate = await this.timeMachineService.getCurrentDate();
 
       const occDate = this.selectedEventDate;
       const start = new Date(ev.startDate);

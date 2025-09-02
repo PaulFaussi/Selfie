@@ -2,6 +2,7 @@ import { Component, Input, OnInit, OnChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { EventService }  from '../../services/event.service';
 import { EventFormComponent, CalendarEvent } from '../event-form/event-form.component';
+import { TimeMachineService } from "../../time-machine.service";
 
 @Component({
   selector: 'app-week',
@@ -22,27 +23,25 @@ export class WeekComponent implements OnInit, OnChanges {
   selectedEventDate?: Date;
   showForm = false;
 
-  constructor(private eventSvc: EventService) {}
+  constructor(private eventSvc: EventService, private timeMachineService: TimeMachineService) {}
 
   ngOnInit() {
-    if (!this.baseDate) {
-      this.baseDate = new Date();
-    }
-    this.buildWeek();
-    this.loadEvents();
+    this.buildWeekAndLoadEvents();
   }
   ngOnChanges() {
-    if (!this.baseDate) {
-      this.baseDate = new Date();
-    }
+    this.buildWeekAndLoadEvents();
+  }
+
+  async buildWeekAndLoadEvents() {
+    this.baseDate = await this.timeMachineService.getCurrentDate();
     this.buildWeek();
     this.loadEvents();
   }
 
   private buildWeek() {
-    const dow = (this.baseDate!.getDay() + 6) % 7;
+    const dayOfTheWeek = (this.baseDate!.getDay() + 6) % 7;
     const monday = new Date(this.baseDate!);
-    monday.setDate(this.baseDate!.getDate() - dow);
+    monday.setDate(this.baseDate!.getDate() - dayOfTheWeek);
     this.days = Array.from({ length: 7 }, (_, i) => {
       const d = new Date(monday);
       d.setDate(monday.getDate() + i);

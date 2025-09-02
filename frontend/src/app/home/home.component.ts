@@ -60,6 +60,9 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(){
 
+    this.timeMachineService.getCurrentDate()
+      .then(currentDate => { this.today = currentDate })
+
     this.genericService.checkTokenValido()
       .then((result: boolean) => {
 

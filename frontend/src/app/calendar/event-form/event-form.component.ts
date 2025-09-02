@@ -4,6 +4,7 @@ import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angula
 import { HttpClient } from '@angular/common/http';
 import { generaICS } from '../../services/event-export.service';
 import { parseICS } from 'ics-parser';
+import { TimeMachineService } from "../../time-machine.service";
 
 export interface CalendarEvent {
   id: string;
@@ -52,7 +53,7 @@ export class EventFormComponent implements OnChanges {
   hours = Array.from({ length: 24 }, (_, i) => i.toString().padStart(2, '0'));
   minutes = Array.from({ length: 12 }, (_, i) => (i * 5).toString().padStart(2, '0'));
 
-  constructor(private fb: FormBuilder, private http: HttpClient) {
+  constructor(private fb: FormBuilder, private http: HttpClient, private timeMachineService: TimeMachineService) {
     this.form = this.fb.group({
       title: ['', Validators.required],
       description: [''],
@@ -207,8 +208,8 @@ export class EventFormComponent implements OnChanges {
     ['startHour', 'startMinute', 'endHour', 'endMinute'].forEach(c => this.form.get(c)?.enable());
   }
 
-  private today(): string {
-    return new Date().toISOString().slice(0, 10);
+  private async today(): Promise<string> {
+    return (await this.timeMachineService.getCurrentDate()).toISOString().slice(0, 10);
   }
 
   private generateId() {

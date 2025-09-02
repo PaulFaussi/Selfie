@@ -10,6 +10,7 @@ import { EventService } from '../services/event.service';
 import { UnavailabilityService, Unavailability } from '../services/unavailability.service';
 import { UnavailabilityFormComponent } from './unavailability-form/unavailability-form.component';
 import { generaICS } from '../services/event-export.service';
+import { TimeMachineService } from "../time-machine.service";
 
 
 @Component({
@@ -57,15 +58,20 @@ export class CalendarComponent implements OnInit {
   constructor(
     private http: HttpClient,
     private eventService: EventService,
-    private unavailabilityService: UnavailabilityService
+    private unavailabilityService: UnavailabilityService,
+    private timeMachineService: TimeMachineService
   ) {}
 
   ngOnInit(): void {
-    this.requestNotificationPermission();
-    this.fetchAttivita();
-    this.fetchEventi();
-    this.fetchUnavailability();
-    setInterval(() => this.checkEventNotifications(), 60 * 1000);
+    this.timeMachineService.getCurrentDate()
+      .then(currentDate => {
+        this.currentDate = currentDate;
+        this.requestNotificationPermission();
+        this.fetchAttivita();
+        this.fetchEventi();
+        this.fetchUnavailability();
+        setInterval(() => this.checkEventNotifications(), 60 * 1000);
+      })
   }
 
   requestNotificationPermission(): void {

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { EventService } from '../../services/event.service';
 import { EventFormComponent, CalendarEvent } from '../event-form/event-form.component';
 import { ConfirmationModalComponent } from '../ConfirmationModalComponent/confirmation-modal.component';
+import { TimeMachineService } from "../../time-machine.service";
 
 @Component({
   selector: 'app-month',
@@ -22,16 +23,18 @@ export class MonthComponent implements OnInit, OnChanges {
   showConfirm = false;
   pendingDeleteEvent?: CalendarEvent;
 
-  constructor(private eventSvc: EventService) {}
+  constructor(private eventSvc: EventService, private timeMachineService: TimeMachineService) {}
 
   ngOnInit() {
-    if (!this.baseDate) this.baseDate = new Date();
-    this.buildCalendar();
-    this.loadEvents();
+    this.buildCalendarAndLoadEvents();
   }
 
   ngOnChanges() {
-    if (!this.baseDate) this.baseDate = new Date();
+    this.buildCalendarAndLoadEvents();
+  }
+
+  async buildCalendarAndLoadEvents() {
+    this.baseDate = await this.timeMachineService.getCurrentDate();
     this.buildCalendar();
     this.loadEvents();
   }
@@ -81,11 +84,11 @@ export class MonthComponent implements OnInit, OnChanges {
     this.showForm = true;
   }
 
-openDetail(ev: CalendarEvent, date?: Date) {
+async openDetail(ev: CalendarEvent, date?: Date) {
   console.log('[DEBUG openDetail] clicked event:', ev);
   console.log('[DEBUG openDetail] clicked date:', date);
   this.selectedEvent = ev;
-  this.selectedEventDate = date ? new Date(date) : new Date();
+  this.selectedEventDate = date ? new Date(date) : await this.timeMachineService.getCurrentDate();
   this.showForm = true;
 }
 

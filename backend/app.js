@@ -61,27 +61,29 @@ async function main() {
   app.use('/notes', noteController.router);
   app.use('/messaggi', messaggiController.router);
 
-  //endpoint Time Machine
-  app.post('/timeMachine', (req, res) => {
-      const { newDateTime } = req.body;
 
-      if(newDateTime == "Now"){
-          updatedTime = new Date();
-      }
-      else{
-          updatedTime = new Date(newDateTime);
-      }
-
-      if (isNaN(updatedTime.getTime())) {
-        return res.status(400).json({ error: 'Formato data/ora non valido.' });
-      }
-
-      updatedTime.setHours(updatedTime.getHours() + 1); //correzione fuso orario
-      serverDateTime = updatedTime;
-
-      console.log("Data e ora aggiornati: ", serverDateTime);
-      res.status(200).json({ message: 'Data e ora aggiornate con successo!', serverDateTime});
-  });
+  // TODO (pf): assicurarmi che questo endpoint sulla time machine non serva più (abbiamo l'endpoint dedicato dentro GenericController
+  // //endpoint Time Machine
+  // app.post('/timeMachine', (req, res) => {
+  //     const { newDateTime } = req.body;
+  //
+  //     if(newDateTime === "Now"){
+  //         updatedTime = new Date();
+  //     }
+  //     else{
+  //         updatedTime = new Date(newDateTime);
+  //     }
+  //
+  //     if (isNaN(updatedTime.getTime())) {
+  //       return res.status(400).json({ error: 'Formato data/ora non valido.' });
+  //     }
+  //
+  //     updatedTime.setHours(updatedTime.getHours() + 1); //correzione fuso orario
+  //     serverDateTime = updatedTime;
+  //
+  //     console.log("Data e ora aggiornati: ", serverDateTime);
+  //     res.status(200).json({ message: 'Data e ora aggiornate con successo!', serverDateTime});
+  // });
 
   app.listen(port, () => {
     console.log(`Server in esecuzione su http://localhost:${port}`);
