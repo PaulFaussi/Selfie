@@ -20,23 +20,6 @@ class PomodoroRepository {
         return result;
     }
 
-
-// export interface PomodoroInterface {
-//     _id: string,
-//         creator: CreatorInterface,
-//         authList: string[],
-//         title: string,
-//         description: string,
-//         startDate: Date,
-//         durationStudy: number | null,
-//         durationBreak: number | null,
-//         lastModificationDate: Date,
-//         creationDate: Date,
-//     // duration_in_minutes: number, TODO (pf): da implementare
-//     // state: "TO START" | "STUDY" | "BREAK" | "ON PAUSE" | "COMPLETED"
-// }
-
-
     async createPomodoro(jwt, title, durationStudy, durationBreak, numberCycles, cyclesLeft, startDate) {
         const creator = extractToken(jwt);
         const now = getCurrentDate();

@@ -32,12 +32,11 @@
 
       <div *ngIf="pomodoro.cyclesLeft > 0" class="cicli-pomodoro">Cicli Rimasti: {{ pomodoro.cyclesLeft }}</div>
 
-      <!-- TODO da aggiustare le condizioni con cui rendere visibili i tasti -> usare delle funzioni basandoci sullo stato del Pomodoro (invece che delle variabili) -->
       <div class="buttons_pomodoro">
-        <button *ngIf="startStudioIsVisible" (click)="startStudio()" [disabled]="!actionButtonIsClickable" class="action-button" style="width: 100%; padding: 0 0.7rem; margin: 0.3rem 0" >INIZIA STUDIO</button>
+        <button *ngIf="isStartStudioButtonVisible()" (click)="startStudio()" class="action-button" style="width: 100%; padding: 0 0.7rem; margin: 0.3rem 0" >INIZIA STUDIO</button>
         <button *ngIf="startPausaIsVisible" (click)="startPausa()" class="action-button" style="width: 100%; padding: 0 0.7rem; margin: 0.3rem 0" >INIZIA PAUSA</button>
-        <button *ngIf="fineCicloIsVisible" class="action-button" (click)="fineCiclo()" style="width: 100%; padding: 0 0.7rem; margin: 0.3rem 0" >FINE CICLO</button>
-        <button *ngIf="ricominciaCicloIsVisible" class="action-button" (click)="ricominciaCiclo()" style="width: 100%; padding: 0 0.7rem; margin: 0.3rem 0" >RICOMINCIA CICLO</button>
+        <button *ngIf="isFineCicloButtonVisible()" class="action-button" (click)="fineCiclo()" style="width: 100%; padding: 0 0.7rem; margin: 0.3rem 0" >FINE CICLO</button>
+        <button *ngIf="isRicominciaCicloButtonVisible()" class="action-button" (click)="ricominciaCiclo()" style="width: 100%; padding: 0 0.7rem; margin: 0.3rem 0" >RICOMINCIA CICLO</button>
       </div>
 
 

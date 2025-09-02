@@ -22,11 +22,6 @@ import { SortPomodoroEnum } from "../sort-pomodoro.enum";
 })
 export class PomodoroComponent implements OnInit {
 
-  public startStudioIsVisible: boolean = true;
-  public startPausaIsVisible: boolean = false;
-  public fineCicloIsVisible: boolean = false;
-  public ricominciaCicloIsVisible: boolean = false;
-  public actionButtonIsClickable: boolean = true;
 
   minutes: string = '30';
   seconds: string = '00';
@@ -79,10 +74,7 @@ export class PomodoroComponent implements OnInit {
   startStudio() {
     this.pomodoro.state = 'STUDIO';
 
-    this.startStudioIsVisible = false;
     this.startPausaIsVisible = false;
-    this.fineCicloIsVisible = true;
-    this.ricominciaCicloIsVisible = true;
 
     this.startTimer();
   }
@@ -90,10 +82,7 @@ export class PomodoroComponent implements OnInit {
   startPausa() {
     this.pomodoro.state = 'PAUSA';
 
-    this.startStudioIsVisible = false;
     this.startPausaIsVisible = false;
-    this.fineCicloIsVisible = true;
-    this.ricominciaCicloIsVisible = true;
 
     this.startTimer();
   }
@@ -109,10 +98,7 @@ export class PomodoroComponent implements OnInit {
     this.pomodoro.state = 'STUDIO';
     this.resetTimer();
 
-    this.startStudioIsVisible = true;
     this.startPausaIsVisible = false;
-    this.fineCicloIsVisible = false;
-    this.ricominciaCicloIsVisible = false;
   }
 
   resetTimer() {
@@ -148,6 +134,28 @@ export class PomodoroComponent implements OnInit {
   }
 
 
+  public startPausaIsVisible: boolean = false;
+
+  public isStartStudioButtonVisible(): boolean {
+    return this.pomodoro.state === 'DA INIZIARE'
+      || (this.pomodoro.state === 'STUDIO' && !this.isFaseAttualeInCorso())
+  }
+
+  public isStartPausaButtonVisible(): boolean {
+    return this.pomodoro.state === 'PAUSA' && !this.isFaseAttualeInCorso()
+  }
+
+  public isFineCicloButtonVisible(): boolean {
+    return this.pomodoro.state !== 'COMPLETATO'
+  }
+
+  public isRicominciaCicloButtonVisible(): boolean {
+    return this.pomodoro.state !== 'DA INIZIARE'
+      && this.pomodoro.state !== 'COMPLETATO'
+      && ((this.pomodoro.state === 'STUDIO' && this.isFaseAttualeInCorso()) || (this.pomodoro.state === 'PAUSA'))
+  }
+
+
   private async endFase() {
     this.stopTimer()
 
@@ -165,10 +173,7 @@ export class PomodoroComponent implements OnInit {
 
     this.resetTimer();
 
-    this.startStudioIsVisible = false;
     this.startPausaIsVisible = true;
-    this.fineCicloIsVisible = true;
-    this.ricominciaCicloIsVisible = true;
   }
 
   private async fineFasePausa() {
@@ -185,10 +190,7 @@ export class PomodoroComponent implements OnInit {
 
     this.resetTimer();
 
-    this.startStudioIsVisible = true;
     this.startPausaIsVisible = false;
-    this.fineCicloIsVisible = false;
-    this.ricominciaCicloIsVisible = false;
   }
 
   private async endPomodoro() {
@@ -203,10 +205,7 @@ export class PomodoroComponent implements OnInit {
     await this.pomodoroService.updateCyclesLeft(this.idPomodoro, 0);
     await this.pomodoroService.completedPomodoro(this.idPomodoro);
 
-    this.startStudioIsVisible = false;
     this.startPausaIsVisible = false;
-    this.fineCicloIsVisible = false;
-    this.ricominciaCicloIsVisible = false;
 
   }
 
@@ -223,5 +222,9 @@ export class PomodoroComponent implements OnInit {
 
   private formatSeconds(seconds: number): string {
     return seconds > 9 ? seconds.toString() : '0' + seconds.toString();
+  }
+
+  private isFaseAttualeInCorso(): boolean {
+    return this.intervalId;
   }
 }
