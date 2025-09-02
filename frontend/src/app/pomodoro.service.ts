@@ -59,6 +59,22 @@ export class PomodoroService {
     return await firstValueFrom(this.httpService.delete(url, token));
   }
 
+  async updateCyclesLeft(id: string, cyclesLeft: number) {
+    const url = `${this.apiUrl}/updateCyclesLeftPomodoro/${id}`;
+    const body = { cyclesLeft };
+    const token = this.loginService.getToken();
+
+    return await firstValueFrom(this.httpService.post(url, body, token));
+  }
+
+  async completedPomodoro(id: string) {
+    const url = `${this.apiUrl}/completedPomodoro/${id}`;
+    const body = {};
+    const token = this.loginService.getToken();
+
+    return await firstValueFrom(this.httpService.post(url, body, token));
+  }
+
   async updatePomodoro(id: string, pomodoro: any) {
     if (pomodoro === null) {
       return null;

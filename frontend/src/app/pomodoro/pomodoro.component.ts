@@ -98,10 +98,10 @@ export class PomodoroComponent implements OnInit {
     this.startTimer();
   }
 
-  fineCiclo() {
+  async fineCiclo() {
     this.stopTimer();
 
-    this.fineFasePausa();
+    await this.fineFasePausa();
   }
 
   ricominciaCiclo() {
@@ -148,14 +148,14 @@ export class PomodoroComponent implements OnInit {
   }
 
 
-  private endFase() {
+  private async endFase() {
     this.stopTimer()
 
     if (this.pomodoro.state === 'STUDIO') {
       this.fineFaseStudio();
     }
     else if (this.pomodoro.state === 'PAUSA') {
-      this.fineFasePausa();
+      await this.fineFasePausa();
     }
 
   }
@@ -171,15 +171,15 @@ export class PomodoroComponent implements OnInit {
     this.ricominciaCicloIsVisible = true;
   }
 
-  private fineFasePausa() {
+  private async fineFasePausa() {
     if (this.pomodoro.cyclesLeft <= 1) {
-      this.endPomodoro();
+      await this.endPomodoro();
       return;
     }
 
     this.pomodoro.cyclesLeft = this.pomodoro.cyclesLeft - 1;
 
-    // TODO aggiornare il db che è stato completato un ciclo
+    await this.pomodoroService.updateCyclesLeft(this.idPomodoro, this.pomodoro.cyclesLeft);
 
     this.pomodoro.state = 'STUDIO';
 
@@ -191,7 +191,7 @@ export class PomodoroComponent implements OnInit {
     this.ricominciaCicloIsVisible = false;
   }
 
-  private endPomodoro() {
+  private async endPomodoro() {
     this.pomodoro.state = 'COMPLETATO';
 
     this.minutes = this.formatMinutes(0);
@@ -199,6 +199,9 @@ export class PomodoroComponent implements OnInit {
     this.pomodoro.cyclesLeft = 0;
 
     this.pomodoro.state = 'COMPLETATO';
+
+    await this.pomodoroService.updateCyclesLeft(this.idPomodoro, 0);
+    await this.pomodoroService.completedPomodoro(this.idPomodoro);
 
     this.startStudioIsVisible = false;
     this.startPausaIsVisible = false;

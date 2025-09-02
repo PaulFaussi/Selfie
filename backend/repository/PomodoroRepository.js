@@ -83,6 +83,24 @@ class PomodoroRepository {
         return await this.collection.findOne({ _id: new ObjectId(id)});
     }
 
+    async completedPomodoro(idPomodoro) {
+        const pomodoro = await this.collection.findOne({ _id: new ObjectId(idPomodoro)});
+
+        if (!pomodoro) {
+            throw new Error('Pomodoro non trovato');
+        }
+
+        const result = await this.collection.updateOne(
+            { _id: new ObjectId(idPomodoro) },
+            { $set: { state: 'COMPLETATO' } });
+
+        if (result.modifiedCount === 0) {
+            throw new Error('Aggiornamento del Pomodoro fallito');
+        }
+
+        return await this.collection.findOne({ _id: new ObjectId(idPomodoro)});
+    }
+
     async updatePomodoro(id, jwt, title, description, startDate, durationStudy, durationBreak) {
         const pomodoro = await this.collection.findOne({ _id: new ObjectId(id)});
 

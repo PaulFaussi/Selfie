@@ -41,6 +41,10 @@ class PomodoroService {
         return await  this.pomodoroRepository.updateCyclesLeftPomodoro(id, jwt, cyclesLeft);
     }
 
+    async completedPomodoro(jwt, id) {
+        return await this.pomodoroRepository.completedPomodoro(id, jwt);
+    }
+
     async updatePomodoro(jwt, id, title, description, startDate, durationStudy, durationBreak) {
         return await  this.pomodoroRepository.updatePomodoro(id, jwt, title, description, startDate, durationStudy, durationBreak);
     }

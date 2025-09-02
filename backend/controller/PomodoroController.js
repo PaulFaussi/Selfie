@@ -11,6 +11,8 @@ class PomodoroController {
         this.router.get('/getPomodoro/:id', this.getPomodoro.bind(this));
         this.router.get('/getAllPomodoros', this.getAllPomodoros.bind(this));
         this.router.post('/createPomodoro', this.createPomodoro.bind(this));
+        this.router.post('/updateCyclesLeftPomodoro/:id', this.updateCyclesLeftPomodoro.bind(this));
+        this.router.post('/completedPomodoro/:id', this.completedPomodoro.bind(this));
         this.router.post('/updatePomodoro/:id', this.updatePomodoro.bind(this));
         this.router.delete('/deletePomodoro/:id', this.deletePomodoro.bind(this));
 
@@ -58,11 +60,21 @@ class PomodoroController {
         }
     }
 
-    // TODO (pf) (next step): ripartire da qui -> implementare gli endpoint di modifica del Pomodoro. Agganciare quindi il FE ai nuovi endpoint
     async updateCyclesLeftPomodoro(req, res) {
         const jwt = getJwtFromRequest(req);
         try {
             const updatedPomodoro = await this.pomodoroService.updateCyclesLeftPomodoro(jwt, req.params.id, req.body.cyclesLeft);
+            res.status(200).json({ pomodoro: updatedPomodoro, message: `Pomodoro ${updatedPomodoro.title} aggiornato con successo` });
+        } catch (error) {
+            res.status(400).json(error.message);
+            console.log(error);
+        }
+    }
+
+    async completedPomodoro(req, res) {
+        const jwt = getJwtFromRequest(req);
+        try {
+            const updatedPomodoro = await this.pomodoroService.completedPomodoro(jwt, req.params.id);
             res.status(200).json({ pomodoro: updatedPomodoro, message: `Pomodoro ${updatedPomodoro.title} aggiornato con successo` });
         } catch (error) {
             res.status(400).json(error.message);
