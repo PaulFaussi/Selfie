@@ -13,8 +13,6 @@ class PomodoroController {
         this.router.post('/createPomodoro', this.createPomodoro.bind(this));
         this.router.post('/updateCyclesLeftPomodoro/:id', this.updateCyclesLeftPomodoro.bind(this));
         this.router.post('/completedPomodoro/:id', this.completedPomodoro.bind(this));
-        this.router.post('/updatePomodoro/:id', this.updatePomodoro.bind(this));
-        this.router.delete('/deletePomodoro/:id', this.deletePomodoro.bind(this));
 
 
     }
@@ -51,9 +49,9 @@ class PomodoroController {
     async createPomodoro(req, res) {
         try {
             const jwt = getJwtFromRequest(req);
-            await this.pomodoroService.createPomodoro(jwt, req.body.title, req.body.durationStudy, req.body.durationBreak, req.body.numberCycles, req.body.cyclesLeft, req.body.startDate);
+            const idNewPomodoro = await this.pomodoroService.createPomodoro(jwt, req.body.title, req.body.durationStudy, req.body.durationBreak, req.body.numberCycles, req.body.cyclesLeft, req.body.startDate);
 
-            res.status(200).json(`Pomodoro creato con successo`);
+            res.status(200).json({message: `Pomodoro creato con successo`, _id: idNewPomodoro });
         } catch (error) {
             res.status(400).json(error.message);
             console.log(error);
@@ -76,30 +74,6 @@ class PomodoroController {
         try {
             const updatedPomodoro = await this.pomodoroService.completedPomodoro(jwt, req.params.id);
             res.status(200).json({ pomodoro: updatedPomodoro, message: `Pomodoro ${updatedPomodoro.title} aggiornato con successo` });
-        } catch (error) {
-            res.status(400).json(error.message);
-            console.log(error);
-        }
-    }
-
-    async updatePomodoro(req, res) {
-        const jwt = getJwtFromRequest(req);
-        try {
-            const updatedPomodoro = await this.pomodoroService.updatePomodoro(jwt, req.params.id, req.body.title, req.body.description, new Date(req.body.startDate), req.body.durationStudy, req.body.durationBreak);
-            res.status(200).json({ pomodoro: updatedPomodoro, message: `Pomodoro ${updatedPomodoro.title} aggiornato con successo` });
-        } catch (error) {
-            res.status(400).json(error.message);
-            console.log(error);
-        }
-    }
-
-    //DELETE
-
-    async deletePomodoro(req, res) {
-        const jwt = getJwtFromRequest(req);
-        try {
-            await this.pomodoroService.deletePomodoro(jwt, req);
-            res.status(200).json(`Pomodoro eliminato con successo`)
         } catch (error) {
             res.status(400).json(error.message);
             console.log(error);

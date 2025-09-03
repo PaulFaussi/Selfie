@@ -35,8 +35,10 @@ export class PomodoroComponent implements OnInit {
     state: 'DA INIZIARE' | 'STUDIO' | 'PAUSA' | 'COMPLETATO',
     durationStudy: number,
     durationBreak: number,
-    cyclesLeft: number
-  } = { _id: '', name: '', state: 'DA INIZIARE', durationStudy: 0, durationBreak: 0, cyclesLeft: 0};
+    numberCycles: number,
+    cyclesLeft: number,
+    duration: number
+  } = { _id: '', name: '', state: 'DA INIZIARE', durationStudy: 0, durationBreak: 0, numberCycles: 0, cyclesLeft: 0, duration: 0};
 
   constructor (private router: Router, private activatedRoute : ActivatedRoute,
                private pomodoroService: PomodoroService) {
@@ -47,24 +49,44 @@ export class PomodoroComponent implements OnInit {
     this.setPomodoro();
   }
 
+  setGenericPomodoro() {
+    this.pomodoro = {
+      _id: '',
+      name: 'Default Pomodoro',
+      state: 'DA INIZIARE',
+      durationStudy: 30,
+      durationBreak: 5,
+      numberCycles: 5,
+      cyclesLeft: 5,
+      duration: 175
+    }
+  }
+
   setPomodoro() {
 
     if (this.idPomodoro == null || this.idPomodoro.length === 0) {
-
+      this.setGenericPomodoro();
+      this.resetTimer();
 
     } else {
       this.pomodoroService.getPomodoroById(this.idPomodoro)
         .then((p) => {
-
           this.pomodoro = {
             _id: p._id,
             name: p.name,
             state: p.state,
             durationStudy: p.durationStudy,
             durationBreak: p.durationBreak,
-            cyclesLeft: p.cyclesLeft
+            numberCycles: p.numberCycles,
+            cyclesLeft: p.cyclesLeft,
+            duration: (p.durationStudy + p.durationBreak) * p.numberCycles
           }
 
+          this.resetTimer();
+
+        })
+        .catch(() => {
+          this.setGenericPomodoro();
           this.resetTimer();
         })
     }
@@ -153,6 +175,20 @@ export class PomodoroComponent implements OnInit {
     return this.pomodoro.state !== 'DA INIZIARE'
       && this.pomodoro.state !== 'COMPLETATO'
       && ((this.pomodoro.state === 'STUDIO' && this.isFaseAttualeInCorso()) || (this.pomodoro.state === 'PAUSA'))
+  }
+
+  public formatTime(minutes: number): string {
+    if (minutes < 60) {
+      return `${minutes} min`;
+    }
+
+    const hours = Math.floor(minutes / 60);
+    const remainingMinutes = minutes % 60;
+
+    const stringHours = hours > 0 ? `${hours}h ` : '';
+    const stringMinutes = remainingMinutes >= 10 ? `${remainingMinutes} min` : `0${remainingMinutes} min`;
+
+    return stringHours + stringMinutes;
   }
 
 

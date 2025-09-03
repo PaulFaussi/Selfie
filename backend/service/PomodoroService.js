@@ -1,6 +1,5 @@
 const PomodoroRepository = require('../repository/PomodoroRepository');
 const { extractUsername } = require('../JwtUtils');
-const {getCurrentDate} = require("../TimeMachine");
 
 class PomodoroService {
 
@@ -28,13 +27,7 @@ class PomodoroService {
 
     async createPomodoro(jwt, title, durationStudy, durationBreak, numberCycles, cyclesLeft, startDate) {
 
-        await this.pomodoroRepository.createPomodoro(jwt, title, durationStudy, durationBreak, numberCycles, cyclesLeft, startDate);
-    }
-
-    async deletePomodoro(jwt, req) {
-        const username = extractUsername(jwt);
-        const id = req.params.id;
-        await this.pomodoroRepository.deletePomodoro(username, id);
+        return await this.pomodoroRepository.createPomodoro(jwt, title, durationStudy, durationBreak, numberCycles, cyclesLeft, startDate);
     }
 
     async updateCyclesLeftPomodoro(jwt, id, cyclesLeft) {
@@ -45,16 +38,12 @@ class PomodoroService {
         return await this.pomodoroRepository.completedPomodoro(id, jwt);
     }
 
-    async updatePomodoro(jwt, id, title, description, startDate, durationStudy, durationBreak) {
-        return await  this.pomodoroRepository.updatePomodoro(id, jwt, title, description, startDate, durationStudy, durationBreak);
-    }
-
 
 
     ////// PRIVATE
 
     isPomodoroVisible(username, pomodoro) {
-        return pomodoro != null && (pomodoro.creator === username);
+        return pomodoro != null && (pomodoro.username === username);
     }
 
     filterPomodoroListByVisibility(username, pomodoroList) {

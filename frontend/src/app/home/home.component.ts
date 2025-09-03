@@ -48,7 +48,6 @@ export class HomeComponent implements OnInit {
   showNextPomodoros: boolean = true;
   allPomodoros: PomodoroInterface[] = [];
   pomodoroToDisplay: PomodoroInterface[] = [];
-  idNextPomodoro: string = '0';
   pomodoroService: PomodoroService = inject(PomodoroService);
 
   timeMachineService: TimeMachineService = inject(TimeMachineService);

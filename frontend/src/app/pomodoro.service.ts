@@ -18,14 +18,15 @@ export class PomodoroService {
                        durationStudy: number | null,
                        durationBreak: number | null,
                        numberCycles: number,
-                       startDate: Date): Promise<void> {
+                       startDate: Date): Promise<any> {
     try {
       const cyclesLeft = numberCycles;
       const url = `${this.apiUrl}/createPomodoro`;
       const body = {title, durationStudy, durationBreak, numberCycles, cyclesLeft, startDate};
       const token = this.loginService.getToken();
 
-      this.httpService.post(url, body, token).subscribe();
+      const response = await firstValueFrom(this.httpService.post(url, body, token));
+      return response._id;
     } catch (error: any) {
       alert(error.message);
     }
@@ -33,13 +34,6 @@ export class PomodoroService {
 
   async getAllPomodoros(): Promise<PomodoroInterface[]> {
     const url = `${this.apiUrl}/getAllPomodoros`;
-    const token = this.loginService.getToken();
-
-    return await firstValueFrom(this.httpService.get(url, token));
-  }
-
-  async getAllPomodorosSorted(sortType: string): Promise<PomodoroInterface[]> {
-    const url = `${this.apiUrl}/getAllPomodoros/${sortType}`;
     const token = this.loginService.getToken();
 
     return await firstValueFrom(this.httpService.get(url, token));

@@ -21,15 +21,11 @@ class PomodoroRepository {
     }
 
     async createPomodoro(jwt, title, durationStudy, durationBreak, numberCycles, cyclesLeft, startDate) {
-        const creator = extractToken(jwt);
+        const user = extractToken(jwt);
         const now = getCurrentDate();
 
-        console.log("Start Date:");
-        console.log(startDate);
-        console.log("\n\n\n");
-
         const newPomodoro = {
-            creator: creator.username,
+            username: user.username,
             name: title,
             state: 'DA INIZIARE',
             durationStudy: durationStudy,
@@ -40,8 +36,10 @@ class PomodoroRepository {
             startDate: new Date(startDate)
         }
         const result = await this.collection.insertOne(newPomodoro);
+        const idNewPomodoro = result.insertedId.toString();
         if(result.acknowledged){
             console.log("Document inserted successfully");
+            return idNewPomodoro;
         }
         else{
             throw new Error('Note creation failed.');
@@ -82,42 +80,6 @@ class PomodoroRepository {
         }
 
         return await this.collection.findOne({ _id: new ObjectId(idPomodoro)});
-    }
-
-    async updatePomodoro(id, jwt, title, description, startDate, durationStudy, durationBreak) {
-        const pomodoro = await this.collection.findOne({ _id: new ObjectId(id)});
-
-        if (!pomodoro) {
-            throw new Error('Pomodoro non trovato');
-        }
-
-        const now = getCurrentDate();
-        const result = await this.collection.updateOne(
-            { _id: new ObjectId(id) },
-            { $set: { title, description, startDate, durationStudy, durationBreak, astModificationDate: nowl} });
-
-        if (result.modifiedCount === 0) {
-            throw new Error('Aggiornamento del Pomodoro fallito');
-        }
-
-        return await this.collection.findOne({ _id: new ObjectId(id)});
-    }
-
-
-
-    async deletePomodoro(username, id) {
-        const pomodoro = await this.collection.findOne({ _id: new ObjectId(id)});
-
-        if (pomodoro.creator.username !== username) {
-            const errorMessage = "Non hai i diritti per eliminare il Pomodoro";
-            throw new Error(errorMessage);
-        }
-
-        const result = await this.collection.deleteOne({ _id: new ObjectId(id)});
-        if (result.deletedCount !== 1) {
-            const errorMessage = "Errore nell'eliminare il Pomodoro";
-            throw new Error(errorMessage);
-        }
     }
 
 }

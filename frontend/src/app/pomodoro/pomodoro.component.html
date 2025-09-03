@@ -49,6 +49,14 @@
       <!-- Animazione Pomodoro Completato -->
       <div class="animated-background completed" *ngIf="pomodoro.state === 'COMPLETATO'"></div>
 
+      <!-- Info Pomodoro -->
+      <div class="container-info-pomodoro">
+        <div class="info-pomodoro">Durata fase studio: {{ formatTime(pomodoro.durationStudy) }}</div>
+        <div class="info-pomodoro">Durata fase pausa: {{ formatTime(pomodoro.durationBreak) }}</div>
+        <div class="info-pomodoro">Numero totale cicli: {{ pomodoro.numberCycles }}</div>
+        <div class="info-pomodoro">Durata totale: {{ formatTime(pomodoro.duration) }}</div>
+      </div>
+
     </div>
 
     <app-footer></app-footer>

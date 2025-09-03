@@ -44,13 +44,13 @@ export class PomodoroCreateComponent  implements OnInit {
   }
 
   async creaPomodoro() {
-    await this.pomodoroService.createPomodoro(this.newPomodoroData.title,
+    const idNewPomodoro = await this.pomodoroService.createPomodoro(this.newPomodoroData.title,
                                               this.newPomodoroData.durationStudy,
                                               this.newPomodoroData.durationBreak,
                                               this.newPomodoroData.numberCycles,
                                               await this.timeMachineService.getCurrentDate());
 
-    await this.router.navigateByUrl('');
+    await this.router.navigateByUrl(`/pomodoro/${idNewPomodoro}`);
   }
 
   async creaScheduledPomodoro() {

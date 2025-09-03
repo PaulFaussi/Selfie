@@ -38,6 +38,11 @@ export const routes: Routes = [
         component: UserDashboardComponent,
         title: 'Dashboard'
     },
+  {
+      path: 'pomodoro',
+      component: PomodoroComponent,
+      title: 'Pomodoro'
+    },
     {
       path: 'pomodoro/:id',
       component: PomodoroComponent,
