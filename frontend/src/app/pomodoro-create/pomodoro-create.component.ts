@@ -26,6 +26,8 @@ export class PomodoroCreateComponent  implements OnInit {
 
   showPopupSchedulePomodoro: boolean = false;
 
+  private syncing: boolean = false;
+
   public newPomodoroData!: {
     title: string,
     durationStudy: number,
@@ -44,6 +46,11 @@ export class PomodoroCreateComponent  implements OnInit {
   }
 
   async creaPomodoro() {
+    if (this.newPomodoroData.numberCycles === 0 || this.newPomodoroData.duration === 0) {
+      alert("Durata del Pomodoro non valida");
+      return;
+    }
+
     const idNewPomodoro = await this.pomodoroService.createPomodoro(this.newPomodoroData.title,
                                               this.newPomodoroData.durationStudy,
                                               this.newPomodoroData.durationBreak,
@@ -64,6 +71,11 @@ export class PomodoroCreateComponent  implements OnInit {
   }
 
   schedulePomodoro() {
+    if (this.newPomodoroData.numberCycles === 0 || this.newPomodoroData.duration === 0) {
+      alert("Durata del Pomodoro non valida");
+      return;
+    }
+
     this.showPopupSchedulePomodoro = true;
   }
 
@@ -71,6 +83,44 @@ export class PomodoroCreateComponent  implements OnInit {
     this.showPopupSchedulePomodoro = false;
   }
 
+  onNumberCyclesChange(value: number | null) {
+    if (this.syncing) {
+      return;
+    }
+
+    this.syncing = true;
+
+    if (value === null || value === undefined) {
+      this.newPomodoroData.duration = 0;
+
+    } else {
+      this.newPomodoroData.duration = (this.newPomodoroData.durationStudy + this.newPomodoroData.durationBreak) * this.newPomodoroData.numberCycles;
+
+    }
+
+    this.syncing = false;
+  }
+
+  onDurationChange(value: number | null) {
+    if (this.syncing) {
+      return;
+    }
+
+    this.syncing = true;
+
+    if (value === null || value === undefined) {
+      this.newPomodoroData.numberCycles = 0;
+
+    } else if (this.newPomodoroData.duration % (this.newPomodoroData.durationStudy + this.newPomodoroData.durationBreak) !== 0) {
+      this.newPomodoroData.numberCycles = 0;
+
+    } else {
+      this.newPomodoroData.numberCycles = this.newPomodoroData.duration / (this.newPomodoroData.durationStudy + this.newPomodoroData.durationBreak)
+
+    }
+
+    this.syncing = false;
+  }
 
   private async setDefaultPomodoro() {
     this.newPomodoroData = {

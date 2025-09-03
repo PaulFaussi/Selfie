@@ -29,28 +29,28 @@
     <!-- TODO il valore qui dentro deve essere maggiore di 0 -->
     <div class="form-group">
       <label for="durationStudy" class="label-input">Durata Studio (minuti)</label>
-      <input id="durationStudy" type="number" class="input-tag" [(ngModel)]="newPomodoroData.durationStudy" />
+      <input id="durationStudy" type="number" class="input-tag" [(ngModel)]="newPomodoroData.durationStudy" (ngModelChange)="onNumberCyclesChange($event)"/>
     </div>
 
     <!-- Durata pausa -->
     <!-- TODO il valore qui dentro deve essere maggiore di 0 -->
     <div class="form-group">
       <label for="durationBreak" class="label-input">Durata Pausa (minuti)</label>
-      <input id="durationBreak" type="number" class="input-tag" [(ngModel)]="newPomodoroData.durationBreak" />
+      <input id="durationBreak" type="number" class="input-tag" [(ngModel)]="newPomodoroData.durationBreak" (ngModelChange)="onNumberCyclesChange($event)"/>
     </div>
 
     <!-- Numero cicli -->
     <!-- TODO il valore qui dentro deve essere maggiore di 0 e minore di 24h -->
     <div class="form-group">
       <label for="numberCycles" class="label-input">Numero di Cicli</label>
-      <input id="numberCycles" type="number" class="input-tag" [(ngModel)]="newPomodoroData.numberCycles" />
+      <input id="numberCycles" type="number" class="input-tag" [(ngModel)]="newPomodoroData.numberCycles" (ngModelChange)="onNumberCyclesChange($event)"/>
     </div>
 
-    <!-- Numero cicli -->
+    <!-- Durata del Pomodoro -->
     <!-- TODO il valore qui dentro deve essere maggiore di 0 e minore di 24h -->
     <div class="form-group">
       <label for="duration" class="label-input">Durata Totale (minuti)</label>
-      <input id="duration" type="number" class="input-tag" [(ngModel)]="newPomodoroData.duration" />
+      <input id="duration" type="number" class="input-tag" [(ngModel)]="newPomodoroData.duration" (ngModelChange)="onDurationChange($event)"/>
     </div>
 
 
