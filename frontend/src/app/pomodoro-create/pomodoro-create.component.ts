@@ -81,6 +81,7 @@ export class PomodoroCreateComponent  implements OnInit {
       recurrence: 'none',
       color: '#ff0000',
       isPomodoroEvent: true,
+      idPomodoro: idNewPomodoro
     };
 
     await this.eventService.addEvent(event);
@@ -89,7 +90,7 @@ export class PomodoroCreateComponent  implements OnInit {
   }
 
   async creaScheduledPomodoro() {
-    await this.pomodoroService.createPomodoro(this.newPomodoroData.title,
+    const idNewPomodoro = await this.pomodoroService.createPomodoro(this.newPomodoroData.title,
       this.newPomodoroData.durationStudy,
       this.newPomodoroData.durationBreak,
       this.newPomodoroData.numberCycles,
@@ -113,6 +114,7 @@ export class PomodoroCreateComponent  implements OnInit {
       recurrence: this.recurrence,
       color: '#ff0000',
       isPomodoroEvent: true,
+      idPomodoro: idNewPomodoro
     };
 
     await this.eventService.addEvent(event);

@@ -37,7 +37,8 @@ export class EventService {
           color: e.color,
           assegnati: e.assegnati || [],
           partecipazioni: e.partecipazioni || [],
-          isPomodoroEvent: e.isPomodoroEvent
+          isPomodoroEvent: e.isPomodoroEvent,
+          idPomodoro: e.idPomodoro
         }));
       });
   }

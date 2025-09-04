@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { EventService }  from '../../services/event.service';
 import { EventFormComponent, CalendarEvent } from '../event-form/event-form.component';
 import { TimeMachineService } from "../../time-machine.service";
+import { Router } from "@angular/router";
 
 @Component({
   selector: 'app-week',
@@ -23,7 +24,7 @@ export class WeekComponent implements OnInit, OnChanges {
   selectedEventDate?: Date;
   showForm = false;
 
-  constructor(private eventSvc: EventService, private timeMachineService: TimeMachineService) {}
+  constructor(private eventSvc: EventService, private router: Router, private timeMachineService: TimeMachineService) {}
 
   ngOnInit() {
     this.buildWeekAndLoadEvents();
@@ -155,9 +156,9 @@ eventsForSlot(day: Date, h: number): CalendarEvent[] {
     this.showForm = true;
   }
 
-  openDetail(ev: CalendarEvent, date?: Date) {
+  async openDetail(ev: CalendarEvent, date?: Date) {
     if (ev.isPomodoroEvent) {
-      alert("Non è possibile modificare l'Evento del Pomodoro");
+      await this.router.navigateByUrl(`/pomodoro/${ev.idPomodoro}`)
       return;
     }
 
