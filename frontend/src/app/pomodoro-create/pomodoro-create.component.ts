@@ -3,7 +3,7 @@ import { NavbarComponent } from "../navbar/navbar.component";
 import { FooterComponent } from "../footer/footer.component";
 import { TimemachineComponent } from "../timemachine/timemachine.component";
 import { Router, RouterLink } from "@angular/router";
-import { FormsModule } from "@angular/forms";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { NgIf } from "@angular/common";
 import { PomodoroService } from "../pomodoro.service";
 import { TimeMachineService } from "../time-machine.service";
@@ -19,7 +19,8 @@ import { EventService } from "../services/event.service";
     TimemachineComponent,
     RouterLink,
     FormsModule,
-    NgIf
+    NgIf,
+    ReactiveFormsModule
   ],
   templateUrl: './pomodoro-create.component.html',
   styleUrl: './pomodoro-create.component.css'
@@ -27,6 +28,8 @@ import { EventService } from "../services/event.service";
 export class PomodoroCreateComponent  implements OnInit {
 
   showPopupSchedulePomodoro: boolean = false;
+
+  recurrence: 'none' | 'daily' | 'weekly' | 'monthly' | 'yearly'= 'none';
 
   private syncing: boolean = false;
 
@@ -91,6 +94,28 @@ export class PomodoroCreateComponent  implements OnInit {
       this.newPomodoroData.durationBreak,
       this.newPomodoroData.numberCycles,
       this.castStringToDate(this.newPomodoroData.startDateString));
+
+    const startDate = this.castStringToDate(this.newPomodoroData.startDateString);
+    const startTime = this.getTimeFromDate(startDate)
+    const endDate =  this.addMinutess(this.castStringToDate(this.newPomodoroData.startDateString), this.newPomodoroData.duration);
+    const endTime = this.getTimeFromDate(endDate);
+
+    const event: CalendarEvent = {
+      id: '',
+      title: this.newPomodoroData.title,
+      description: 'POMODORO: ' + this.newPomodoroData.title,
+      startDate,
+      startTime,
+      endDate,
+      endTime,
+      allDay: false,
+      reminderMinutes: 30,
+      recurrence: this.recurrence,
+      color: '#ff0000',
+      isPomodoroEvent: true,
+    };
+
+    await this.eventService.addEvent(event);
 
     await this.router.navigateByUrl('');
   }

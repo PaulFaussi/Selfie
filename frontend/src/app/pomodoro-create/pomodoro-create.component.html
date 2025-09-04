@@ -82,16 +82,27 @@
       </div>
 
       <!-- sezione ripetizioni -->
-      <div class="repeat-section">
-        <div class="checkbox-wrapper">
-          <input id="enableRepeat" type="checkbox" />
-          <label for="enableRepeat" class="label-input" style="margin-bottom: 0;">Ripeti questo Pomodoro</label>
-        </div>
-
-        <!-- TODO scegliere come strutturare la frequenza a frontend -->
-
-
+      <div class="recurrence">
+        <label id="recurrence-label" for="recurrence">Ripetizione</label>
+        <select id="recurrence" [(ngModel)]="recurrence">
+          <option value="none">Nessuna</option>
+          <option value="daily">Giornaliera</option>
+          <option value="weekly">Settimanale</option>
+          <option value="monthly">Mensile</option>
+          <option value="yearly">Annuale</option>
+        </select>
       </div>
+<!--      </select>-->
+<!--      <div class="repeat-section">-->
+<!--        <div class="checkbox-wrapper">-->
+<!--          <input id="enableRepeat" type="checkbox" />-->
+<!--          <label for="enableRepeat" class="label-input" style="margin-bottom: 0;">Ripeti questo Pomodoro</label>-->
+<!--        </div>-->
+
+<!--        &lt;!&ndash; TODO scegliere come strutturare la frequenza a frontend &ndash;&gt;-->
+
+
+<!--      </div>-->
 
       <div class="button-group">
         <button type="button" (click)="creaScheduledPomodoro()" id="conferma-schedule-button">CONFERMA</button>
