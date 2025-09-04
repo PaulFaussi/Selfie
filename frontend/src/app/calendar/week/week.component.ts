@@ -156,6 +156,11 @@ eventsForSlot(day: Date, h: number): CalendarEvent[] {
   }
 
   openDetail(ev: CalendarEvent, date?: Date) {
+    if (ev.isPomodoroEvent) {
+      alert("Non è possibile modificare l'Evento del Pomodoro");
+      return;
+    }
+
     this.selectedEvent = ev;
     this.selectedEventDate = date ? new Date(date) : new Date();
     this.showForm = true;

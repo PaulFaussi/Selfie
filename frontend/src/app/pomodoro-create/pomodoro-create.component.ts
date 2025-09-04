@@ -7,6 +7,8 @@ import { FormsModule } from "@angular/forms";
 import { NgIf } from "@angular/common";
 import { PomodoroService } from "../pomodoro.service";
 import { TimeMachineService } from "../time-machine.service";
+import { CalendarEvent } from "../calendar/event-form/event-form.component";
+import { EventService } from "../services/event.service";
 
 @Component({
   selector: 'app-pomodoro-create',
@@ -38,7 +40,8 @@ export class PomodoroCreateComponent  implements OnInit {
   }
 
 
-  constructor(private router: Router, private pomodoroService: PomodoroService, private timeMachineService: TimeMachineService) {
+  constructor(private router: Router, private pomodoroService: PomodoroService,
+              private timeMachineService: TimeMachineService, private eventService: EventService) {
   }
 
   ngOnInit(): void {
@@ -56,6 +59,28 @@ export class PomodoroCreateComponent  implements OnInit {
                                               this.newPomodoroData.durationBreak,
                                               this.newPomodoroData.numberCycles,
                                               await this.timeMachineService.getCurrentDate());
+
+    const startDate = this.castStringToDate(this.newPomodoroData.startDateString);
+    const startTime = this.getTimeFromDate(startDate)
+    const endDate =  this.addMinutess(this.castStringToDate(this.newPomodoroData.startDateString), this.newPomodoroData.duration);
+    const endTime = this.getTimeFromDate(endDate);
+
+    const event: CalendarEvent = {
+      id: '',
+      title: this.newPomodoroData.title,
+      description: 'POMODORO: ' + this.newPomodoroData.title,
+      startDate,
+      startTime,
+      endDate,
+      endTime,
+      allDay: false,
+      reminderMinutes: 30,
+      recurrence: 'none',
+      color: '#ff0000',
+      isPomodoroEvent: true,
+    };
+
+    await this.eventService.addEvent(event);
 
     await this.router.navigateByUrl(`/pomodoro/${idNewPomodoro}`);
   }
@@ -140,5 +165,16 @@ export class PomodoroCreateComponent  implements OnInit {
 
   private castStringToDate(string: string): Date {
     return new Date(string);
+  }
+
+  private addMinutess(date: Date, minutesToAdd: number): Date {
+    return new Date(date.getTime() + minutesToAdd * 60000);
+  }
+
+  private getTimeFromDate(date: Date): string {
+    const hours = date.getHours() >= 10 ? date.getHours() : '0' + date.getHours();
+    const minutes = date.getMinutes() >= 10 ? date.getMinutes() : '0' + date.getMinutes();
+
+    return hours + ':' + minutes;
   }
 }

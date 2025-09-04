@@ -36,7 +36,8 @@ export class EventService {
           recurrence: e.recurrence,
           color: e.color,
           assegnati: e.assegnati || [],
-          partecipazioni: e.partecipazioni || []
+          partecipazioni: e.partecipazioni || [],
+          isPomodoroEvent: e.isPomodoroEvent
         }));
       });
   }

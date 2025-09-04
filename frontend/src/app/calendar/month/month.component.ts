@@ -85,6 +85,11 @@ export class MonthComponent implements OnInit, OnChanges {
   }
 
 async openDetail(ev: CalendarEvent, date?: Date) {
+  if (ev.isPomodoroEvent) {
+    alert("Non è possibile modificare l'Evento del Pomodoro");
+    return;
+  }
+
   console.log('[DEBUG openDetail] clicked event:', ev);
   console.log('[DEBUG openDetail] clicked date:', date);
   this.selectedEvent = ev;

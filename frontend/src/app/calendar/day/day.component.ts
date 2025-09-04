@@ -134,6 +134,11 @@ export class DayComponent implements OnInit, OnChanges {
   }
 
   async openDetail(ev: CalendarEvent, date?: Date) {
+    if (ev.isPomodoroEvent) {
+      alert("Non è possibile modificare l'Evento del Pomodoro");
+      return;
+    }
+
     this.selectedEvent = ev;
     this.selectedEventDate = date ? new Date(date) : (this.baseDate ? new Date(this.baseDate) : await this.timeMachineService.getCurrentDate());
     this.showForm = true;

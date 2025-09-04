@@ -21,6 +21,7 @@ export interface CalendarEvent {
   color: string;
   assegnati?: string[];
   partecipazioni?: { utente: string; stato: 'accettato' | 'rifiutato' | 'in_attesa' }[];
+  isPomodoroEvent?: boolean;
 }
 
 // ✅ Interfaccia per tipizzare il contenuto di un evento ICS
