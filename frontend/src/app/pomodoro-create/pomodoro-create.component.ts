@@ -9,6 +9,9 @@ import { PomodoroService } from "../pomodoro.service";
 import { TimeMachineService } from "../time-machine.service";
 import { CalendarEvent } from "../calendar/event-form/event-form.component";
 import { EventService } from "../services/event.service";
+import { MessageService } from '../message.service';
+import { MessageInterface } from '../message.interface';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-pomodoro-create',
@@ -33,6 +36,10 @@ export class PomodoroCreateComponent  implements OnInit {
 
   private syncing: boolean = false;
 
+  receiverInput: string = '';
+
+  idPomodoroCreato: string = '';
+
   public newPomodoroData!: {
     title: string,
     durationStudy: number,
@@ -44,7 +51,7 @@ export class PomodoroCreateComponent  implements OnInit {
 
 
   constructor(private router: Router, private pomodoroService: PomodoroService,
-              private timeMachineService: TimeMachineService, private eventService: EventService) {
+              private timeMachineService: TimeMachineService, private eventService: EventService, private messageService: MessageService) {
   }
 
   ngOnInit(): void {
@@ -62,29 +69,6 @@ export class PomodoroCreateComponent  implements OnInit {
                                               this.newPomodoroData.durationBreak,
                                               this.newPomodoroData.numberCycles,
                                               await this.timeMachineService.getCurrentDate());
-
-    const startDate = this.castStringToDate(this.newPomodoroData.startDateString);
-    const startTime = this.getTimeFromDate(startDate)
-    const endDate =  this.addMinutess(this.castStringToDate(this.newPomodoroData.startDateString), this.newPomodoroData.duration);
-    const endTime = this.getTimeFromDate(endDate);
-
-    const event: CalendarEvent = {
-      id: '',
-      title: this.newPomodoroData.title,
-      description: 'POMODORO: ' + this.newPomodoroData.title,
-      startDate,
-      startTime,
-      endDate,
-      endTime,
-      allDay: false,
-      reminderMinutes: 30,
-      recurrence: 'none',
-      color: '#ff0000',
-      isPomodoroEvent: true,
-      idPomodoro: idNewPomodoro
-    };
-
-    await this.eventService.addEvent(event);
 
     await this.router.navigateByUrl(`/pomodoro/${idNewPomodoro}`);
   }
@@ -112,7 +96,7 @@ export class PomodoroCreateComponent  implements OnInit {
       allDay: false,
       reminderMinutes: 30,
       recurrence: this.recurrence,
-      color: '#ff0000',
+      color: '#b10000ff',
       isPomodoroEvent: true,
       idPomodoro: idNewPomodoro
     };
@@ -129,6 +113,36 @@ export class PomodoroCreateComponent  implements OnInit {
     }
 
     this.showPopupSchedulePomodoro = true;
+  }
+
+  async sharePomodoro(){
+    if (this.newPomodoroData.numberCycles === 0 || this.newPomodoroData.duration === 0 || this.receiverInput === '') {
+      alert("Controllare i valori inseriti.");
+      return;
+    }
+
+    const idNewPomodoro = await this.pomodoroService.createPomodoro(this.newPomodoroData.title,
+                                              this.newPomodoroData.durationStudy,
+                                              this.newPomodoroData.durationBreak,
+                                              this.newPomodoroData.numberCycles,
+                                              await this.timeMachineService.getCurrentDate());
+
+    const now = await this.timeMachineService.getCurrentDate();
+
+    const message: MessageInterface = {
+          sender: '',
+          receiver: this.receiverInput,
+          text: `Pomodoro settings: ${this.newPomodoroData.title}. Click here to import settings. Pomodoro id: ${idNewPomodoro}`,
+          date: now,
+          isRead: false
+        };
+
+    await this.messageService.sendMessage(message);
+
+    this.receiverInput = '';
+    alert('Impostazioni del pomodoro condivise.')
+
+    await this.router.navigateByUrl('/pomodoro/' + idNewPomodoro);
   }
 
   closeScheduleBox() {
@@ -176,7 +190,7 @@ export class PomodoroCreateComponent  implements OnInit {
 
   private async setDefaultPomodoro() {
     this.newPomodoroData = {
-      title: 'Titolo',
+      title: 'New Pomo',
       durationStudy: 30,
       durationBreak: 5,
       numberCycles: 5,

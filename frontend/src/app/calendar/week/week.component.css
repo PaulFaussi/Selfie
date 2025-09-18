@@ -1,8 +1,11 @@
+
+
 .week-header {
   display: grid;
   grid-template-columns: 50px repeat(7, 1fr);
   background: var(--purple);
   color: #fff;
+  height: 3rem;
 }
 .week-header .time-col {
   /* colonna vuota per le ore */
@@ -25,18 +28,40 @@
   height: 40px; /* flessibile se serve */
   text-align: right;
   padding-right: 4px;
-  border-bottom: 1px solid #eee;
 }
 .day-col {
   display: flex;
   flex-direction: column;
+  border-left: 1px solid rgb(190, 190, 190);
 }
 .slot {
   flex: 1;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid rgb(190, 190, 190);
+  border-bottom-width: 95%;
   position: relative;
 }
+
+.addEvent{
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  color: white;
+
+  height: 4rem;
+  width: 4rem;
+  background-color: #6f42c1;
+  border: 2px solid #3b2368;
+  border-radius: 100%;
+  font-size: 2rem;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
 .fill {
+  width: 100%;
   position: absolute;
   top: 0; left: 0; right: 0; bottom: 0;
   color: #fff;
@@ -46,4 +71,17 @@
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+}
+
+.hour {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px solid rgb(190, 190, 190);
+}
+
+
+*{
+  font-family: Arial, Helvetica, sans-serif;
 }

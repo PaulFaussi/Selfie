@@ -5,23 +5,24 @@ class EventService {
         this.repository = new EventRepository(db);
     }
 
-    async getAll() {
+    async getAll(token) {
         try {
-            return await this.repository.findAll();
+            return await this.repository.findAll(token);
         } catch (error) {
             throw new Error(error.message);
         }
     }
 
-    async create(eventData) {
+    async create(eventData, auth) {
         try {
-            return await this.repository.create(eventData);
+            return await this.repository.create(eventData, auth);
         } catch (error) {
+            console.log(error)
             throw new Error(error.message);
         }
     }
 
-    async update(id, eventData) {
+    async updateEvent(id, eventData) {
         try {
             return await this.repository.update(id, eventData);
         } catch (error) {
@@ -37,9 +38,9 @@ class EventService {
         }
     }
 
-    async delete(id) {
+    async deleteEvent(auth, id) {
         try {
-            return await this.repository.delete(id);
+            return await this.repository.deleteEvent(auth, id);
         } catch (error) {
             throw new Error(error.message);
         }

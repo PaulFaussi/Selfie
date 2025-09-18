@@ -8,13 +8,13 @@ import { Component } from '@angular/core';
   <footer>
 
     <div class="footer-links">
-        <a href="">
+        <a href="/calendar">
             <h2 id="link">Calendar</h2>
         </a>
-        <a href="">
+        <a href="/notes">
             <h2 id="link">Notes</h2>
         </a>
-        <a href="">
+        <a href="/pomodoro">
             <h2 id="link">Pomos</h2>
         </a>
     </div>

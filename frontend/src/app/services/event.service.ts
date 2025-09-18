@@ -6,7 +6,7 @@ import { lastValueFrom } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class EventService {
-  private apiUrl = 'http://localhost:9000/evento';
+  private apiUrl = 'http://localhost:8000/evento';
 
   constructor(private http: HttpClient) {}
 
@@ -67,7 +67,7 @@ export class EventService {
     return lastValueFrom(this.http.put<void>(`${this.apiUrl}/${event.id}`, toSend, { headers: this.getAuthHeaders() }));
   }
 
-  deleteEvent(id: string): Promise<void> {
+  async deleteEvent(id: string): Promise<void> {
     return lastValueFrom(this.http.delete<void>(`${this.apiUrl}/${id}`, { headers: this.getAuthHeaders() }));
   }
 

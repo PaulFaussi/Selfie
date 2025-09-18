@@ -11,7 +11,7 @@ import { LoginService } from "./login.service";
 })
 export class GenericService {
 
-  apiUrl: string = 'http://localhost:9000/generic';
+  apiUrl: string = 'http://localhost:8000/generic';
 
   constructor(private httpService: HttpService, private loginService: LoginService) { }
 

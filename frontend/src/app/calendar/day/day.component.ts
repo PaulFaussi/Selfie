@@ -34,7 +34,6 @@ export class DayComponent implements OnInit, OnChanges {
   }
 
   async setCurrentDateAndLoadEvents() {
-    this.baseDate = await this.timeMachineService.getCurrentDate();
     this.loadEvents();
   }
 
@@ -43,13 +42,13 @@ export class DayComponent implements OnInit, OnChanges {
   }
 
   eventsForHour(h: number): CalendarEvent[] {
-  const currentDate = this.baseDate!;
-  const slotStart = new Date(currentDate);
-  slotStart.setHours(h, 0, 0, 0);
-  const slotEnd = new Date(currentDate);
-  slotEnd.setHours(h + 1, 0, 0, 0);
+    const currentDate = this.baseDate!;
+    const slotStart = new Date(currentDate);
+    slotStart.setHours(h, 0, 0, 0);
+    const slotEnd = new Date(currentDate);
+    slotEnd.setHours(h + 1, 0, 0, 0);
 
-  const results = this.events.filter(e => {
+    const results = this.events.filter(e => {
     const baseStartDate = new Date(e.startDate);
     const baseEndDate = new Date(e.endDate);
 
@@ -106,16 +105,16 @@ export class DayComponent implements OnInit, OnChanges {
     // Validità: l'evento deve intersecare lo slot
     const valid = slotStart < eventEnd && slotEnd > eventStart;
 
-    // Debug dettagliato
-    if (valid) {
-      console.log(`🪲 [day] evento valido:
+    // Debug 
+    /* if (valid) {
+      console.log(`[day] evento valido:
         ID: ${e.id}
         title: ${e.title}
         recurrence: ${e.recurrence}
         eventStart: ${eventStart}
         eventEnd: ${eventEnd}
         slot: ${h}:00`);
-    }
+    } */
 
     return valid;
   });
@@ -148,15 +147,15 @@ export class DayComponent implements OnInit, OnChanges {
   }
 
   async deleteSelected(event?: CalendarEvent) {
-  if (event) this.selectedEvent = event;
-  if (!this.selectedEvent) return;
+    if (event) this.selectedEvent = event;
+    if (!this.selectedEvent) return;
 
-  const ev = this.selectedEvent;
+    const ev = this.selectedEvent;
 
-  if (ev.recurrence !== 'none') {
-    const confirmSeries = window.confirm(
-      "Vuoi eliminare l'intera serie di eventi? Premi OK per eliminare **tutti** gli eventi della serie, Annulla per eliminare **solo questa** occorrenza."
-    );
+    if (ev.recurrence !== 'none') {
+      const confirmSeries = window.confirm(
+        "Vuoi eliminare l'intera serie di eventi? Premi OK per eliminare **tutti** gli eventi della serie, Annulla per eliminare **solo questa** occorrenza."
+      );
 
     if (confirmSeries) {
       // Eliminazione intera serie
@@ -246,6 +245,7 @@ export class DayComponent implements OnInit, OnChanges {
     }
 
   } else {
+    
     // Eliminazione evento non ricorrente
     this.eventSvc.deleteEvent(ev.id)
       .then(() => this.eventSvc.getAllEvents())

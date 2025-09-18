@@ -22,15 +22,14 @@
                 <label>Week</label>
             </div>
         </div>
-<div class="calendar-content">
-  <div class="calendar-scroll-area">
-    <app-day *ngIf="showDayView" [baseDate]="today" [previewMode]="true"></app-day>
-    <app-week *ngIf="!showDayView" [baseDate]="today" [previewMode]="true"></app-week>
-  </div>
-</div>
 
 
-
+        <div class="calendar-content">
+            <div class="calendar-scroll-area">
+                <app-day *ngIf="showDayView" [baseDate]="today" [previewMode]="true"></app-day>
+                <app-week *ngIf="!showDayView" [baseDate]="today" [previewMode]="true"></app-week>
+            </div>
+        </div>
 
     </div>
 

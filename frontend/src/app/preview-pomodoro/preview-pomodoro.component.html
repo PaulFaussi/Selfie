@@ -2,25 +2,27 @@
 <div class="container">
   <a [routerLink]="['/pomodoro', pomodoro._id]">
     <div class="title-box">
-      <h1 class="title"> {{ pomodoro.name }} </h1>
+      <h1 class="title"> {{ pomodoro.name.length < 25
+                              ? pomodoro.name
+                              : pomodoro.name.substring(0, 21) + "..." }} </h1>
       <h1 class="pomodoro-emoji">🍅</h1>
     </div>
 
     <div class="content">
       <div class="pomodoro-body">
-        <p>Duration study: {{ pomodoro.durationStudy }} min </p>
+        <p>Study phase: {{ pomodoro.durationStudy }} min </p>
       </div>
       <div class="pomodoro-body">
-        <p>Duration break: {{ pomodoro.durationBreak }} min </p>
+        <p>Break phase: {{ pomodoro.durationBreak }} min </p>
       </div>
       <div class="pomodoro-body">
-        <p>Number cycles left: {{ pomodoro.cyclesLeft }} </p>
+        <p>Cycles: {{ pomodoro.cyclesLeft }} </p>
+      </div>
+      <div class="pomodoro-body">
+        <p>Scheduled at: {{pomodoro.startDate | date:'dd MMM yyyy, HH:mm'}} </p>
       </div>
     </div>
 
-    <div class="date">
-      <h2 class="date-left"> Schedule at: {{pomodoro.startDate | date:'dd MMM yyyy, HH:mm' }} </h2>
-<!--      <h2 class="date-right"> Created: {{pomodoro.creationDate | date:'dd MMM yyyy, HH:mm' }} </h2>-->
-    </div>
+    <p style="font-size: 0.8rem; color: rgb(177, 177, 177); text-align: center; margin-top: 0.5rem;"> Click to start a pomo with these settings</p>
   </a>
 </div>

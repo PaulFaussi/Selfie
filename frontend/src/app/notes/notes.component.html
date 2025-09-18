@@ -27,7 +27,7 @@
 
 
     <div class="notes-displayed" >
-        <p [style.display]="noNotesAvailable">No notes availabe.</p>
+        <p style="margin-top: 4rem;" [style.display]="noNotesAvailable">No notes availabe.</p>
         <app-preview-note *ngFor="let singleNoteInstance of testNotesList" [noteFetched]="singleNoteInstance"></app-preview-note>
     </div>
 
@@ -126,9 +126,9 @@
         <button id="form-button" type="submit" style="margin-top: 0.5rem;" (click)="sortShortest()">LENGTH - SHORTEST</button>
         <button id="form-button" type="submit" style="margin-top: 0.5rem;" (click)="sortLongest()">LENGTH - LONGEST</button>
 
-        <h1 style="margin: 0.5rem 0 0.5rem 0;">Filter notes by category:</h1>
+        <h1 style="margin: 3rem 0 0.5rem 0;">Filter notes by category:</h1>
 
-        <div class="title-box">
+        <div class="title-box" style="width: 85%;">
             <label for="title-box">Category</label>
             <input id="title-box" type="text" name="title" placeholder="Enter note category" style="height: 2rem;" #cat>
         </div>

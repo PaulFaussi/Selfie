@@ -21,8 +21,12 @@
   </div>
 </div>
 
-<button class="fab" *ngIf="!previewMode"  (click)="openNew()">+</button>
+<!-- <button class="fab" *ngIf="!previewMode"  (click)="openNew()">+</button> -->
 
+ <div class="addEvent" *ngIf="!previewMode" (click)="openNew()">
+  +
+ </div>
+ 
 <app-event-form *ngIf="!previewMode && showForm"
                 [formData]="selectedEvent"
                 (newEvent)="saveEvent($event)"

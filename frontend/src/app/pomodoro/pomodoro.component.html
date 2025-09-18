@@ -3,10 +3,10 @@
 <body>
   <app-navbar></app-navbar>
 
-    <div [ngStyle]="pomodoro.state === 'DA INIZIARE' ? {'background-color': 'rgb(200, 200, 200)'} :
-           pomodoro.state === 'STUDIO' ? {'background-color':'#FF9A9A'} :
-           pomodoro.state === 'PAUSA' ? {'background-color': '#C7FBFF'} :
-           pomodoro.state === 'COMPLETATO' ? {'background-color': '#AFFFA8'} :
+    <div [ngStyle]="pomodoro.state === 'Ready to start' ? {'background-color': 'rgb(200, 200, 200)'} :
+           pomodoro.state === 'Studying...' ? {'background-color':'#FF9A9A'} :
+           pomodoro.state === 'Break Time' ? {'background-color': '#C7FBFF'} :
+           pomodoro.state === 'Completed' ? {'background-color': '#AFFFA8'} :
            null" class="page-content">
 
       <div class="head">
@@ -17,8 +17,8 @@
 
     <div class="manage-pomodoros">
       <a routerLink="/create-pomodoro">
-        <button id="new-pomodoro-button" class="management-button" style="border-right: 1px solid black;">
-          NEW POMODORO
+        <button id="new-pomodoro-button" class="management-button" style="border: 1px solid rgb(36, 36, 36); height: 3rem;">
+          SETUP NEW POMO
         </button>
       </a>
     </div>
@@ -30,33 +30,36 @@
 
       <div class="stato-pomodoro">{{ pomodoro.state}}</div>
 
-      <div *ngIf="pomodoro.cyclesLeft > 0" class="cicli-pomodoro">Cicli Rimasti: {{ pomodoro.cyclesLeft }}</div>
+      <div *ngIf="pomodoro.cyclesLeft > 0" class="cicli-pomodoro">Remaining cycles: {{ pomodoro.cyclesLeft }}</div>
 
       <div class="buttons_pomodoro">
-        <button *ngIf="isStartStudioButtonVisible()" (click)="startStudio()" class="action-button" style="width: 100%; padding: 0 0.7rem; margin: 0.3rem 0" >INIZIA STUDIO</button>
-        <button *ngIf="startPausaIsVisible" (click)="startPausa()" class="action-button" style="width: 100%; padding: 0 0.7rem; margin: 0.3rem 0" >INIZIA PAUSA</button>
-        <button *ngIf="isFineCicloButtonVisible()" class="action-button" (click)="fineCiclo()" style="width: 100%; padding: 0 0.7rem; margin: 0.3rem 0" >FINE CICLO</button>
-        <button *ngIf="isRicominciaCicloButtonVisible()" class="action-button" (click)="ricominciaCiclo()" style="width: 100%; padding: 0 0.7rem; margin: 0.3rem 0" >RICOMINCIA CICLO</button>
+        <button *ngIf="isStartStudioButtonVisible()" (click)="startStudio()" class="action-button" style="width: 100%; padding: 0 0.7rem; margin: 0.3rem 0" >START</button>
+        <button *ngIf="isStartPausaButtonVisible()" (click)="startPausa()" class="action-button" style="width: 100%; padding: 0 0.7rem; margin: 0.3rem 0" >START</button>
+        <button *ngIf="isSkipToPauseButtonVisible()" (click)="goToBreakTime()" class="action-button" style="width: 100%; padding: 0 0.7rem; margin: 0.3rem 0" >SKIP TO PAUSE</button>
+        <button *ngIf="isFineCicloButtonVisible()" class="action-button" (click)="fineCiclo()" style="width: 100%; padding: 0 0.7rem; margin: 0.3rem 0" >END CYCLE</button>
+        <button *ngIf="isRicominciaCicloButtonVisible()" class="action-button" (click)="ricominciaCiclo()" style="width: 100%; padding: 0 0.7rem; margin: 0.3rem 0" >RESTART CYCLE</button>
       </div>
 
 
       <!-- Animazione Studio -->
-      <div class="animated-background study" *ngIf="pomodoro.state === 'STUDIO'"></div>
+      <div class="animated-background study" *ngIf="pomodoro.state === 'Studying...'"></div>
 
       <!-- Animazione Pausa -->
-      <div class="animated-background break" *ngIf="pomodoro.state === 'PAUSA'"></div>
+      <div class="animated-background break" *ngIf="pomodoro.state === 'Break Time'"></div>
 
       <!-- Animazione Pomodoro Completato -->
-      <div class="animated-background completed" *ngIf="pomodoro.state === 'COMPLETATO'"></div>
+      <div class="animated-background completed" *ngIf="pomodoro.state === 'Completed'"></div>
 
       <!-- Info Pomodoro -->
-      <div class="container-info-pomodoro">
-        <div class="info-pomodoro">Durata fase studio: {{ formatTime(pomodoro.durationStudy) }}</div>
-        <div class="info-pomodoro">Durata fase pausa: {{ formatTime(pomodoro.durationBreak) }}</div>
-        <div class="info-pomodoro">Numero totale cicli: {{ pomodoro.numberCycles }}</div>
-        <div class="info-pomodoro">Durata totale: {{ formatTime(pomodoro.duration) }}</div>
+      <div style="display: flex; flex-direction: column; align-items: center;">
+        <div class="container-info-pomodoro">
+          <h1 style="color: rgb(53, 53, 53); font-size: 1.5rem;">Current settings</h1>
+          <div class="info-pomodoro">Study phase: {{ formatTime(pomodoro.durationStudy) }}</div>
+          <div class="info-pomodoro">Break phase: {{ formatTime(pomodoro.durationBreak) }}</div>
+          <div class="info-pomodoro">Total cycles: {{ pomodoro.numberCycles }}</div>
+          <div class="info-pomodoro">Total duration: {{ formatTime(pomodoro.duration) }}</div>
+        </div>
       </div>
-
     </div>
 
     <app-footer></app-footer>

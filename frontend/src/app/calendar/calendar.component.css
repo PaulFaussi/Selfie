@@ -1,10 +1,11 @@
 .calendar-header {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   background-color: var(--purple);
   color: #fff;
   padding: 0.75rem;
+  border-bottom: 1px solid #381f6b;
 }
 
 .calendar-header .nav-btn {
@@ -26,6 +27,7 @@
   display: flex;
   justify-content: center;
   background-color: #f0f0f0;
+  border-bottom: 1px solid #381f6b;
 }
 
 .view-selector .tab {
@@ -45,9 +47,9 @@
   color: #fff;
 }
 
-.views-container {
-  margin-top: 1rem;
-}
+/* .views-container {
+  height: 100vh;
+} */
 
 
 /* TOGGLE ATTIVITÀ */
@@ -66,7 +68,7 @@
 .activity-sidebar {
   position: fixed;
   top: 0;
-  right: -300px;
+  right: -100%;
   width: 280px;
   height: 100%;
   background: #fefefe;
@@ -170,6 +172,10 @@
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
   cursor: pointer;
   transition: background-color 0.3s;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .fab-button:hover {

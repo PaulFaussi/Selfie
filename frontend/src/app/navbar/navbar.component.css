@@ -192,6 +192,8 @@ input{
   gap: 12px;
   width: 100%;
   overflow-y: auto;
+
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 .message-box {
@@ -219,7 +221,7 @@ input{
 
 .message-date{
   font-size: 0.7rem;
-  color: rgb(209, 209, 209);
+  color: rgb(112, 112, 112);
   margin-top: 0.2rem;
 
   display: flex;
@@ -233,4 +235,13 @@ label{
   font-family: Arial, Helvetica, sans-serif;
   text-align: center;
   color: rgb(229, 229, 229);
+}
+
+path{
+  color: rgb(206, 206, 206);
+}
+
+.pomodoro-message {
+  background-color: darkred;
+  color: white; 
 }

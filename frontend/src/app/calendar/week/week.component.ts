@@ -34,7 +34,6 @@ export class WeekComponent implements OnInit, OnChanges {
   }
 
   async buildWeekAndLoadEvents() {
-    this.baseDate = await this.timeMachineService.getCurrentDate();
     this.buildWeek();
     this.loadEvents();
   }
@@ -54,99 +53,76 @@ export class WeekComponent implements OnInit, OnChanges {
     this.eventSvc.getAllEvents().then(ev => this.events = ev);
   }
 
-eventsForSlot(day: Date, h: number): CalendarEvent[] {
-  const slotStart = new Date(day);
-  slotStart.setHours(h, 0, 0, 0);
-  const slotEnd = new Date(day);
-  slotEnd.setHours(h + 1, 0, 0, 0);
+  eventsForSlot(day: Date, h: number): CalendarEvent[] {
+    const slotStart = new Date(day);
+    slotStart.setHours(h, 0, 0, 0);
+    const slotEnd = new Date(day);
+    slotEnd.setHours(h + 1, 0, 0, 0);
 
-  const results = this.events.filter(e => {
-    const baseStartDate = new Date(e.startDate);
-    const baseEndDate = new Date(e.endDate);
+    const results = this.events.filter(e => {
+      const baseStartDate = new Date(e.startDate);
+      const baseEndDate = new Date(e.endDate);
 
-    // Calcola la differenza di settimane dal baseStartDate al giorno corrente
-    const diffDays = Math.floor((day.getTime() - baseStartDate.getTime()) / (1000 * 60 * 60 * 24));
-    const weeksSinceStart = Math.floor(diffDays / 7);
+      // Calcola la differenza di settimane dal baseStartDate al giorno corrente
+      const diffDays = Math.floor((day.getTime() - baseStartDate.getTime()) / (1000 * 60 * 60 * 24));
+      const weeksSinceStart = Math.floor(diffDays / 7);
 
-    // Calcola la data di occorrenza per eventi ricorrenti
-    let eventStart = new Date(baseStartDate);
-    let eventEnd = new Date(baseEndDate);
+      // Calcola la data di occorrenza per eventi ricorrenti
+      let eventStart = new Date(baseStartDate);
+      let eventEnd = new Date(baseEndDate);
 
-    switch (e.recurrence) {
-      case 'weekly':
-        if (weeksSinceStart < 0) return false; // futuro non ancora arrivato
-        eventStart.setDate(baseStartDate.getDate() + weeksSinceStart * 7);
-        eventEnd.setDate(baseEndDate.getDate() + weeksSinceStart * 7);
-        break;
-      case 'daily':
-        if (diffDays < 0) return false;
-        eventStart.setDate(baseStartDate.getDate() + diffDays);
-        eventEnd.setDate(baseEndDate.getDate() + diffDays);
-        break;
-      case 'monthly':
-        if (day < baseStartDate) return false;
-        eventStart.setMonth(day.getMonth());
-        eventStart.setFullYear(day.getFullYear());
-        eventEnd.setMonth(day.getMonth());
-        eventEnd.setFullYear(day.getFullYear());
-        break;
-      case 'yearly':
-        if (day < baseStartDate) return false;
-        eventStart.setFullYear(day.getFullYear());
-        eventEnd.setFullYear(day.getFullYear());
-        break;
-      case 'none':
-        // no recurrence, keep dates as is
-        break;
-    }
+      switch (e.recurrence) {
+        case 'weekly':
+          if (weeksSinceStart < 0) return false; // futuro non ancora arrivato
+          eventStart.setDate(baseStartDate.getDate() + weeksSinceStart * 7);
+          eventEnd.setDate(baseEndDate.getDate() + weeksSinceStart * 7);
+          break;
+        case 'daily':
+          if (diffDays < 0) return false;
+          eventStart.setDate(baseStartDate.getDate() + diffDays);
+          eventEnd.setDate(baseEndDate.getDate() + diffDays);
+          break;
+        case 'monthly':
+          if (day < baseStartDate) return false;
+          eventStart.setMonth(day.getMonth());
+          eventStart.setFullYear(day.getFullYear());
+          eventEnd.setMonth(day.getMonth());
+          eventEnd.setFullYear(day.getFullYear());
+          break;
+        case 'yearly':
+          if (day < baseStartDate) return false;
+          eventStart.setFullYear(day.getFullYear());
+          eventEnd.setFullYear(day.getFullYear());
+          break;
+        case 'none':
+          // no recurrence, keep dates as is
+          break;
+      }
 
-    // Applica orari
-    if (e.startTime) {
-      const [sh, sm] = e.startTime.split(':').map(Number);
-      eventStart.setHours(sh, sm, 0, 0);
-    } else {
-      eventStart.setHours(0,0,0,0);
-    }
+      // Applica orari
+      if (e.startTime) {
+        const [sh, sm] = e.startTime.split(':').map(Number);
+        eventStart.setHours(sh, sm, 0, 0);
+      } else {
+        eventStart.setHours(0,0,0,0);
+      }
 
-    if (e.endTime) {
-      const [eh, em] = e.endTime.split(':').map(Number);
-      eventEnd.setHours(eh, em, 0, 0);
-    } else {
-      eventEnd.setHours(23,59,59,999);
-    }
+      if (e.endTime) {
+        const [eh, em] = e.endTime.split(':').map(Number);
+        eventEnd.setHours(eh, em, 0, 0);
+      } else {
+        eventEnd.setHours(23,59,59,999);
+      }
 
-    // Validità generale
-    const valid = (slotStart < eventEnd && slotEnd > eventStart);
+      // Validità generale
+      const valid = (slotStart < eventEnd && slotEnd > eventStart);
+      return valid;
+    });
 
-    // Debug dettagliato
-    if (valid) {
-      console.log(`🪲 DEBUG slot valid:
-        ID: ${e.id}
-        title: ${e.title}
-        recurrence: ${e.recurrence}
-        eventStart: ${eventStart}
-        eventEnd: ${eventEnd}
-        slot: ${h}:00`);
-    }
 
-    return valid;
-  });
 
-/*
-  console.log(`🕒 [week] slot ${day.toISOString().slice(0,10)} ${h}:00 – eventi trovati:`, results.map(e => e.id));
-  results.forEach(e => {
-  console.log(`🪲 DEBUG event slot:
-    ID: ${e.id}
-    title: ${e.title}
-    recurrence: ${e.recurrence}
-    startDate: ${e.startDate}
-    endDate: ${e.endDate}
-    startTime: ${e.startTime}
-    endTime: ${e.endTime}`);
-}); */
-
-  return results;
-}
+    return results;
+  }
 
 
 
@@ -167,16 +143,19 @@ eventsForSlot(day: Date, h: number): CalendarEvent[] {
     this.showForm = true;
   }
 
-deleteSelected(event?: CalendarEvent) {
-  if (event) this.selectedEvent = event;
-  if (!this.selectedEvent) return;
 
-  const ev = this.selectedEvent;
 
-  if (ev.recurrence !== 'none') {
-    const confirmSeries = window.confirm(
-      "Vuoi eliminare l'intera serie di eventi? Premi OK per eliminare **tutti** gli eventi della serie, Annulla per eliminare **solo questa** occorrenza."
-    );
+
+  deleteSelected(event?: CalendarEvent) {
+    if (event) this.selectedEvent = event;
+    if (!this.selectedEvent) return;
+
+    const ev = this.selectedEvent;
+
+    if (ev.recurrence !== 'none') {
+      const confirmSeries = window.confirm(
+        "Vuoi eliminare l'intera serie di eventi?"
+      );
 
     if (confirmSeries) {
       // Eliminazione intera serie
@@ -186,9 +165,9 @@ deleteSelected(event?: CalendarEvent) {
           this.events = evArr;
           this.selectedEvent = undefined;
           this.selectedEventDate = undefined;
-        });
+        })}
 
-    } else {
+    /*  else { 
       // Eliminazione singola occorrenza
       if (!this.selectedEventDate) this.selectedEventDate = new Date();
 
@@ -263,19 +242,19 @@ deleteSelected(event?: CalendarEvent) {
             this.selectedEventDate = undefined;
           });
       }
-    }
+    } */
 
-  } else {
-    // Eliminazione evento non ricorrente
-    this.eventSvc.deleteEvent(ev.id)
-      .then(() => this.eventSvc.getAllEvents())
-      .then(evArr => {
-        this.events = evArr;
-        this.selectedEvent = undefined;
-        this.selectedEventDate = undefined;
-      });
+    } else {
+      // Eliminazione evento non ricorrente
+      this.eventSvc.deleteEvent(ev.id)
+        .then(() => this.eventSvc.getAllEvents())
+        .then(evArr => {
+          this.events = evArr;
+          this.selectedEvent = undefined;
+          this.selectedEventDate = undefined;
+        });
+      }
   }
-}
 
   saveEvent(ev: CalendarEvent) {
     if (this.selectedEvent) {

@@ -1,40 +1,51 @@
-<div class="week-header">
-  <div class="time-col"></div>
-  <ng-container *ngFor="let d of days">
-    <div class="day-col-header">
-      {{ d | date:'dd' }} {{ d | date:'EEE' }}
-    </div>
-  </ng-container>
-</div>
-
-<div class="week-body">
-  <div class="time-col">
-    <div class="hour" *ngFor="let h of hours">{{ h }}:00</div>
+ 
+<div>
+ 
+ <div class="week-header">
+    <div class="time-col"></div>
+    <ng-container *ngFor="let d of days">
+      <div class="day-col-header">
+        {{ d | date:'dd' }} {{ d | date:'EEE' }}
+      </div>
+    </ng-container>
   </div>
-  <ng-container *ngFor="let d of days">
-    <div class="day-col">
-      <div class="slot" *ngFor="let h of hours">
-        <div *ngFor="let ev of eventsForSlot(d, h); let i = index; let count = count"
-             class="fill"
-             [style.width.%]="100 / count"
-             [style.left.%]="(100 / count) * i"
-             [style.right]="'auto'"
-             [style.background]="ev.color"
-             (click)="openDetail(ev, d)">
-          {{ ev.title }}
+
+  <div class="week-body">
+    <div class="time-col">
+      <div class="hour" *ngFor="let h of hours">{{ h }}:00</div>
+    </div>
+    <ng-container *ngFor="let d of days">
+      <div class="day-col">
+        <div class="slot" *ngFor="let h of hours">
+          <div *ngFor="let ev of eventsForSlot(d, h); let i = index; let count = count"
+              class="fill"
+              [style.width.%]="100 / count"
+              [style.left.%]="(100 / count) * i"
+              [style.right]="'auto'"
+              [style.background]="ev.color"
+              (click)="openDetail(ev, d)">
+            {{ ev.title }}
+          </div>
         </div>
       </div>
-    </div>
-  </ng-container>
-</div>
+    </ng-container>
+  </div>
 
-<button class="fab" *ngIf="!previewMode" (click)="openNew()">+</button>
+  <!-- <button class="fab" *ngIf="!previewMode" (click)="openNew()">+</button> -->
+
+  <div class="addEvent" *ngIf="!previewMode" (click)="openNew()">
+    +
+  </div>
 
 
-<app-event-form *ngIf="!previewMode && showForm"
-                [formData]="selectedEvent"
-                (newEvent)="saveEvent($event)"
-                (updateEvent)="saveEvent($event)"
-                (deleteEvent)="deleteSelected($event)"
-                (formClosed)="closeForm()">
-</app-event-form>
+
+  <app-event-form *ngIf="!previewMode && showForm"
+                  [formData]="selectedEvent"
+                  (newEvent)="saveEvent($event)"
+                  (updateEvent)="saveEvent($event)"
+                  (deleteEvent)="deleteSelected($event)"
+                  (formClosed)="closeForm()">
+  </app-event-form>
+
+
+</div> 

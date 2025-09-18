@@ -124,11 +124,11 @@ export class HomeComponent implements OnInit {
   private async updatePomodoroToDisplay() {
     if (this.showNextPomodoros) {
       this.pomodoroToDisplay = this.allPomodoros
-        .filter(p => p.state !== 'COMPLETATO')
+        .filter(p => p.state !== 'Completed')
         .sort((p1, p2) => p1.startDate.getTime() - p2.startDate.getTime());
     } else {
       this.pomodoroToDisplay = this.allPomodoros
-        .filter(p => p.state === 'COMPLETATO')
+        .filter(p => p.state === 'Completed')
         .sort((p1, p2) => p2.startDate.getTime() - p1.startDate.getTime());
     }
 

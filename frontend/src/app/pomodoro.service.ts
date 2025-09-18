@@ -10,7 +10,7 @@ import { LoginService } from "./login.service";
 })
 export class PomodoroService {
 
-  apiUrl: string = 'http://localhost:9000/pomodoro'
+  apiUrl: string = 'http://localhost:8000/pomodoro'
 
   constructor(private httpService: HttpService, private loginService: LoginService) { }
 
@@ -20,12 +20,25 @@ export class PomodoroService {
                        numberCycles: number,
                        startDate: Date): Promise<any> {
     try {
+      console.log("START DATE: " + startDate)
       const cyclesLeft = numberCycles;
       const url = `${this.apiUrl}/createPomodoro`;
       const body = {title, durationStudy, durationBreak, numberCycles, cyclesLeft, startDate};
       const token = this.loginService.getToken();
 
       const response = await firstValueFrom(this.httpService.post(url, body, token));
+      return response._id;
+    } catch (error: any) {
+      alert(error.message);
+    }
+  }
+
+  async copyPomodoro(id: string): Promise<any> {
+    try {
+      const url = `${this.apiUrl}/copyPomodoro/${id}`;
+      const token = this.loginService.getToken();
+
+      const response = await firstValueFrom(this.httpService.get(url, token));
       return response._id;
     } catch (error: any) {
       alert(error.message);
@@ -82,26 +95,6 @@ export class PomodoroService {
     const token = this.loginService.getToken();
 
     return await firstValueFrom(this.httpService.post(url, body, token));
-  }
-
-  filterByFuturePomodoros(list: PomodoroInterface[]): PomodoroInterface[] {
-    const now: Date = new Date();
-
-    return list.filter(obj => new Date(obj.startDate) >= now);
-  }
-
-  filterByPastPomodoros(list: PomodoroInterface[]): PomodoroInterface[] {
-    const now: Date = new Date();
-
-    return list.filter(obj => new Date(obj.startDate) <= now);
-  }
-
-  sortByUpcomingPomodoros(list: PomodoroInterface[]): PomodoroInterface[] {
-    return list.sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime())
-  }
-
-  sortByRecentPomodoros(list: PomodoroInterface[]): PomodoroInterface[] {
-    return list.sort((a, b) => new Date(b.startDate).getTime() - new Date(a.startDate).getTime());
   }
 
 

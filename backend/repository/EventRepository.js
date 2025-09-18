@@ -1,18 +1,20 @@
 const { ObjectId } = require('mongodb');
+const { extractUsername, extractToken } = require('../JwtUtils');
 
 class EventRepository {
     constructor(db) {
         this.collection = db.collection('events');
     }
 
-    async findAll() {
-        return await this.collection.find().toArray();
+    async findAll(token) {
+        const user = extractUsername(token);
+        return await this.collection.find({ $or: [ { creatore: user },{ assegnati: user } ]}).toArray();
     }
 
-    async create(eventData) {
+    async create(eventData, auth) {
         const newEvent = {
             ...eventData,
-            creatore: eventData.creatore || 'sconosciuto',
+            creatore: extractUsername(auth),
             assegnati: eventData.assegnati || [],
             partecipazioni: (eventData.assegnati || []).map(u => ({
                 utente: u,
@@ -54,14 +56,12 @@ class EventRepository {
         return;
     }
 
-    async delete(id) {
-        const objId = new ObjectId(id);
-        await this.collection.deleteOne({ _id: objId });
+    async deleteEvent(auth, id) {
+         await this.collection.deleteOne({ _id: new ObjectId(id) });
     }
 
     async deleteSeries(originalId) {
-        const objId = new ObjectId(originalId);
-        const original = await this.collection.findOne({ _id: objId });
+        const original = await this.collection.findOne({ _id: new ObjectId(originalId) });
 
         if (!original) throw new Error('Evento non trovato');
 

@@ -1,8 +1,8 @@
 <div class="form-backdrop">
   <div class="form-modal">
     <div class="form-toggle">
-      <span [class.active]="!isActivityMode" (click)="switchToEvento()">✏️ Evento</span>
-      <span [class.active]="isActivityMode" (click)="switchToAttivita()">📌 Attività</span>
+      <span class="selector" [class.active]="!isActivityMode" (click)="switchToEvento()" style="margin-right: 1rem;">✏️ Evento</span>
+      <span class="selector" [class.active]="isActivityMode" (click)="switchToAttivita()">📌 Attività</span>
     </div>
 
     <h2 *ngIf="!isEditMode">{{ isActivityMode ? 'Crea Attività' : 'Crea Evento' }}</h2>
@@ -82,15 +82,18 @@
       <label for="color">Colore</label>
       <input id="color" formControlName="color" type="color" />
 
-
-      <div class="form-buttons">
-        <button type="submit">{{ isEditMode ? 'Aggiorna' : 'Crea' }}</button>
-        <button type="button" (click)="cancel()">Annulla</button>
-        <button *ngIf="isEditMode" type="button" (click)="delete()">Elimina</button>
+      <div class="form-buttons" style="justify-content: flex-start;">
         <button *ngIf="isEditMode && !isActivityMode" type="button" (click)="esportaEvento()">📅 Esporta</button>
         <input type="file" accept=".ics" (change)="onICSFileSelected($event)" style="display: none" #fileInput />
         <button type="button" (click)="fileInput.click()">Importa</button>
       </div>
+
+      <div class="form-buttons">
+        <button type="button" (click)="cancel()">Chiudi</button>
+        <button *ngIf="isEditMode" type="button" (click)="delete()">Elimina</button>
+        <button type="submit">{{ isEditMode ? 'Aggiorna' : 'Crea' }}</button>
+      </div>
+
     </form>
   </div>
 </div>

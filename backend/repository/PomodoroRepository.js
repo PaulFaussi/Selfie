@@ -20,20 +20,20 @@ class PomodoroRepository {
         return result;
     }
 
-    async createPomodoro(jwt, title, durationStudy, durationBreak, numberCycles, cyclesLeft, startDate) {
+    async createPomodoro(jwt, title, durationStudy, durationBreak, numberCycles, startDate) {
         const user = extractToken(jwt);
         const now = getCurrentDate();
 
         const newPomodoro = {
             username: user.username,
             name: title,
-            state: 'DA INIZIARE',
+            state: 'Ready to start',
             durationStudy: durationStudy,
             durationBreak: durationBreak,
             numberCycles,
-            cyclesLeft,
+            cyclesLeft: numberCycles,
             creationDate: now,
-            startDate: new Date(startDate)
+            startDate
         }
         const result = await this.collection.insertOne(newPomodoro);
         const idNewPomodoro = result.insertedId.toString();
@@ -73,7 +73,7 @@ class PomodoroRepository {
 
         const result = await this.collection.updateOne(
             { _id: new ObjectId(idPomodoro) },
-            { $set: { state: 'COMPLETATO' } });
+            { $set: { state: 'Completed' } });
 
         if (result.modifiedCount === 0) {
             throw new Error('Aggiornamento del Pomodoro fallito');

@@ -18,18 +18,18 @@
       <input type="date" [(ngModel)]="endDate" name="endDate" required />
       <input type="time" [(ngModel)]="endTime" name="endTime" />
 
-      <label>Ripetizione:</label>
+      <!-- <label>Ripetizione:</label>
       <select [(ngModel)]="recurrence" name="recurrence">
         <option value="none">Nessuna</option>
         <option value="daily">Giornaliera</option>
         <option value="weekly">Settimanale</option>
-      </select>
+      </select> -->
 
       <label>Note:</label>
       <textarea [(ngModel)]="note" name="note" rows="2"></textarea>
 
       <div class="form-buttons">
-        <button type="submit">Salva</button>
+        <button type="submit">Salva</button>  <!-- submit -->
         <button type="button" (click)="reset()">Annulla</button>
       </div>
     </form>
@@ -42,7 +42,7 @@
           <div>
             <strong>{{ i.note || 'Indisponibilità' }}</strong><br />
             <small>{{ i.startDate | date:'short' }} → {{ i.endDate | date:'short' }}</small><br />
-            <em>Ripetizione: {{ i.recurrence }}</em>
+            <!-- <em>Ripetizione: {{ i.recurrence }}</em> -->
           </div>
           <div class="list-buttons">
             <button (click)="editExisting(i)">Modifica</button>

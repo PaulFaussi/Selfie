@@ -1,7 +1,7 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Unavailability } from '../../services/unavailability.service';
+import { Unavailability, UnavailabilityService } from '../../services/unavailability.service';
 
 @Component({
   selector: 'app-unavailability-form',
@@ -17,6 +17,8 @@ export class UnavailabilityFormComponent {
   @Output() cancelled = new EventEmitter<void>();
   @Output() requestDelete = new EventEmitter<string>();
   @Output() requestEdit = new EventEmitter<Unavailability>();
+
+  unavService = inject(UnavailabilityService);
 
   showForm = false;
   mode: 'add' | 'list' = 'add';
@@ -53,7 +55,7 @@ export class UnavailabilityFormComponent {
     this.submitted.emit({
       startDate: start,
       endDate: end,
-      recurrence: this.recurrence,
+      /* recurrence: this.recurrence, */
       note: this.note
     });
 
@@ -86,4 +88,21 @@ export class UnavailabilityFormComponent {
       this.requestDelete.emit(id);
     }
   }
+
+  
+
+
+  /* addOne() {
+
+    const data = {
+      startDate: new Date(`${this.startDate}T${this.startTime || '00:00'}`),
+      endDate: new Date(`${this.endDate}T${this.endTime || '00:00'}`),
+      note: this.note
+    }
+
+    this.unavService.addOne(data)
+  }
+ */
+
+
 }

@@ -5,6 +5,7 @@ import { MessageInterface } from "../message.interface";
 import { FormsModule } from "@angular/forms";
 import { MessageService } from "../message.service";
 import { TimeMachineService } from "../time-machine.service";
+import { PomodoroService } from "../pomodoro.service";
 
 
 @Component({
@@ -27,7 +28,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   messageService: MessageService = inject(MessageService);
 
-  constructor(private router: Router, public timeMachineService: TimeMachineService) {}
+  constructor(private router: Router, public timeMachineService: TimeMachineService, public pomodoroService: PomodoroService) {}
 
 
   ngOnInit(): void {
@@ -69,38 +70,58 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   refreshNotifications(){
-    this.messageService.getAllMessages().then((messages: MessageInterface[]) => {
+    this.messageService.getAllMessages().then(async (messages: MessageInterface[]) => {
       if(messages.some(message => !message.isRead) && !this.chatTabVis) {
         this.hasNotification = true;
 
         for (const message of messages) {
           if (!message.isRead) {
-            this.messageService.markMessageAsRead(message);
+            await this.messageService.markMessageAsRead(message);
           }
         }
       }
 
       this.messageList = messages;
-      console.log(this.messageList);
     });
   }
 
-  sendMessage(){
+  // callEveryFiveSeconds() {
+  //   setInterval(() => {
+  //     this.refreshNotifications();
+  //   }, 5000);
+  // }
+
+
+  async sendMessage(){
+    const now = await this.timeMachineService.getCurrentDate();
+
     const message: MessageInterface = {
       sender: '',
       receiver: this.usernameReceiver,
       text: this.messageToSend,
-      date: new Date(),
+      date: now,
       isRead: false
     };
-
-    console.log(message);
 
     this.messageService.sendMessage(message).then(() => {
       this.usernameReceiver = "";
       this.messageToSend = "";
     })
 
+  }
+
+
+  async pomoClick(message: MessageInterface) {
+    if (!message.text.startsWith('Pomodoro settings')) {
+      return;
+    }
+
+    const idSharedPomodoro = message.text.slice(-24).trim();
+
+    const idPomodoro = await this.pomodoroService.copyPomodoro(idSharedPomodoro);
+
+
+    await this.router.navigate(['/pomodoro', idPomodoro]);
   }
 
 }

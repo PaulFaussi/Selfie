@@ -32,13 +32,13 @@ export class PomodoroComponent implements OnInit {
   pomodoro: {
     _id: string,
     name: string,
-    state: 'DA INIZIARE' | 'STUDIO' | 'PAUSA' | 'COMPLETATO',
+    state: 'Ready to start' | 'Studying...' | 'Break Time' | 'Completed',
     durationStudy: number,
     durationBreak: number,
     numberCycles: number,
     cyclesLeft: number,
     duration: number
-  } = { _id: '', name: '', state: 'DA INIZIARE', durationStudy: 0, durationBreak: 0, numberCycles: 0, cyclesLeft: 0, duration: 0};
+  } = { _id: '', name: '', state: 'Ready to start', durationStudy: 0, durationBreak: 0, numberCycles: 0, cyclesLeft: 0, duration: 0};
 
   constructor (private router: Router, private activatedRoute : ActivatedRoute,
                private pomodoroService: PomodoroService) {
@@ -53,7 +53,7 @@ export class PomodoroComponent implements OnInit {
     this.pomodoro = {
       _id: '',
       name: 'Default Pomodoro',
-      state: 'DA INIZIARE',
+      state: 'Ready to start',
       durationStudy: 30,
       durationBreak: 5,
       numberCycles: 5,
@@ -94,53 +94,57 @@ export class PomodoroComponent implements OnInit {
   }
 
   startStudio() {
-    this.pomodoro.state = 'STUDIO';
-
-    this.startPausaIsVisible = false;
+    this.pomodoro.state = 'Studying...';
 
     this.startTimer();
   }
 
   startPausa() {
-    this.pomodoro.state = 'PAUSA';
-
-    this.startPausaIsVisible = false;
+    this.pomodoro.state = 'Break Time';
 
     this.startTimer();
+  }
+
+  goToBreakTime() {
+    this.pomodoro.state = 'Break Time';
+
+    this.resetTimer();
   }
 
   async fineCiclo() {
     this.stopTimer();
 
-    await this.fineFasePausa();
+    await this.fineFaseBreakTime();
   }
 
   ricominciaCiclo() {
     this.stopTimer()
-    this.pomodoro.state = 'STUDIO';
+    this.pomodoro.state = 'Studying...';
     this.resetTimer();
-
-    this.startPausaIsVisible = false;
   }
 
   resetTimer() {
-    if (this.pomodoro.state === 'DA INIZIARE' || this.pomodoro.state === 'STUDIO') {
+    if (this.isFaseAttualeInCorso()) {
+      this.stopTimer();
+    }
+
+    if (this.pomodoro.state === 'Ready to start' || this.pomodoro.state === 'Studying...') {
       this.minutes = this.formatMinutes(this.pomodoro.durationStudy);
       this.seconds = this.formatSeconds(0);
-    } else if (this.pomodoro.state === 'PAUSA') {
+    } else if (this.pomodoro.state === 'Break Time') {
       this.minutes = this.formatMinutes(this.pomodoro.durationBreak);
       this.seconds = this.formatSeconds(0);
     }
   }
 
   startTimer() {
-    this.intervalId = setInterval(() => {
+    this.intervalId = setInterval(async () => {
       const minutes = Number(this.minutes)
       const seconds = Number(this.seconds)
       if (minutes === 0) {
         if (seconds === 0) {
           clearInterval(this.intervalId);
-          this.endFase();
+          await this.endFase();
         } else {
           this.seconds = this.formatSeconds(seconds - 1);
         }
@@ -156,25 +160,28 @@ export class PomodoroComponent implements OnInit {
   }
 
 
-  public startPausaIsVisible: boolean = false;
-
   public isStartStudioButtonVisible(): boolean {
-    return this.pomodoro.state === 'DA INIZIARE'
-      || (this.pomodoro.state === 'STUDIO' && !this.isFaseAttualeInCorso())
+    return this.pomodoro.state === 'Ready to start'
+      || (this.pomodoro.state === 'Studying...' && !this.isFaseAttualeInCorso())
   }
 
   public isStartPausaButtonVisible(): boolean {
-    return this.pomodoro.state === 'PAUSA' && !this.isFaseAttualeInCorso()
+    return this.pomodoro.state === 'Break Time' && !this.isFaseAttualeInCorso()
   }
 
+  public isSkipToPauseButtonVisible(): boolean {
+    return this.pomodoro.state === 'Studying...' && this.isFaseAttualeInCorso();
+  }
+
+
   public isFineCicloButtonVisible(): boolean {
-    return this.pomodoro.state !== 'COMPLETATO'
+    return this.pomodoro.state !== 'Completed'
   }
 
   public isRicominciaCicloButtonVisible(): boolean {
-    return this.pomodoro.state !== 'DA INIZIARE'
-      && this.pomodoro.state !== 'COMPLETATO'
-      && ((this.pomodoro.state === 'STUDIO' && this.isFaseAttualeInCorso()) || (this.pomodoro.state === 'PAUSA'))
+    return this.pomodoro.state !== 'Ready to start'
+      && this.pomodoro.state !== 'Completed'
+      && ((this.pomodoro.state === 'Studying...' && this.isFaseAttualeInCorso()) || (this.pomodoro.state === 'Break Time'))
   }
 
   public formatTime(minutes: number): string {
@@ -193,26 +200,22 @@ export class PomodoroComponent implements OnInit {
 
 
   private async endFase() {
-    this.stopTimer()
-
-    if (this.pomodoro.state === 'STUDIO') {
-      this.fineFaseStudio();
-    }
-    else if (this.pomodoro.state === 'PAUSA') {
-      await this.fineFasePausa();
+    if (this.pomodoro.state === 'Studying...') {
+      console.log("Fine fase studio");
+      this.goToBreakTime();
     }
 
+    else if (this.pomodoro.state === 'Break Time') {
+      console.log("Fine fase pausa");
+      await this.fineFaseBreakTime();
+    }
+
+    else {
+      this.stopTimer();
+    }
   }
 
-  private fineFaseStudio() {
-    this.pomodoro.state = 'PAUSA';
-
-    this.resetTimer();
-
-    this.startPausaIsVisible = true;
-  }
-
-  private async fineFasePausa() {
+  private async fineFaseBreakTime() {
     if (this.pomodoro.cyclesLeft <= 1) {
       await this.endPomodoro();
       return;
@@ -220,28 +223,33 @@ export class PomodoroComponent implements OnInit {
 
     this.pomodoro.cyclesLeft = this.pomodoro.cyclesLeft - 1;
 
-    await this.pomodoroService.updateCyclesLeft(this.idPomodoro, this.pomodoro.cyclesLeft);
+    try {
+            await this.pomodoroService.updateCyclesLeft(this.idPomodoro, this.pomodoro.cyclesLeft);
+          } catch (error) {
+            // caso pomodoro non memorizzato a db
+    }
 
-    this.pomodoro.state = 'STUDIO';
+    this.pomodoro.state = 'Studying...';
 
     this.resetTimer();
-
-    this.startPausaIsVisible = false;
   }
 
   private async endPomodoro() {
-    this.pomodoro.state = 'COMPLETATO';
+    this.pomodoro.state = 'Completed';
 
     this.minutes = this.formatMinutes(0);
     this.seconds = this.formatSeconds(0);
     this.pomodoro.cyclesLeft = 0;
 
-    this.pomodoro.state = 'COMPLETATO';
+    this.pomodoro.state = 'Completed';
 
-    await this.pomodoroService.updateCyclesLeft(this.idPomodoro, 0);
-    await this.pomodoroService.completedPomodoro(this.idPomodoro);
+    try {
+      await this.pomodoroService.updateCyclesLeft(this.idPomodoro, this.pomodoro.cyclesLeft);
+      await this.pomodoroService.completedPomodoro(this.idPomodoro);
+    } catch (error) {
+      // caso pomodoro non memorizzato a db
+    }
 
-    this.startPausaIsVisible = false;
 
   }
 

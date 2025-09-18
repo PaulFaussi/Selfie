@@ -45,7 +45,7 @@ export class CalendarComponent implements OnInit {
   unavailability: Unavailability[] = [];
   editingUnavailability?: any;
 
-  currentUser: string = 'utente1';
+  currentUser: string = localStorage.getItem("username") || 'not found';
 
   selectedAttivita?: any;
   showEventForm: boolean = false;
@@ -98,7 +98,7 @@ export class CalendarComponent implements OnInit {
   }
 
   fetchAttivita(): void {
-    this.http.get<any[]>('http://localhost:9000/attivita').subscribe({
+    this.http.get<any[]>('http://localhost:8000/attivita').subscribe({
       next: (res) => {
         const now = new Date();
         const todayStr = new Date().toISOString().split('T')[0];
@@ -129,9 +129,10 @@ export class CalendarComponent implements OnInit {
   }
 
   fetchUnavailability(): void {
-    this.unavailabilityService.getAll(this.currentUser)
+    this.unavailabilityService.getAll()
       .then(res => this.unavailability = res || [])
       .catch(err => console.error('Errore nel caricamento indisponibilità', err));
+      console.log("UNAV: ",this.unavailability)
   }
 
   aggiungiUnavailability(data: Omit<Unavailability, 'user'>): void {
@@ -283,12 +284,12 @@ export class CalendarComponent implements OnInit {
   }
 
   completaAttivita(id: string) {
-    this.http.patch(`http://localhost:9000/attivita/${id}/completa`, {}).subscribe(() => this.fetchAttivita());
+    this.http.patch(`http://localhost:8000/attivita/${id}/completa`, {}).subscribe(() => this.fetchAttivita());
   }
 
   eliminaAttivita(id: string) {
     if (confirm('Sei sicuro di voler eliminare questa attività?')) {
-      this.http.delete(`http://localhost:9000/attivita/${id}`).subscribe(() => this.fetchAttivita());
+      this.http.delete(`http://localhost:8000/attivita/${id}`).subscribe(() => this.fetchAttivita());
     }
   }
 

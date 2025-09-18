@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 })
 
 export class NotesService {
-  apiUrl: string = 'http://localhost:9000/notes'
+  apiUrl: string = 'http://localhost:8000/notes'
 
   constructor(private http: HttpClient, private router: Router) { }
 
@@ -24,7 +24,6 @@ export class NotesService {
   async getAllNotes(): Promise<NoteInterface[]> {
     const token = localStorage.getItem('loginToken');
     const data = await fetch(`${this.apiUrl}/getAllNotes`, {method: 'GET', headers: {'Content-Type': 'application/json', 'Authorization': `${token}`}});
-    console.log(data);
     return await data.json() ?? [];
   }
 

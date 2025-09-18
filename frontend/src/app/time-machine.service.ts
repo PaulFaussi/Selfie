@@ -9,7 +9,7 @@ import { firstValueFrom } from "rxjs";
 })
 export class TimeMachineService {
 
-  apiUrl: string = 'http://localhost:9000/generic';
+  apiUrl: string = 'http://localhost:8000/generic';
 
   constructor(private httpService: HttpService) { }
 

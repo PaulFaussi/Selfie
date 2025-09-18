@@ -44,8 +44,6 @@ class GenericController {
 
         try {
             const date = req.body.updatedDate;
-            console.log(req.body);
-            console.log(date);
             updateCurrentDate(date);
             res.status(200).json({message: 'Data aggiornata con successo'});
         } catch (error) {

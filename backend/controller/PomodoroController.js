@@ -11,6 +11,7 @@ class PomodoroController {
         this.router.get('/getPomodoro/:id', this.getPomodoro.bind(this));
         this.router.get('/getAllPomodoros', this.getAllPomodoros.bind(this));
         this.router.post('/createPomodoro', this.createPomodoro.bind(this));
+        this.router.get('/copyPomodoro/:id', this.copyPomodoro.bind(this));
         this.router.post('/updateCyclesLeftPomodoro/:id', this.updateCyclesLeftPomodoro.bind(this));
         this.router.post('/completedPomodoro/:id', this.completedPomodoro.bind(this));
 
@@ -49,9 +50,21 @@ class PomodoroController {
     async createPomodoro(req, res) {
         try {
             const jwt = getJwtFromRequest(req);
-            const idNewPomodoro = await this.pomodoroService.createPomodoro(jwt, req.body.title, req.body.durationStudy, req.body.durationBreak, req.body.numberCycles, req.body.cyclesLeft, req.body.startDate);
+            const idNewPomodoro = await this.pomodoroService.createPomodoro(jwt, req.body.title, req.body.durationStudy, req.body.durationBreak, req.body.numberCycles, req.body.startDate);
 
             res.status(200).json({message: `Pomodoro creato con successo`, _id: idNewPomodoro });
+        } catch (error) {
+            res.status(400).json(error.message);
+            console.log(error);
+        }
+    }
+
+    async copyPomodoro(req, res) {
+        try {
+            const jwt = getJwtFromRequest(req);
+            const id = req.params.id;
+            const idNewPomodoro = await this.pomodoroService.copyPomodoro(jwt, id);
+            res.status(200).json({message: `Copia del Pomodoro creata con successo`, _id: idNewPomodoro });
         } catch (error) {
             res.status(400).json(error.message);
             console.log(error);

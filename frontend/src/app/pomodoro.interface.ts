@@ -4,7 +4,7 @@ export interface PomodoroInterface {
 
   _id: string,
   name: string,
-  state: 'DA INIZIARE' | 'STUDIO' | 'PAUSA' | 'COMPLETATO',
+  state: 'Ready to start' | 'Studying...' | 'Break Time' | 'Completed',
   durationStudy: number,
   durationBreak: number,
   numberCycles: number,

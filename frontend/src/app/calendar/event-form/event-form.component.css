@@ -11,13 +11,13 @@
   background: #fff;
   padding: 1.5rem;
   border-radius: 0.5rem;
-  width: 90%; max-width: 450px;
+  width: 85vw; max-width: 450px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.3);
   color: #333;
 }
 
 h2 {
-  margin-top: 0;
+  margin: 1rem 0;
   text-align: center;
   color: var(--purple);
 }
@@ -122,3 +122,24 @@ input[type="number"] {
   background: #b02a37;
 }
 
+
+.form-toggle{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center
+
+}
+
+.selector{
+  width: 50%;
+  height: 2rem;
+  line-height: 2rem;
+  text-align: center;
+  color: white;
+  border: 1px solid #32195c;
+  border-radius: 0.5rem;
+  background-color: #5a2ea6;
+  border: 1px solid purple;
+}

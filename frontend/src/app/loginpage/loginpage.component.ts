@@ -54,9 +54,6 @@ export class LoginpageComponent {
       dateofbirth
     )
 
-    if(result===true){
-      alert("Registration successful.")
-    }
   }
 
 

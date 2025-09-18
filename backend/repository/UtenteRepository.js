@@ -61,7 +61,7 @@ class UtenteRepository {
         try {
             const existingUser = await this.collection.findOne({ username: username });
             if (existingUser) {
-                throw new Error("User in out db.");
+                throw new Error("User already in our db.");
             }
             else{
                 const result = await this.collection.insertOne(newUser);
@@ -71,7 +71,7 @@ class UtenteRepository {
             
         } catch (error) {
             console.log(error);
-            throw new Error(error.message)
+            throw new Error(error);
         }
     }
 }

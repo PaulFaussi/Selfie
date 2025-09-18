@@ -18,7 +18,11 @@
   </ng-container>
 </div>
 
-<button class="fab" (click)="openNew()">+</button>
+
+<!-- <button class="fab" style="background-color: red;" (click)="openNew()">+</button> -->
+ <div class="addEvent" (click)="openNew()">
+  +
+ </div>
 
 <app-event-form *ngIf="showForm"
   [formData]="selectedEvent"
@@ -29,11 +33,12 @@
 </app-event-form>
 
 <!-- MODALE DI CONFERMA -->
-<app-confirmation-modal
+<!-- <app-confirmation-modal
   *ngIf="showConfirm"
+  [selectedEventSon]="selectedEvent"
   [title]="'Conferma eliminazione'"
   [message]="'Vuoi eliminare solo questa occorrenza o l\'intera serie?'"
-  (onDeleteSingle)="onDeleteSingle()"
-  (onDeleteSeries)="onDeleteSeries()"
+  (onDeleteSingle)="onDeleteSingle($event)"
+  (onDeleteSeries)="onDeleteSeries($event)"
   (onCancel)="onCancelModal()">
-</app-confirmation-modal>
+</app-confirmation-modal> -->

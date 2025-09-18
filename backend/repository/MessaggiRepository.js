@@ -49,12 +49,11 @@ class MessaggiRepository {
         }
     }
 
-    async updateMessage(message) {
+    async markMessageAsRead(isMessageRead) {
         try {
-            const { _id, ...updateFields } = message;
             const result = await this.collection.updateOne(
-                { _id: new ObjectId(message._id) },
-                { $set: updateFields }
+                { _id: new ObjectId(isMessageRead._id) },
+                { $set: { read: isMessageRead } }
             );
 
             if (result.modifiedCount <= 1) {

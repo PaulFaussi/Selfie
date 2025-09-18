@@ -133,9 +133,9 @@ export class EventFormComponent implements OnChanges {
         descrizione: f.description,
         dataScadenza: f.endDate,
         assegnati: f.assegnati.split(',').map((x: string) => x.trim()),
-        creatore: 'utente1'
+        creatore: localStorage.getItem("username")
       };
-      this.http.post('http://localhost:9000/attivita', payload).subscribe(() => this.close());
+      this.http.post('http://localhost:8000/attivita', payload).subscribe(() => this.close());
       return;
     }
 
@@ -190,7 +190,7 @@ export class EventFormComponent implements OnChanges {
     this.formClosed.emit();
   }
 
-  private resetForm() {
+/*   private resetForm() {
     this.form.reset({
       title: '',
       description: '',
@@ -207,6 +207,29 @@ export class EventFormComponent implements OnChanges {
       color: '#6f42c1',
       assegnati: ''
     });
+    ['startHour', 'startMinute', 'endHour', 'endMinute'].forEach(c => this.form.get(c)?.enable());
+  } */
+
+    private async resetForm() {
+      const today = await this.today();
+
+      this.form.reset({
+        title: '',
+        description: '',
+        luogo: '',
+        startDate: today,
+        endDate: today,
+        allDay: false,
+        startHour: '00',
+        startMinute: '00',
+        endHour: '00',
+        endMinute: '00',
+        reminderMinutes: 0,
+        recurrence: 'none',
+        color: '#6f42c1',
+        assegnati: ''
+      });
+
     ['startHour', 'startMinute', 'endHour', 'endMinute'].forEach(c => this.form.get(c)?.enable());
   }
 

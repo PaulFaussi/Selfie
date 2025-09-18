@@ -16,40 +16,40 @@
   <div class="edit-pomodoro-container">
 
     <div class="pomodoroHeader">
-      <h1 class="pomodoroHeader">Crea Nuovo Pomodoro</h1>
+      <h1 class="pomodoroHeader" style="color: rgb(10, 10, 10);">Setup new pomodoro</h1>
     </div>
 
     <!-- Nome Pomodoro -->
     <div class="form-group">
-      <label for="title" class="label-input">Nome Pomodoro</label>
+      <label for="title" class="label-input">Title</label>
       <input id="title" type="text" class="input-tag" [(ngModel)]="newPomodoroData.title" />
     </div>
 
     <!-- Durata studio -->
     <!-- TODO il valore qui dentro deve essere maggiore di 0 -->
     <div class="form-group">
-      <label for="durationStudy" class="label-input">Durata Studio (minuti)</label>
+      <label for="durationStudy" class="label-input">Study duration (minutes)</label>
       <input id="durationStudy" type="number" class="input-tag" [(ngModel)]="newPomodoroData.durationStudy" (ngModelChange)="onNumberCyclesChange($event)"/>
     </div>
 
     <!-- Durata pausa -->
     <!-- TODO il valore qui dentro deve essere maggiore di 0 -->
     <div class="form-group">
-      <label for="durationBreak" class="label-input">Durata Pausa (minuti)</label>
+      <label for="durationBreak" class="label-input">Break duration (minutes)</label>
       <input id="durationBreak" type="number" class="input-tag" [(ngModel)]="newPomodoroData.durationBreak" (ngModelChange)="onNumberCyclesChange($event)"/>
     </div>
 
     <!-- Numero cicli -->
     <!-- TODO il valore qui dentro deve essere maggiore di 0 e minore di 24h -->
     <div class="form-group">
-      <label for="numberCycles" class="label-input">Numero di Cicli</label>
+      <label for="numberCycles" class="label-input">Number of cycles</label>
       <input id="numberCycles" type="number" class="input-tag" [(ngModel)]="newPomodoroData.numberCycles" (ngModelChange)="onNumberCyclesChange($event)"/>
     </div>
 
     <!-- Durata del Pomodoro -->
     <!-- TODO il valore qui dentro deve essere maggiore di 0 e minore di 24h -->
     <div class="form-group">
-      <label for="duration" class="label-input">Durata Totale (minuti)</label>
+      <label for="duration" class="label-input">Total duration (minutes)</label>
       <input id="duration" type="number" class="input-tag" [(ngModel)]="newPomodoroData.duration" (ngModelChange)="onDurationChange($event)"/>
     </div>
 
@@ -58,6 +58,14 @@
       <button type="button" (click)="creaPomodoro()" id="crea-pomodoro-button">START NOW</button>
       <button type="button" (click)="schedulePomodoro()" id="schedule-pomodoro-button">SCHEDULE</button>
     </div>
+
+
+    <h1 style="font-size: 1rem; margin-top: 1.5rem; color: rgb(209, 209, 209);">Share settings with another user</h1>
+    <div class="share">
+      <input type="text" [(ngModel)]="receiverInput" placeholder="Enter username..." name="receiver" />
+      <button type="button" (click)="sharePomodoro()" id="schedule-pomodoro-button">SHARE</button>
+    </div>
+
 
   </div>
 
@@ -71,25 +79,28 @@
 
       <!-- header -->
       <div class="schedule-header">
-        <h2 class="schedule-title">Programma Pomodoro</h2>
-        <button class="close-btn" (click)="closeScheduleBox()">&times;</button>
+        <h2 class="schedule-title">Schedule Pomodoro</h2>
+        <!-- <button class="close-btn" (click)="closeScheduleBox()">&times;</button> -->
+        <svg style="height: 2rem;" (click)="closeScheduleBox()" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+        </svg>
       </div>
 
       <!-- data e ora di inizio -->
       <div class="form-group">
-        <label for="startDate" class="label-input">Data e Ora di Inizio</label>
+        <label for="startDate" class="label-input">Date / Time</label>
         <input id="startDate" type="datetime-local" class="input-tag" [(ngModel)]="newPomodoroData.startDateString" />
       </div>
 
       <!-- sezione ripetizioni -->
       <div class="recurrence">
-        <label id="recurrence-label" for="recurrence">Ripetizione</label>
-        <select id="recurrence" [(ngModel)]="recurrence">
-          <option value="none">Nessuna</option>
-          <option value="daily">Giornaliera</option>
-          <option value="weekly">Settimanale</option>
-          <option value="monthly">Mensile</option>
-          <option value="yearly">Annuale</option>
+        <label id="recurrence-label">Repeat:</label>
+        <select class="recurrence-select" [(ngModel)]="recurrence">
+          <option value="none">Disabled</option>
+          <option value="daily">Daily</option>
+          <option value="weekly">Weekly</option>
+          <option value="monthly">Monthly</option>
+          <option value="yearly">Annual</option>
         </select>
       </div>
 <!--      </select>-->
@@ -105,7 +116,7 @@
 <!--      </div>-->
 
       <div class="button-group">
-        <button type="button" (click)="creaScheduledPomodoro()" id="conferma-schedule-button">CONFERMA</button>
+        <button type="button" (click)="creaScheduledPomodoro()" id="conferma-schedule-button">ADD TO CALENDAR</button>
       </div>
 
 

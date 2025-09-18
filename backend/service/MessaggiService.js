@@ -34,8 +34,7 @@ class MessaggiService {
 
     async markMessageAsRead(message){
         try {
-            message.isRead = true;
-            await this.messaggiRepository.updateMessage(message);
+            await this.messaggiRepository.markMessageAsRead(true);
         } catch(error){
             throw new Error(error.message);
         }

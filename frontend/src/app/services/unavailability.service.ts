@@ -3,27 +3,43 @@ import { HttpClient } from '@angular/common/http';
 import { lastValueFrom } from 'rxjs';
 
 export interface Unavailability {
-  _id?: string;  // 👈 Aggiungi questa riga
-  user: string;
+  _id?: string; 
   startDate: Date;
   endDate: Date;
-  recurrence: 'none' | 'daily' | 'weekly' | 'monthly' | 'yearly';
+  user: string;
+  /* recurrence: 'none' | 'daily' | 'weekly' | 'monthly' | 'yearly'; */
   note?: string;
 }
 
 
 @Injectable({ providedIn: 'root' })
 export class UnavailabilityService {
-  private apiUrl = 'http://localhost:9000/unavailability';
+  private apiUrl = 'http://localhost:8000/unavailability';
 
   constructor(private http: HttpClient) {}
 
-  getAll(user: string): Promise<Unavailability[]> {
-    return lastValueFrom(this.http.get<Unavailability[]>(`${this.apiUrl}/${user}`));
+  getAll(): Promise<Unavailability[]> {
+    return lastValueFrom(this.http.get<Unavailability[]>(`${this.apiUrl}/${localStorage.getItem('username')}`));
   }
 
+  /* async addOne(data: any): Promise<Unavailability[]> {
+    const token = localStorage.getItem('loginToken');
+
+    const res = await fetch(`${this.apiUrl}/create`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `${token}`
+      },
+      body: JSON.stringify({ data })
+    });
+
+    return await res.json() ?? [];
+  } */
+
+
   addOne(data: Unavailability): Promise<Unavailability> {
-    return lastValueFrom(this.http.post<Unavailability>(this.apiUrl, data));
+    return lastValueFrom(this.http.post<Unavailability>(`${this.apiUrl}/create`, data));
   }
 
   deleteOne(id: string): Promise<void> {
@@ -31,8 +47,8 @@ export class UnavailabilityService {
   }
 
   updateOne(id: string, data: Partial<Unavailability>): Promise<Unavailability> {
-  return lastValueFrom(this.http.patch<Unavailability>(`${this.apiUrl}/${id}`, data));
-}
+    return lastValueFrom(this.http.patch<Unavailability>(`${this.apiUrl}/${id}`, data));
+  }
 
 
 }

@@ -17,7 +17,7 @@ class EventController {
     async getAllEvents(req, res) {
         try {
             const auth = req.headers.authorization;
-            const events = await this.service.getAll();
+            const events = await this.service.getAll(auth);
             // const events = await this.service.getAllEvents(auth);
             res.status(200).json(events);
         } catch (error) {
@@ -28,7 +28,7 @@ class EventController {
     async createEvent(req, res) {
         try {
             const auth = req.headers.authorization;
-            const event = await this.service.create(req.body);
+            const event = await this.service.create(req.body, auth);
             // const event = await this.service.create(auth, req.body);
             res.status(201).json(event);
         } catch (error) {

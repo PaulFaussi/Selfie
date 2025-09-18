@@ -13,10 +13,10 @@ export class LoginService {
 
   }
 
-  url='http://localhost:9000/user'
+  url='http://localhost:8000/user'
 
   async loginRequest(username: string, password: string) {
-    this.http.post<{ token?: string; userFound?: any; message?: string; error?: string }>(
+    this.http.post<{ token?: string; user?: string, userFound?: any; message?: string; error?: string }>(
         `${this.url}/login`, { username, password }
     ).subscribe({
         next: (res) => {
@@ -39,30 +39,28 @@ export class LoginService {
   }
 
 
-  async registerRequest(firstname: string, lastname: string, username: string, password: string, dob: Date) : Promise<boolean>{
-    const data = {firstname: firstname, lastname: lastname, username: username, password: password, dob: dob};
-    console.log(data);
 
-    try{
-      const response = await fetch(`${this.url}/register`, {method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
+    async registerRequest( firstname: string, lastname: string, username: string,password: string, dob: Date ): Promise<boolean> {
+      this.http.post<{ message?: string; error?: string }>(
+        `${this.url}/register`, { firstname, lastname, username, password, dob }
+      ).subscribe({
+        next: (res) => {
+          if (!res.error) {
+            alert("Registration successful");
+          } else {
+            alert(`Registration failed: ${res.message || 'Unknown error'}`);
+          }
         },
-        body: JSON.stringify(data)
+        error: (err) => {
+          console.error('Registration failed:', err.error?.message || 'Unknown error');
+          alert(`Registration failed: ${err.error?.message}`);
+        }
       });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message);
-      }
-
+       
       return true;
+    }
 
-    }
-    catch (error) {
-      return false;
-    }
-  }
+
 
 
   async getUser(): Promise<any> {

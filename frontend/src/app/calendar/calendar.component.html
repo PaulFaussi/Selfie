@@ -51,7 +51,7 @@
       <li *ngFor="let i of unavailability">
         <strong>{{ i.note || 'Indisponibilità' }}</strong><br />
         <small>{{ i.startDate | date:'short' }} → {{ i.endDate | date:'short' }}</small><br />
-        <em>Ripetizione: {{ i.recurrence }}</em><br />
+        <!-- <em>Ripetizione: {{ i.recurrence }}</em><br /> -->
         <button (click)="modificaUnavailability(i)">✏️ Modifica</button>
         <button (click)="i._id && eliminaUnavailability(i._id)">🗑️ Elimina</button>
       </li>

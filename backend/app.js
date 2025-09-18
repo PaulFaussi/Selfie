@@ -4,10 +4,9 @@ const UtenteController = require('./controller/UtenteController');
 const NoteController = require('./controller/NoteController');
 const MessaggiController = require('./controller/MessaggiController');
 const GenericController = require('./controller/GenericController');
-
 const EventController = require('./controller/EventController');
 const createAttivitaRouter = require('./controller/AttivitaController');
-const createUnavailabilityRouter = require('./controller/UnavailabilityController');
+const UnavailabilityController = require('./controller/UnavailabilityController');
 
 const express = require('express');
 const cors = require('cors');
@@ -24,19 +23,17 @@ setInterval(() => {
 
 async function main() {
   const app = express();
-  const port = 9000;
-
-  // Middleware
+  const port = 8000;
   app.use(express.json());
 
   app.use(cors()); 
-  const corsOptions = {
+  /* const corsOptions = {
     origin: 'http://localhost:4200', //problemi su macchina dipartimento ??
     methods:['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization']
-  }; 
+  };  */
 
-  db = await connectToDB(); // ✅ CORRETTO: salviamo il db restituito
+  db = await connectToDB();
 
   // Controllers che usano direttamente MongoDB
   // creazione controllers
@@ -48,11 +45,12 @@ async function main() {
   const messaggiController = new MessaggiController(db);
   const genericController = new GenericController();
   const eventoController = new EventController(db);
+  const unavailabilityController = new UnavailabilityController(db);
 
   // creazione endpoints
   app.use('/evento', eventoController.router);
   app.use('/attivita', createAttivitaRouter(db));
-  app.use('/unavailability', createUnavailabilityRouter(db));
+  app.use('/unavailability', unavailabilityController.router);
   /*app.use('/calendario', calendarioController.router); */
   app.use('/pomodoro', pomodoroController.router);
   app.use('/generic', genericController.router);
@@ -99,8 +97,7 @@ async function connectToDB() {
 
     try {
         await client.connect();
-        const db = client.db(); // ✅ CORRETTO: otteniamo l'oggetto database
-
+        const db = client.db(); 
         const adminDb = db.admin();
         const pingResult = await adminDb.ping();
 
@@ -110,7 +107,7 @@ async function connectToDB() {
             throw new Error("Errore connessione al DB.");
         }
 
-        return db; // ✅ Ritorna il database
+        return db; 
 
     } catch(error) {
         console.error("Errore nel connettersi al DB\n", error);

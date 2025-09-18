@@ -11,7 +11,13 @@ class PomodoroService {
         const username = extractUsername(jwt);
         const pomodoro = await this.pomodoroRepository.findById(username, id);
 
-        if (this.isPomodoroVisible(username, pomodoro)) {
+        /* if (this.isPomodoroVisible(username, pomodoro)) {
+            return pomodoro;
+        } else {
+            throw new Error("Pomodoro non trovato");
+        } */
+
+        if (pomodoro != null) {
             return pomodoro;
         } else {
             throw new Error("Pomodoro non trovato");
@@ -25,9 +31,21 @@ class PomodoroService {
         return this.filterPomodoroListByVisibility(username, pomodoroList)
     }
 
-    async createPomodoro(jwt, title, durationStudy, durationBreak, numberCycles, cyclesLeft, startDate) {
+    async createPomodoro(jwt, title, durationStudy, durationBreak, numberCycles, startDate) {
 
-        return await this.pomodoroRepository.createPomodoro(jwt, title, durationStudy, durationBreak, numberCycles, cyclesLeft, startDate);
+        return await this.pomodoroRepository.createPomodoro(jwt, title, durationStudy, durationBreak, numberCycles, startDate);
+    }
+
+    async copyPomodoro(jwt, idPomodoroDaCopiare) {
+
+        const pomodoroDaCopiare = await this.findById(jwt, idPomodoroDaCopiare);
+
+        return await this.pomodoroRepository.createPomodoro(jwt,
+                                                            pomodoroDaCopiare.name,
+                                                            pomodoroDaCopiare.durationStudy,
+                                                            pomodoroDaCopiare.durationBreak,
+                                                            pomodoroDaCopiare.numberCycles,
+                                                            pomodoroDaCopiare.startDate);
     }
 
     async updateCyclesLeftPomodoro(jwt, id, cyclesLeft) {

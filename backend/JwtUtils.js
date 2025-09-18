@@ -11,8 +11,9 @@ const SECRET_KEY = 'U1r3G8f0Hk3nZ4xT6bP9j2M5oA7yQ0Lw';
  * @returns {String} Il token generato
  */
 function generateToken(payload) {
-    const expiresIn = '1h';
-    return jwt.sign(payload, SECRET_KEY, { expiresIn });
+    /* const expiresIn = '1h'; */
+    /* return jwt.sign(payload, SECRET_KEY, { expiresIn }); */
+    return jwt.sign(payload, SECRET_KEY);
 }
 
 

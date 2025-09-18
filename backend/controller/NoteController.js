@@ -45,8 +45,6 @@ class NoteController {
         }
     }
 
-
-
     //POST
 
     async createNote(req, res){
@@ -73,8 +71,6 @@ class NoteController {
         }
     }
 
-
-    
     //DELETE
 
     async deleteNote(req, res){
